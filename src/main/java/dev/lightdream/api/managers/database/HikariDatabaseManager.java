@@ -27,6 +27,7 @@ public class HikariDatabaseManager extends DatabaseManager {
     public HikariDatabaseManager(IAPI api) {
         this.api = api;
         this.sqlConfig = api.getSQLConfig();
+        connect();
     }
 
     public void connect() {
