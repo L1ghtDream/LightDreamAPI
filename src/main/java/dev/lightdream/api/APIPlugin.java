@@ -42,6 +42,7 @@ public final class APIPlugin extends JavaPlugin {
     public void test(List<Test> tests) {
         AtomicInteger testCount = new AtomicInteger();
         tests.forEach(test -> {
+            test.test();
             getLogger().info("Test " + testCount + ": " + (test.status ? "Passed" : "Failed"));
             testCount.getAndIncrement();
         });
