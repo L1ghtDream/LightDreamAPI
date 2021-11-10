@@ -2,6 +2,7 @@ package dev.lightdream.api.managers.database;
 
 import dev.lightdream.api.IAPI;
 import dev.lightdream.api.configs.SQLConfig;
+import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -57,7 +58,6 @@ public abstract class DatabaseManager implements IDatabaseManager {
         switch (name) {
             case "int":
             case "Integer":
-
             case "boolean":
             case "Boolean":
             case "float":
@@ -72,5 +72,4 @@ public abstract class DatabaseManager implements IDatabaseManager {
                 return "\"\"";
         }
     }
-
 }

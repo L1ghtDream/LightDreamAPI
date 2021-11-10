@@ -20,10 +20,6 @@ import java.util.UUID;
 @dev.lightdream.api.annotations.DatabaseTable(table = "users")
 public class User extends DatabaseEntry {
 
-    @SuppressWarnings("unused")
-    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
-    @dev.lightdream.api.annotations.DatabaseField(columnName = "id", autoGenerate = true)
-    public int id;
     @DatabaseField(columnName = "uuid", unique = true)
     @dev.lightdream.api.annotations.DatabaseField(columnName = "uuid", unique = true)
     public UUID uuid;
@@ -156,5 +152,14 @@ public class User extends DatabaseEntry {
         return getPlayer().hasPermission(permission);
     }
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", id=" + id +
+                ", uuid=" + uuid +
+                ", name='" + name + '\'' +
+                ", lang='" + lang + '\'' +
+                '}';
+    }
 }

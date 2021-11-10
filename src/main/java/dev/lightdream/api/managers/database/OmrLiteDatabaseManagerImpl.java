@@ -12,8 +12,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-public class DatabaseManagerImpl extends OmrLiteDatabaseManager implements IDatabaseManagerImpl {
-    public DatabaseManagerImpl(IAPI api) {
+public class OmrLiteDatabaseManagerImpl extends OmrLiteDatabaseManager implements IDatabaseManagerImpl {
+    public OmrLiteDatabaseManagerImpl(IAPI api) {
         super(api);
     }
 

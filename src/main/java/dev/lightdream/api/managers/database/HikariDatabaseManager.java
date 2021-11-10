@@ -6,6 +6,7 @@ import dev.lightdream.api.IAPI;
 import dev.lightdream.api.annotations.DatabaseField;
 import dev.lightdream.api.annotations.DatabaseTable;
 import dev.lightdream.api.databases.DatabaseEntry;
+import dev.lightdream.api.databases.User;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Field;
@@ -49,14 +50,14 @@ public class HikariDatabaseManager extends DatabaseManager {
     @Override
     public <T> List<T> getAll(Class<T> clazz) {
         if (!clazz.isAnnotationPresent(DatabaseTable.class)) {
-            //todo logger
+            api.getLogger().severe("Class " + clazz.getSimpleName() + " is not annotated as a database table");
             return new ArrayList<>();
         }
 
         List<T> output = new ArrayList<>();
-        PreparedStatement statement = getConnection().prepareStatement(
-                "SELECT * FROM ? WHERE 1");
+        PreparedStatement statement = getConnection().prepareStatement(sqlConfig.driver.selectAll);
         statement.setString(1, clazz.getAnnotation(DatabaseTable.class).table());
+
         ResultSet rs = statement.executeQuery();
         while (rs.next()) {
             T obj = clazz.newInstance();
@@ -76,24 +77,22 @@ public class HikariDatabaseManager extends DatabaseManager {
         }
 
         if (!clazz.isAnnotationPresent(DatabaseTable.class)) {
-            //todo logger
+            api.getLogger().severe("Class " + clazz.getSimpleName() + " is not annotated as a database table");
             return new ArrayList<>();
         }
-        StringBuilder query = new StringBuilder("SELECT * FROM ? WHERE ");
 
+        StringBuilder placeholder = new StringBuilder();
         for (String key : queries.keySet()) {
             Object value = queries.get(key);
-            query.append(key)
-                    .append("=")
-                    .append(formatQueryArgument(value))
-                    .append(" AND ");
+            placeholder.append(key).append("=").append(formatQueryArgument(value)).append(" AND ");
         }
-        query.append(" ");
-        query = new StringBuilder(query.toString().replace(" AND  ", ""));
-
+        placeholder.append(" ");
+        placeholder = new StringBuilder(placeholder.toString().replace(" AND  ", ""));
 
         List<T> output = new ArrayList<>();
-        PreparedStatement statement = getConnection().prepareStatement(query.toString());
+        PreparedStatement statement = getConnection().prepareStatement(
+                sqlConfig.driver.select.replace("%placeholder%", placeholder.toString())
+        );
         statement.setString(1, clazz.getAnnotation(DatabaseTable.class).table());
         ResultSet rs = statement.executeQuery();
         while (rs.next()) {
@@ -111,35 +110,38 @@ public class HikariDatabaseManager extends DatabaseManager {
     @SneakyThrows
     @Override
     public void createTable(Class<?> clazz) {
-
         if (!clazz.isAnnotationPresent(DatabaseTable.class)) {
-            //todo logger
+            api.getLogger().severe("Class " + clazz.getSimpleName() + " is not annotated as a database table");
             return;
         }
 
         Object obj = clazz.newInstance();
-        String query = "CREATE TABLE IF NOT EXISTS ?.?(";
+        String placeholder = "";
 
         Field[] fields = obj.getClass().getFields();
         for (Field field : fields) {
             if (!field.isAnnotationPresent(DatabaseField.class)) {
-                return;
+                continue;
             }
             DatabaseField dbField = field.getAnnotation(DatabaseField.class);
-            query += dbField.columnName() + " " +
+            placeholder += dbField.columnName() + " " +
                     getDataType(field) + " " +
                     (dbField.unique() ? "UNIQUE " : "") +
                     (dbField.autoGenerate() ? "AUTO_INCREMENT " : "") +
                     ",";
         }
 
-        query += ",";
-        query = query.replace(",,", "");
-        query += ")";
+        placeholder += ",";
+        placeholder = placeholder.replace(",,", "");
+        placeholder += ")";
 
-        PreparedStatement statement = getConnection().prepareStatement(query);
+        PreparedStatement statement = getConnection().prepareStatement(
+                sqlConfig.driver.createTable.replace("%placeholder%", placeholder)
+        );
         statement.setString(1, sqlConfig.database);
         statement.setString(2, clazz.getAnnotation(DatabaseTable.class).table());
+
+        statement.executeUpdate();
     }
 
     @Override
@@ -159,13 +161,74 @@ public class HikariDatabaseManager extends DatabaseManager {
         //todo
     }
 
+    @SneakyThrows
     @Override
-    public void save(DatabaseEntry object, boolean cache) {
-        //todo
+    public void save(DatabaseEntry entry, boolean cache) {
+        if (!entry.getClass().isAnnotationPresent(DatabaseTable.class)) {
+            //todo logger
+            return;
+        }
+        List<? extends DatabaseEntry> currentEntries = new ArrayList<>();
+        if(entry.id!=0) {
+            currentEntries = get(entry.getClass(), new HashMap<String, Object>() {{
+                put("id", entry.id);
+            }});
+        }
+        if (currentEntries.size() == 0) {
+            StringBuilder placeholder = new StringBuilder();
+
+            Field[] fields = entry.getClass().getFields();
+            for (Field field : fields) {
+                if (!field.isAnnotationPresent(DatabaseField.class)) {
+                    continue;
+                }
+                DatabaseField dbField = field.getAnnotation(DatabaseField.class);
+                placeholder.append(formatQueryArgument(field.get(entry))).append(",");
+            }
+
+            placeholder.append(",");
+            placeholder = new StringBuilder(placeholder.toString().replace(",,", ""));
+            placeholder.append(")");
+
+            PreparedStatement statement = getConnection().prepareStatement(
+                    sqlConfig.driver.insert.replace("%placeholder%", placeholder.toString())
+            );
+            statement.setString(1, entry.getClass().getAnnotation(DatabaseTable.class).table());
+
+            statement.executeUpdate();
+            return;
+        }
+
+        StringBuilder placeholder = new StringBuilder();
+
+        Field[] fields = entry.getClass().getFields();
+        for (Field field : fields) {
+            if (!field.isAnnotationPresent(DatabaseField.class)) {
+                continue;
+            }
+            DatabaseField dbField = field.getAnnotation(DatabaseField.class);
+            placeholder.append(field.getName()).append("=").append(formatQueryArgument(field.get(entry)));
+        }
+
+        placeholder.append(",");
+        placeholder = new StringBuilder(placeholder.toString().replace(",,", ""));
+        placeholder.append(")");
+
+        PreparedStatement statement = getConnection().prepareStatement(
+                sqlConfig.driver.update.replace("%placeholder%", placeholder.toString())
+        );
+        statement.setString(1, entry.getClass().getAnnotation(DatabaseTable.class).table());
+        statement.setInt(2, entry.id);
+
+        statement.executeUpdate();
     }
 
+    @SneakyThrows
     @Override
     public void delete(DatabaseEntry entry) {
-        //todo
+        PreparedStatement statement = getConnection().prepareStatement(sqlConfig.driver.delete);
+        statement.setString(1, entry.getClass().getAnnotation(DatabaseTable.class).table());
+        statement.setInt(2, entry.id);
+        statement.executeUpdate();
     }
 }

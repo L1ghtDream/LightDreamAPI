@@ -16,7 +16,7 @@ import dev.lightdream.api.databases.ConsoleUser;
 import dev.lightdream.api.databases.User;
 import dev.lightdream.api.dto.Position;
 import dev.lightdream.api.managers.*;
-import dev.lightdream.api.managers.database.DatabaseManagerImpl;
+import dev.lightdream.api.managers.database.OmrLiteDatabaseManagerImpl;
 import dev.lightdream.api.utils.Debugger;
 import fr.minuskube.inv.InventoryManager;
 import net.milkbowl.vault.economy.Economy;
@@ -56,7 +56,7 @@ public final class API implements IAPI {
     //Managers
     public LangManager langManager;
     public MessageManager messageManager;
-    public DatabaseManagerImpl databaseManager;
+    public OmrLiteDatabaseManagerImpl databaseManager;
     public FileManager fileManager;
     public KeyDeserializerManager keyDeserializerManager;
     public Command command;
@@ -105,7 +105,7 @@ public final class API implements IAPI {
 
         //Managers
         messageManager = new MessageManager(this, API.class);
-        this.databaseManager = new DatabaseManagerImpl(this);
+        this.databaseManager = new OmrLiteDatabaseManagerImpl(this);
         this.databaseManager.setup(User.class);
         this.langManager = new LangManager(API.class, getLangs());
         this.eventManager = new EventManager(this);
@@ -247,7 +247,7 @@ public final class API implements IAPI {
     }
 
     @Override
-    public DatabaseManagerImpl getDatabaseManager() {
+    public OmrLiteDatabaseManagerImpl getDatabaseManager() {
         return databaseManager;
     }
 
@@ -272,7 +272,7 @@ public final class API implements IAPI {
 
     @Override
     public String getProjectVersion() {
-        return "3.101";
+        return "3.102";
     }
 
     @Override
