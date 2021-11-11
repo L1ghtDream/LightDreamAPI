@@ -7,7 +7,7 @@
     <groupId>dev.lightdream</groupId>
     <artifactId>LightDreamAPI</artifactId>
     <packaging>jar</packaging>
-    <version>3.104</version>
+    <version>3.105</version>
 
     <url>https://lightdream.dev</url>
 
@@ -110,6 +110,14 @@
         <repository>
             <id>hikari</id>
             <url>https://mvnrepository.com/artifact/com.zaxxer/HikariCP</url>
+        </repository>
+        <repository>
+            <id>sql-driver</id>
+            <url>https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc</url>
+        </repository>
+        <repository>
+            <id>sql-dialect</id>
+            <url>https://mvnrepository.com/artifact/com.zsoltfabok/sqlite-dialect</url>
         </repository>
     </repositories>
 
@@ -250,6 +258,19 @@
             <version>1.7</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- DRIVER -->
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.36.0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.zsoltfabok</groupId>
+            <artifactId>sqlite-dialect</artifactId>
+            <version>1.0</version>
+        </dependency>
+
 
     </dependencies>
 </project>
