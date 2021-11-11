@@ -7,7 +7,7 @@
     <groupId>dev.lightdream</groupId>
     <artifactId>LightDreamAPI</artifactId>
     <packaging>jar</packaging>
-    <version>3.105</version>
+    <version>3.106</version>
 
     <url>https://lightdream.dev</url>
 
@@ -269,6 +269,11 @@
             <groupId>com.zsoltfabok</groupId>
             <artifactId>sqlite-dialect</artifactId>
             <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.enigmabridge</groupId>
+            <artifactId>hibernate4-sqlite-dialect </artifactId>
+            <version>0.1.0</version>
         </dependency>
 
 
