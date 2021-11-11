@@ -38,6 +38,11 @@ public class HikariDatabaseManager extends DatabaseManager {
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        config.setPoolName("SQLiteConnectionPool");
+        switch (sqlConfig.driver){
+            case SQLITE:
+                config.setDriverClassName("org.sqlite.JDBC");
+        }
         ds = new HikariDataSource(config);
     }
 
