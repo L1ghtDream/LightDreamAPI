@@ -114,10 +114,6 @@ public abstract class GUI implements InventoryProvider {
                 if (item.item.material.equals(XMaterial.AIR)) {
                     contents.set(Utils.getSlotPosition(item.item.slot), null);
                 } else {
-                    Debugger.info(contents);
-                    Debugger.info(item);
-                    Debugger.info(item.item);
-                    Debugger.info(item.item.slot);
                     contents.set(Utils.getSlotPosition(item.item.slot), ClickableItem.of(ItemBuilder.makeItem(item.item), e -> {
                         List<String> functions = item.functions();
                         functions.forEach(function -> functionCall(player, function, item.functionArgs(function)));

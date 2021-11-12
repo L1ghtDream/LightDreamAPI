@@ -1,9 +1,9 @@
 package dev.lightdream.api;
 
-import dev.lightdream.api.databases.User;
+import dev.lightdream.api.configs.SQLConfig;
 import dev.lightdream.api.dto.Test;
-import dev.lightdream.api.managers.database.HikariDatabaseManager;
 import dev.lightdream.api.managers.database.HikariDatabaseManagerImpl;
+import dev.lightdream.api.utils.Debugger;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
@@ -20,18 +20,32 @@ public final class APIPlugin extends JavaPlugin {
     public void onEnable() {
         this.api = new API(this);
 
-        test( Arrays.asList(
+        if (!Debugger.enabled) {
+            return;
+        }
+
+        test(Arrays.asList(
                 new Test((x) -> {
                     return true;
                 }),
-                new Test((x)->{
+                new Test((x) -> {
+                    SQLConfig backup = api.sqlConfig;
+                    api.sqlConfig = new SQLConfig();
+                    api.sqlConfig.database = "Tests.db";
                     HikariDatabaseManagerImpl dbManager = new HikariDatabaseManagerImpl(api);
-                    UUID uuid =UUID.randomUUID();
-                    User user=dbManager.getUser(uuid);
+
+                    UUID uuid = UUID.randomUUID();
+                    dbManager.getUser(uuid);
                     System.out.println(dbManager.getUser(uuid));
+
+                    uuid = UUID.randomUUID();
+                    dbManager.getUser(uuid);
+                    System.out.println(dbManager.getUser(uuid));
+
+                    api.sqlConfig = backup;
                     return true;
                 })
-            ));
+        ));
     }
 
     @Override

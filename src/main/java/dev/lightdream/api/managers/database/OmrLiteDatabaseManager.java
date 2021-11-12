@@ -9,6 +9,7 @@ import com.j256.ormlite.support.DatabaseConnection;
 import com.j256.ormlite.table.TableUtils;
 import dev.lightdream.api.IAPI;
 import dev.lightdream.api.databases.DatabaseEntry;
+import dev.lightdream.api.dto.LambdaExecutor;
 import dev.lightdream.api.utils.Debugger;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
@@ -125,12 +126,12 @@ public class OmrLiteDatabaseManager extends DatabaseManager {
             list.add(entry);
             cacheMap.put(entry.getClass(), list);
         } else {
-            Debugger.info("Saving " + entry);
+            api.getLogger().info("Saving " + entry);
             try {
                 ((Dao<DatabaseEntry, Integer>) daoMap.get(entry.getClass())).createOrUpdate(entry);
                 daoMap.get(entry.getClass()).commit(databaseConnection);
             } catch (Throwable e) {
-                Debugger.info("Seems like a duplicate, ignoring and using the local value");
+                api.getLogger().info("Seems like a duplicate, ignoring and using the local value");
             }
         }
     }
@@ -176,7 +177,7 @@ public class OmrLiteDatabaseManager extends DatabaseManager {
     }
 
     public List<?> queryAll(Class<?> clazz) {
-        Debugger.info("Getting from database");
+        api.getLogger().info("Getting from database");
         if (triedConnecting) {
             api.getLogger().info("Already tried reconnecting. Returning empty list");
             return new ArrayList<>();
@@ -189,7 +190,6 @@ public class OmrLiteDatabaseManager extends DatabaseManager {
             } catch (SQLException sqlException) {
                 sqlException.printStackTrace();
             }
-            Debugger.info(output.size());
             return output;
         } catch (Throwable t) {
             triedConnecting = true;
@@ -226,5 +226,20 @@ public class OmrLiteDatabaseManager extends DatabaseManager {
         createTable(clazz);
         createDao(clazz).setAutoCommit(databaseConnection, false);
         cacheMap.put(clazz, (List<DatabaseEntry>) getAll(clazz, false));
+    }
+
+    @Override
+    public HashMap<Class<?>, String> getDataTypes() {
+        return null;
+    }
+
+    @Override
+    public HashMap<Class<?>, LambdaExecutor> getSerializeMap() {
+        return null;
+    }
+
+    @Override
+    public HashMap<Class<?>, LambdaExecutor> getDeserializeMap() {
+        return null;
     }
 }

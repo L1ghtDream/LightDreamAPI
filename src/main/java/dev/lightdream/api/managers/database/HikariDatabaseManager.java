@@ -6,7 +6,7 @@ import dev.lightdream.api.IAPI;
 import dev.lightdream.api.annotations.DatabaseField;
 import dev.lightdream.api.annotations.DatabaseTable;
 import dev.lightdream.api.databases.DatabaseEntry;
-import dev.lightdream.api.databases.User;
+import dev.lightdream.api.utils.Debugger;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Field;
@@ -14,11 +14,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public class HikariDatabaseManager extends DatabaseManager {
+public abstract class HikariDatabaseManager extends DatabaseManager {
 
     private HikariDataSource ds;
 
@@ -35,15 +36,18 @@ public class HikariDatabaseManager extends DatabaseManager {
         config.setJdbcUrl(getDatabaseURL());
         config.setUsername(sqlConfig.username);
         config.setPassword(sqlConfig.password);
-        config.addDataSourceProperty("cachePrepStmts", "true");
-        config.addDataSourceProperty("prepStmtCacheSize", "250");
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-        config.setPoolName("SQLiteConnectionPool");
-        switch (sqlConfig.driver){
+        config.setConnectionTestQuery("SELECT 1");
+        config.setMaxLifetime(60000);
+        config.setIdleTimeout(45000);
+        config.setMaximumPoolSize(50);
+        switch (sqlConfig.driver) {
             case SQLITE:
                 config.setDriverClassName("org.sqlite.JDBC");
+                config.addDataSourceProperty("dataSourceClassName", "org.sqlite.SQLiteDataSource");
+                break;
         }
         ds = new HikariDataSource(config);
+        setup();
     }
 
     @SneakyThrows
@@ -61,15 +65,16 @@ public class HikariDatabaseManager extends DatabaseManager {
         }
 
         List<T> output = new ArrayList<>();
-        PreparedStatement statement = getConnection().prepareStatement(sqlConfig.driver.selectAll);
-        statement.setString(1, clazz.getAnnotation(DatabaseTable.class).table());
 
-        ResultSet rs = statement.executeQuery();
+        ResultSet rs = executeQuery(
+                sqlConfig.driver.selectAll.replace("%table%", clazz.getAnnotation(DatabaseTable.class).table()),
+                new ArrayList<>()
+        );
         while (rs.next()) {
             T obj = clazz.newInstance();
             Field[] fields = obj.getClass().getFields();
             for (Field field : fields) {
-                field.set(obj, rs.getString(field.getName()));
+                field.set(obj, getObject(field.getType(), rs.getObject(field.getName())));
             }
             output.add(obj);
         }
@@ -96,16 +101,16 @@ public class HikariDatabaseManager extends DatabaseManager {
         placeholder = new StringBuilder(placeholder.toString().replace(" AND  ", ""));
 
         List<T> output = new ArrayList<>();
-        PreparedStatement statement = getConnection().prepareStatement(
+        ResultSet rs = executeQuery(
                 sqlConfig.driver.select.replace("%placeholder%", placeholder.toString())
+                        .replace("%table%", clazz.getAnnotation(DatabaseTable.class).table()),
+                new ArrayList<>()
         );
-        statement.setString(1, clazz.getAnnotation(DatabaseTable.class).table());
-        ResultSet rs = statement.executeQuery();
         while (rs.next()) {
             T obj = clazz.newInstance();
             Field[] fields = obj.getClass().getFields();
             for (Field field : fields) {
-                field.set(obj, rs.getString(field.getName()));
+                field.set(obj, getObject(field.getType(), rs.getString(field.getName())));
             }
             output.add(obj);
         }
@@ -131,29 +136,24 @@ public class HikariDatabaseManager extends DatabaseManager {
             }
             DatabaseField dbField = field.getAnnotation(DatabaseField.class);
             placeholder += dbField.columnName() + " " +
-                    getDataType(field) + " " +
+                    getDataType(field.getType()) + " " +
                     (dbField.unique() ? "UNIQUE " : "") +
-                    (dbField.autoGenerate() ? "AUTO_INCREMENT " : "") +
+                    (dbField.autoGenerate() ? sqlConfig.driver.autoIncrement : "") +
                     ",";
         }
 
         placeholder += ",";
         placeholder = placeholder.replace(",,", "");
-        placeholder += ")";
 
-        PreparedStatement statement = getConnection().prepareStatement(
+        executeUpdate(
                 sqlConfig.driver.createTable.replace("%placeholder%", placeholder)
+                        .replace("%table%", clazz.getAnnotation(DatabaseTable.class).table()),
+                new ArrayList<>()
         );
-        statement.setString(1, sqlConfig.database);
-        statement.setString(2, clazz.getAnnotation(DatabaseTable.class).table());
-
-        statement.executeUpdate();
     }
 
     @Override
-    public void setup() {
-
-    }
+    public abstract void setup();
 
     @Override
     public void setup(Class<?> clazz) {
@@ -175,33 +175,45 @@ public class HikariDatabaseManager extends DatabaseManager {
             return;
         }
         List<? extends DatabaseEntry> currentEntries = new ArrayList<>();
-        if(entry.id!=0) {
+        if (entry.id != 0) {
             currentEntries = get(entry.getClass(), new HashMap<String, Object>() {{
                 put("id", entry.id);
             }});
         }
         if (currentEntries.size() == 0) {
-            StringBuilder placeholder = new StringBuilder();
+            StringBuilder placeholder1 = new StringBuilder();
+            StringBuilder placeholder2 = new StringBuilder();
 
             Field[] fields = entry.getClass().getFields();
             for (Field field : fields) {
                 if (!field.isAnnotationPresent(DatabaseField.class)) {
                     continue;
                 }
-                DatabaseField dbField = field.getAnnotation(DatabaseField.class);
-                placeholder.append(formatQueryArgument(field.get(entry))).append(",");
+                DatabaseField databaseField = field.getAnnotation(DatabaseField.class);
+
+                if (databaseField.autoGenerate()) {
+                    continue;
+                }
+
+                String columnName = databaseField.columnName();
+                placeholder1.append(columnName).append(",");
+                placeholder2.append(formatQueryArgument(field.get(entry))).append(",");
             }
 
-            placeholder.append(",");
-            placeholder = new StringBuilder(placeholder.toString().replace(",,", ""));
-            placeholder.append(")");
+            placeholder1.append(",");
+            placeholder2.append(",");
 
-            PreparedStatement statement = getConnection().prepareStatement(
-                    sqlConfig.driver.insert.replace("%placeholder%", placeholder.toString())
-            );
-            statement.setString(1, entry.getClass().getAnnotation(DatabaseTable.class).table());
+            placeholder1 = new StringBuilder(placeholder1.toString().replace(",,", ""));
+            placeholder2 = new StringBuilder(placeholder2.toString().replace(",,", ""));
 
-            statement.executeUpdate();
+            executeUpdate(
+                    sqlConfig.driver.insert
+                            .replace("%placeholder-1%", placeholder1.toString())
+                            .replace("%placeholder-2%", placeholder2.toString())
+                            .replace("%table%", entry.getClass().getAnnotation(DatabaseTable.class).table()),
+                    new ArrayList<>(
+
+                    ));
             return;
         }
 
@@ -220,21 +232,40 @@ public class HikariDatabaseManager extends DatabaseManager {
         placeholder = new StringBuilder(placeholder.toString().replace(",,", ""));
         placeholder.append(")");
 
-        PreparedStatement statement = getConnection().prepareStatement(
+        executeUpdate(
                 sqlConfig.driver.update.replace("%placeholder%", placeholder.toString())
-        );
-        statement.setString(1, entry.getClass().getAnnotation(DatabaseTable.class).table());
-        statement.setInt(2, entry.id);
-
-        statement.executeUpdate();
+                        .replace("%table%", entry.getClass().getAnnotation(DatabaseTable.class).table()),
+                Arrays.asList(entry.id));
     }
 
     @SneakyThrows
     @Override
     public void delete(DatabaseEntry entry) {
-        PreparedStatement statement = getConnection().prepareStatement(sqlConfig.driver.delete);
-        statement.setString(1, entry.getClass().getAnnotation(DatabaseTable.class).table());
-        statement.setInt(2, entry.id);
+        executeUpdate(
+                sqlConfig.driver.delete.replace("%table%", entry.getClass().getAnnotation(DatabaseTable.class).table()),
+                Arrays.asList(entry.id));
+    }
+
+    @SneakyThrows
+    private void executeUpdate(String sql, List<Object> values) {
+
+        PreparedStatement statement = getConnection().prepareStatement(sql);
+
+        for (int i = 0; i < values.size(); i++) {
+            statement.setObject(i + 1, values.get(i));
+        }
+
         statement.executeUpdate();
+    }
+
+    @SneakyThrows
+    private ResultSet executeQuery(String sql, List<Object> values) {
+        PreparedStatement statement = getConnection().prepareStatement(sql);
+
+        for (int i = 0; i < values.size(); i++) {
+            statement.setObject(i + 1, values.get(i));
+        }
+
+        return statement.executeQuery();
     }
 }

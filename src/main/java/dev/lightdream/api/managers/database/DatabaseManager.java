@@ -2,16 +2,25 @@ package dev.lightdream.api.managers.database;
 
 import dev.lightdream.api.IAPI;
 import dev.lightdream.api.configs.SQLConfig;
-import lombok.SneakyThrows;
+import dev.lightdream.api.dto.LambdaExecutor;
+import dev.lightdream.api.utils.Debugger;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.UUID;
 
 public abstract class DatabaseManager implements IDatabaseManager {
 
     public IAPI api;
     public SQLConfig sqlConfig;
+    public HashMap<Class<?>, LambdaExecutor> deserializeMap = new HashMap<Class<?>, LambdaExecutor>() {{
+        put(UUID.class, (object) -> UUID.fromString(object.toString()));
+    }};
+    public HashMap<Class<?>, LambdaExecutor> serializeMap = new HashMap<Class<?>, LambdaExecutor>() {{
+        put(String.class, (object) -> "\"" + object.toString() + "\"");
+        put(UUID.class, (object) -> "\"" + object.toString() + "\"");
+    }};
 
     public @NotNull String getDatabaseURL() {
         switch (sqlConfig.driver) {
@@ -30,46 +39,84 @@ public abstract class DatabaseManager implements IDatabaseManager {
         }
     }
 
-    public String getDataType(Field field) {
-        String name = field.getType().getSimpleName();
-        switch (name) {
-            case "int":
-            case "Integer":
-                return "INT";
-            case "String":
-                return "TEXT";
-            case "boolean":
-            case "Boolean":
-                return "BOOLEAN";
-            case "float":
-            case "Float":
-                return "FLOAT";
-            case "double":
-            case "Double":
-                return "DOUBLE";
-            default:
-                api.getLogger().severe("Datatype not recognised");
+    public String getDataType(Class<?> clazz) {
+        String dbDataType = sqlConfig.driver.dataTypes.get(clazz);
+
+        if (dbDataType == null) {
+            HashMap<Class<?>, String> additionalDataTypes = getDataTypes();
+
+            if (additionalDataTypes == null) {
+                api.getLogger().warning("DataType " + clazz.getSimpleName() + " is not a supported data type");
                 return "";
+            }
+
+            dbDataType = additionalDataTypes.get(clazz);
         }
+
+        if (dbDataType != null) {
+            return dbDataType;
+        }
+
+        api.getLogger().warning("DataType " + clazz.getSimpleName() + " is not a supported data type");
+        return "";
     }
 
+    public abstract HashMap<Class<?>, String> getDataTypes();
+
+    public abstract HashMap<Class<?>, LambdaExecutor> getSerializeMap();
+
     public String formatQueryArgument(Object object) {
-        String name = object.getClass().getSimpleName();
-        switch (name) {
-            case "int":
-            case "Integer":
-            case "boolean":
-            case "Boolean":
-            case "float":
-            case "Float":
-            case "double":
-            case "Double":
-                return object.toString();
-            case "String":
-                return "\"" + object + "\"";
-            default:
-                api.getLogger().severe("Datatype not recognised");
-                return "\"\"";
+        if (object == null) {
+            return "NULL";
         }
+        Class<?> clazz = object.getClass();
+        String output = null;
+        if (serializeMap.get(clazz) != null) {
+            output = (String) serializeMap.get(clazz).execute(object);
+        }
+
+        if (output == null) {
+            HashMap<Class<?>, LambdaExecutor> additionalSerializeMap = getSerializeMap();
+
+            if (additionalSerializeMap == null) {
+                return object.toString();
+            }
+            if (additionalSerializeMap.get(clazz) != null) {
+                output = (String) additionalSerializeMap.get(clazz).execute(object);
+            }
+        }
+
+        if (output != null) {
+            return output;
+        }
+
+        return object.toString();
     }
+
+    public abstract HashMap<Class<?>, LambdaExecutor> getDeserializeMap();
+
+    public Object getObject(Class<?> clazz, Object object) {
+        Object output = null;
+        if (deserializeMap.get(clazz) != null) {
+            output = deserializeMap.get(clazz).execute(object);
+        }
+        if (output == null) {
+            HashMap<Class<?>, LambdaExecutor> additionalDeserializeMap = getDeserializeMap();
+
+            if (additionalDeserializeMap == null) {
+                return object;
+            }
+            if (additionalDeserializeMap.get(clazz) != null) {
+                output = additionalDeserializeMap.get(clazz).execute(object);
+            }
+        }
+
+        if (output != null) {
+            return output;
+        }
+
+        return object;
+    }
+
+
 }

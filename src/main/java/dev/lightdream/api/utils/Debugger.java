@@ -5,6 +5,7 @@ import dev.lightdream.api.IAPI;
 public class Debugger {
 
     private static IAPI api;
+    public static boolean enabled= false;
 
     public static void info(Object object) {
         if (object == null) {
@@ -27,6 +28,7 @@ public class Debugger {
 
     public static void init(IAPI api) {
         Debugger.api = api;
+        Debugger.enabled=true;
     }
 
 }
