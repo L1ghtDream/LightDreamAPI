@@ -37,6 +37,8 @@ public class SQLConfig {
                     put(double.class, "DOUBLE");
                     put(Double.class, "DOUBLE");
                     put(UUID.class, "TEXT");
+                    put(Long.class, "LONG");
+                    put(long.class, "LONG");
                 }},
                 "AUTO_INCREMENT"
         ),
