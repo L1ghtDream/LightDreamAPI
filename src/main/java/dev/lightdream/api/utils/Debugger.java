@@ -23,7 +23,7 @@ public class Debugger {
         if (!api.debug()) {
             return;
         }
-        api.getLogger().info(message);
+        api.getPlugin().getLogger().info(message);
     }
 
     public static void init(IAPI api) {

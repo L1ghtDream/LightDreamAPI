@@ -10,6 +10,7 @@ import com.j256.ormlite.table.TableUtils;
 import dev.lightdream.api.IAPI;
 import dev.lightdream.api.databases.DatabaseEntry;
 import dev.lightdream.api.dto.LambdaExecutor;
+import dev.lightdream.api.utils.Logger;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 
@@ -82,7 +83,7 @@ public class OmrLiteDatabaseManager extends DatabaseManager {
     @SuppressWarnings({"unused", "unchecked"})
     @SneakyThrows
     public void save(boolean cache) {
-        api.getLogger().info("Saving database tables to " + api.getDataFolder());
+        Logger.info("Saving database tables to " + api.getDataFolder());
         if (cache) {
             cacheMap.forEach((clazz, list) -> {
                 list.forEach(obj -> {
@@ -92,7 +93,7 @@ public class OmrLiteDatabaseManager extends DatabaseManager {
                         sqlException.printStackTrace();
                     }
                 });
-                api.getLogger().info("Saving table " + getDao(clazz).getTableName());
+                Logger.info("Saving table " + getDao(clazz).getTableName());
                 try {
                     getDao(clazz).commit(databaseConnection);
                 } catch (SQLException sqlException) {
@@ -101,7 +102,7 @@ public class OmrLiteDatabaseManager extends DatabaseManager {
             });
         } else {
             for (Dao<?, ?> dao : daoMap.values()) {
-                api.getLogger().info("Saving table " + dao.getTableName());
+                Logger.info("Saving table " + dao.getTableName());
                 dao.commit(databaseConnection);
             }
         }
@@ -125,12 +126,12 @@ public class OmrLiteDatabaseManager extends DatabaseManager {
             list.add(entry);
             cacheMap.put(entry.getClass(), list);
         } else {
-            api.getLogger().info("Saving " + entry);
+            Logger.info("Saving " + entry);
             try {
                 ((Dao<DatabaseEntry, Integer>) daoMap.get(entry.getClass())).createOrUpdate(entry);
                 daoMap.get(entry.getClass()).commit(databaseConnection);
             } catch (Throwable e) {
-                api.getLogger().info("Seems like a duplicate, ignoring and using the local value");
+                Logger.info("Seems like a duplicate, ignoring and using the local value");
             }
         }
     }
@@ -176,9 +177,9 @@ public class OmrLiteDatabaseManager extends DatabaseManager {
     }
 
     public List<?> queryAll(Class<?> clazz) {
-        api.getLogger().info("Getting from database");
+        Logger.info("Getting from database");
         if (triedConnecting) {
-            api.getLogger().info("Already tried reconnecting. Returning empty list");
+            Logger.info("Already tried reconnecting. Returning empty list");
             return new ArrayList<>();
         }
 
@@ -193,7 +194,7 @@ public class OmrLiteDatabaseManager extends DatabaseManager {
         } catch (Throwable t) {
             triedConnecting = true;
             Bukkit.getScheduler().runTaskLater(api.getPlugin(), () -> triedConnecting = false, 10 * 20L);
-            api.getLogger().severe("Connection to the database has been closed with message %message%. Reconnecting.".replace("%message%", t.getMessage()));
+            Logger.error("Connection to the database has been closed with message %message%. Reconnecting.".replace("%message%", t.getMessage()));
             connect();
             return new ArrayList<>();
         }
@@ -221,7 +222,7 @@ public class OmrLiteDatabaseManager extends DatabaseManager {
     @SuppressWarnings("unchecked")
     @SneakyThrows
     public void setup(Class<?> clazz) {
-        api.getLogger().info("Setting up " + clazz.getSimpleName() + " database table");
+        Logger.info("Setting up " + clazz.getSimpleName() + " database table");
         createTable(clazz);
         createDao(clazz).setAutoCommit(databaseConnection, false);
         cacheMap.put(clazz, (List<DatabaseEntry>) getAll(clazz, false));

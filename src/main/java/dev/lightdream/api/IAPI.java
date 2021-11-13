@@ -38,8 +38,6 @@ public interface IAPI {
 
     File getDataFolder();
 
-    Logger getLogger();
-
     String getProjectName();
 
     String getProjectID();

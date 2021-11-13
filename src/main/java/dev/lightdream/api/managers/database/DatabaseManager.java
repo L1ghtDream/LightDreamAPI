@@ -3,6 +3,7 @@ package dev.lightdream.api.managers.database;
 import dev.lightdream.api.IAPI;
 import dev.lightdream.api.configs.SQLConfig;
 import dev.lightdream.api.dto.LambdaExecutor;
+import dev.lightdream.api.utils.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -45,7 +46,7 @@ public abstract class DatabaseManager implements IDatabaseManager {
             HashMap<Class<?>, String> additionalDataTypes = getDataTypes();
 
             if (additionalDataTypes == null) {
-                api.getLogger().warning("DataType " + clazz.getSimpleName() + " is not a supported data type");
+                Logger.error("DataType " + clazz.getSimpleName() + " is not a supported data type");
                 return "";
             }
 
@@ -56,7 +57,7 @@ public abstract class DatabaseManager implements IDatabaseManager {
             return dbDataType;
         }
 
-        api.getLogger().warning("DataType " + clazz.getSimpleName() + " is not a supported data type");
+        Logger.error("DataType " + clazz.getSimpleName() + " is not a supported data type");
         return "";
     }
 

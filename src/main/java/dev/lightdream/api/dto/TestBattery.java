@@ -1,6 +1,7 @@
 package dev.lightdream.api.dto;
 
 import dev.lightdream.api.IAPI;
+import dev.lightdream.api.utils.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.fusesource.jansi.Ansi;
 
@@ -21,9 +22,9 @@ public class TestBattery {
         AtomicInteger testCount = new AtomicInteger();
         tests.forEach(test -> {
             test.test();
-            api.getLogger().info("Test " + testCount + ": " + (test.status ?
-                    Ansi.ansi().fg(Ansi.Color.GREEN).boldOff() + "Passed" :
-                    Ansi.ansi().fg(Ansi.Color.RED).boldOff() + "Failed"));
+            Logger.info("Test " + testCount + ": " + (test.status ?
+                    Ansi.ansi().fg(Ansi.Color.GREEN).boldOff() + "Passed" + Ansi.ansi().fg(Ansi.Color.WHITE).boldOff() :
+                    Ansi.ansi().fg(Ansi.Color.RED).boldOff() + "Failed") + Ansi.ansi().fg(Ansi.Color.WHITE).boldOff());
             testCount.getAndIncrement();
         });
     }

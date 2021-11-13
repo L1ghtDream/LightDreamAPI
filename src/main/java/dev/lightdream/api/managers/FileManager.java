@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import dev.lightdream.api.IAPI;
 import dev.lightdream.api.dto.Position;
+import dev.lightdream.api.utils.Logger;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -77,7 +78,7 @@ public class FileManager {
         try {
             objectMapper.writeValue(file, instance);
         } catch (IOException e) {
-            api.getLogger().severe("Failed to save " + file + ": " + e.getMessage());
+            Logger.error("Failed to save " + file + ": " + e.getMessage());
         }
     }
 
@@ -85,7 +86,7 @@ public class FileManager {
         try {
             return objectMapper.writeValueAsString(instance);
         } catch (IOException e) {
-            api.getLogger().severe("Failed to save " + instance.toString() + ": " + e.getMessage());
+            Logger.error("Failed to save " + instance.toString() + ": " + e.getMessage());
         }
         return "";
     }
@@ -99,7 +100,7 @@ public class FileManager {
             try {
                 return objectMapper.readValue(file, clazz);
             } catch (IOException e) {
-                api.getLogger().severe("Failed to parse " + file + ": " + e.getMessage());
+                Logger.error("Failed to parse " + file + ": " + e.getMessage());
             }
         }
         try {

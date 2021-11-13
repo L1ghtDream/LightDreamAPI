@@ -2,6 +2,7 @@ package dev.lightdream.api.commands;
 
 import dev.lightdream.api.IAPI;
 import dev.lightdream.api.databases.User;
+import dev.lightdream.api.utils.Logger;
 import dev.lightdream.api.utils.MessageBuilder;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,7 +25,7 @@ public class Command implements CommandExecutor, TabCompleter {
             api.getPlugin().getCommand(command).setExecutor(this);
             api.getPlugin().getCommand(command).setTabCompleter(this);
         } catch (NullPointerException e) {
-            api.getLogger().severe("The command '" + command + "' does not exist in plugin.yml");
+            Logger.error("The command '" + command + "' does not exist in plugin.yml");
             return;
         }
 

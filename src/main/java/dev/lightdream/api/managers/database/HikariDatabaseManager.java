@@ -6,6 +6,7 @@ import dev.lightdream.api.IAPI;
 import dev.lightdream.api.annotations.DatabaseField;
 import dev.lightdream.api.annotations.DatabaseTable;
 import dev.lightdream.api.databases.DatabaseEntry;
+import dev.lightdream.api.utils.Logger;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Field;
@@ -60,7 +61,7 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
     @Override
     public <T> List<T> getAll(Class<T> clazz) {
         if (!clazz.isAnnotationPresent(DatabaseTable.class)) {
-            api.getLogger().severe("Class " + clazz.getSimpleName() + " is not annotated as a database table");
+            Logger.error("Class " + clazz.getSimpleName() + " is not annotated as a database table");
             return new ArrayList<>();
         }
 
@@ -88,7 +89,7 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
         }
 
         if (!clazz.isAnnotationPresent(DatabaseTable.class)) {
-            api.getLogger().severe("Class " + clazz.getSimpleName() + " is not annotated as a database table");
+            Logger.error("Class " + clazz.getSimpleName() + " is not annotated as a database table");
             return new ArrayList<>();
         }
 
@@ -122,7 +123,7 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
     @Override
     public void createTable(Class<?> clazz) {
         if (!clazz.isAnnotationPresent(DatabaseTable.class)) {
-            api.getLogger().severe("Class " + clazz.getSimpleName() + " is not annotated as a database table");
+            Logger.error("Class " + clazz.getSimpleName() + " is not annotated as a database table");
             return;
         }
 

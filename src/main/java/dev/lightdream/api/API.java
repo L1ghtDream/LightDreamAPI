@@ -84,9 +84,9 @@ public final class API implements IAPI {
         //Load settings
         loadConfigs();
 
-        getLogger().info("API Settings");
-        getLogger().info("Use Economy (by Vault): " + apiConfig.useEconomy);
-        getLogger().info("Use Permissions (by Vault): " + apiConfig.usePermissions);
+        dev.lightdream.api.utils.Logger.info("API Settings");
+        dev.lightdream.api.utils.Logger.info("Use Economy (by Vault): " + apiConfig.useEconomy);
+        dev.lightdream.api.utils.Logger.info("Use Permissions (by Vault): " + apiConfig.usePermissions);
 
         //Events
         new BalanceChangeEventRunnable(this);
@@ -114,7 +114,7 @@ public final class API implements IAPI {
         List<SubCommand> baseSubCommands = new ArrayList<>(getBaseCommands());
         command = new Command(this, getProjectID(), baseSubCommands);
 
-        getLogger().info(ChatColor.GREEN + getProjectName() + "(by github.com/L1ghtDream) has been enabled");
+        dev.lightdream.api.utils.Logger.good(ChatColor.GREEN + getProjectName() + "(by github.com/L1ghtDream) has been enabled");
     }
 
     private Economy setupEconomy() {
@@ -256,11 +256,6 @@ public final class API implements IAPI {
     }
 
     @Override
-    public Logger getLogger() {
-        return getPlugin().getLogger();
-    }
-
-    @Override
     public String getProjectName() {
         return "LightDreamAPI";
     }
@@ -272,7 +267,7 @@ public final class API implements IAPI {
 
     @Override
     public String getProjectVersion() {
-        return "4.5";
+        return "4.6";
     }
 
     @Override

@@ -17,6 +17,7 @@ import dev.lightdream.api.managers.FileManager;
 import dev.lightdream.api.managers.KeyDeserializerManager;
 import dev.lightdream.api.managers.MessageManager;
 import dev.lightdream.api.managers.database.OmrLiteDatabaseManagerImpl;
+import dev.lightdream.api.utils.Logger;
 import fr.minuskube.inv.InventoryManager;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.JDA;
@@ -110,7 +111,7 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
 
         //Register
         API.instance.plugins.add(this);
-        getLogger().info(ChatColor.GREEN + projectName + "(by github.com/L1ghtDream) has been enabled");
+        Logger.info(ChatColor.GREEN + projectName + "(by github.com/L1ghtDream) has been enabled");
     }
 
     @Override
