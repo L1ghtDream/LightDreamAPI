@@ -41,7 +41,6 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
     //Settings
     public String projectName = "Undefined";
     public String projectID = "Undefined";
-    public String projectVersion = "Undefined";
     public boolean enabled;
 
     //Config
@@ -68,7 +67,7 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
 
     @SuppressWarnings("unused")
     @SneakyThrows
-    public void init(String projectName, String projectID, String version) {
+    public void init(String projectName, String projectID) {
         if (API.instance == null) {
             api = new API(this);
         } else {
@@ -77,7 +76,6 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
 
         this.projectName = projectName;
         this.projectID = projectID;
-        this.projectVersion = version;
         enabled = true;
 
         //Files
