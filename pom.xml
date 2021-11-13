@@ -7,7 +7,7 @@
     <groupId>dev.lightdream</groupId>
     <artifactId>LightDreamAPI</artifactId>
     <packaging>jar</packaging>
-    <version>4.16</version>
+    <version>4.17</version>
 
     <url>https://lightdream.dev</url>
 
@@ -122,6 +122,10 @@
         <repository>
             <id>maven-model</id>
             <url>https://mvnrepository.com/artifact/org.apache.maven/maven-model</url>
+        </repository>
+        <repository>
+            <id>dmulloy2-repo</id>
+            <url>https://repo.dmulloy2.net/repository/public/</url>
         </repository>
     </repositories>
 
@@ -268,6 +272,11 @@
             <artifactId>VaultAPI</artifactId>
             <version>1.7</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>4.7.0</version>
         </dependency>
 
         <!-- DRIVER -->

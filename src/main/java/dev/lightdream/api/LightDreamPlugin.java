@@ -12,10 +12,7 @@ import dev.lightdream.api.configs.Lang;
 import dev.lightdream.api.configs.SQLConfig;
 import dev.lightdream.api.databases.ConsoleUser;
 import dev.lightdream.api.databases.User;
-import dev.lightdream.api.managers.EventManager;
-import dev.lightdream.api.managers.FileManager;
-import dev.lightdream.api.managers.KeyDeserializerManager;
-import dev.lightdream.api.managers.MessageManager;
+import dev.lightdream.api.managers.*;
 import dev.lightdream.api.managers.database.OmrLiteDatabaseManagerImpl;
 import dev.lightdream.api.utils.Logger;
 import fr.minuskube.inv.InventoryManager;
@@ -24,7 +21,6 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -57,6 +53,7 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
     public MessageManager messageManager;
     public Command baseCommand;
     public EventManager eventManager;
+    public ProtocolLibManager protocolLibManager;
     //Bot
     public JDA bot;
     //API
@@ -92,6 +89,7 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
         this.inventoryManager.init();
         this.messageManager = instantiateMessageManager();
         this.eventManager = new EventManager(this);
+        this.protocolLibManager = new ProtocolLibManager();
 
         //Commands
         List<SubCommand> baseSubCommands = new ArrayList<>();
