@@ -27,11 +27,6 @@ public class HikariDatabaseManagerImpl extends HikariDatabaseManager implements 
     }
 
     @Override
-    public void save(DatabaseEntry object) {
-        save(object, false);
-    }
-
-    @Override
     public @NotNull User getUser(@NotNull UUID uuid) {
         Optional<User> optionalUser = getAll(User.class).stream().filter(user -> user.uuid.equals(uuid)).findFirst();
 

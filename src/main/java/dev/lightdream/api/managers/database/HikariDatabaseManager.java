@@ -271,4 +271,9 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
 
         return statement.executeQuery();
     }
+
+    @Override
+    public void save(DatabaseEntry object) {
+        save(object, false);
+    }
 }
