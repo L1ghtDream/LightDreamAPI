@@ -37,7 +37,7 @@ public class WorldEditUtils {
     public static void paste(PluginLocation pos, CuboidClipboard clipboard) {
         World world = Bukkit.getWorld(pos.world);
         EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(new BukkitWorld(world), 1000000000);
-        clipboard.paste(editSession, pos.toVector(), true);
+        clipboard.paste(editSession, new Vector(pos.x, pos.y, pos.z), true);
     }
 
     @SneakyThrows
