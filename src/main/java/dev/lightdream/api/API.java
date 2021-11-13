@@ -281,7 +281,7 @@ public final class API implements IAPI {
         }
 
         return reader.read(new InputStreamReader(MessageActivity.Application.class.getResourceAsStream(
-                "/META-INF/maven/de.scrum-master.stackoverflow/aspectj-introduce-method/pom.xml"
+                "/META-INF/maven/dev.lightdream/LightDreamAPI/pom.xml"
         ))).getVersion();
     }
 
@@ -304,5 +304,8 @@ public final class API implements IAPI {
     @Override
     public void registerUser(Player player) {
         databaseManager.getUser(player);
+        plugins.forEach(plugin->{
+            plugin.registerUser(player);
+        });
     }
 }
