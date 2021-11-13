@@ -18,7 +18,7 @@ public class Logger {
 
     public static void info(String message) {
         if (api == null) {
-            System.out.println(Ansi.ansi().fg(Ansi.Color.RED).boldOff() + "The debugger has not been initialized."
+            System.out.println(Ansi.ansi().fg(Ansi.Color.RED).boldOff() + "The logger has not been initialized."
                     + Ansi.ansi().fg(Ansi.Color.WHITE).boldOff());
             return;
         }

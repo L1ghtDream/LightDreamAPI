@@ -18,6 +18,7 @@ import dev.lightdream.api.dto.Position;
 import dev.lightdream.api.managers.*;
 import dev.lightdream.api.managers.database.OmrLiteDatabaseManagerImpl;
 import dev.lightdream.api.utils.Debugger;
+import dev.lightdream.api.utils.Logger;
 import fr.minuskube.inv.InventoryManager;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -33,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Logger;
 
 @SuppressWarnings("CanBeFinal")
 public final class API implements IAPI {
@@ -69,6 +69,7 @@ public final class API implements IAPI {
 
     public void init() {
         Debugger.init(this);
+        Logger.init(this);
 
         instance = this;
         enabled = true;
@@ -267,7 +268,7 @@ public final class API implements IAPI {
 
     @Override
     public String getProjectVersion() {
-        return "4.6";
+        return "4.7";
     }
 
     @Override
