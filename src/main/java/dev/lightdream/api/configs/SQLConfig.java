@@ -83,7 +83,7 @@ public class SQLConfig {
             this.createTable = createTable;
             this.delete = delete;
             this.dataTypes = dataTypes;
-            this.autoIncrement=autoIncrement;
+            this.autoIncrement = autoIncrement;
         }
 
         Driver(Driver driver) {
@@ -94,7 +94,7 @@ public class SQLConfig {
             this.createTable = driver.createTable;
             this.delete = driver.delete;
             this.dataTypes = driver.dataTypes;
-            this.autoIncrement=driver.autoIncrement;
+            this.autoIncrement = driver.autoIncrement;
         }
 
     }

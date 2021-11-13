@@ -5,7 +5,6 @@ import dev.lightdream.api.databases.User;
 import dev.lightdream.api.dto.GUIConfig;
 import dev.lightdream.api.dto.GUIItem;
 import dev.lightdream.api.dto.XMaterial;
-import dev.lightdream.api.utils.Debugger;
 import dev.lightdream.api.utils.ItemBuilder;
 import dev.lightdream.api.utils.MessageBuilder;
 import dev.lightdream.api.utils.Utils;

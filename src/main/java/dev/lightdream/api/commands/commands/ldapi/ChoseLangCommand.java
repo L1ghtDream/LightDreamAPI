@@ -20,7 +20,7 @@ public class ChoseLangCommand extends SubCommand {
             sendUsage(user);
             return;
         }
-        
+
         String lang = args.get(0);
         if (!api.getSettings().langs.contains(lang)) {
             user.sendMessage(api, new MessageBuilder(api.getLang().invalidLang));

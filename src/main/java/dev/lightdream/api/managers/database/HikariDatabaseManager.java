@@ -6,7 +6,6 @@ import dev.lightdream.api.IAPI;
 import dev.lightdream.api.annotations.DatabaseField;
 import dev.lightdream.api.annotations.DatabaseTable;
 import dev.lightdream.api.databases.DatabaseEntry;
-import dev.lightdream.api.utils.Debugger;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Field;
@@ -31,6 +30,7 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
         connect();
     }
 
+    @SuppressWarnings("SwitchStatementWithTooFewBranches")
     public void connect() {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(getDatabaseURL());
@@ -167,6 +167,7 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
         //todo
     }
 
+    @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
     @SneakyThrows
     @Override
     public void save(DatabaseEntry entry, boolean cache) {
@@ -238,6 +239,7 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
                 Arrays.asList(entry.id));
     }
 
+    @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
     @SneakyThrows
     @Override
     public void delete(DatabaseEntry entry) {

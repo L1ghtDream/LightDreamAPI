@@ -1,12 +1,12 @@
 package dev.lightdream.api;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import dev.lightdream.api.commands.Command;
 import dev.lightdream.api.configs.Config;
 import dev.lightdream.api.configs.Lang;
 import dev.lightdream.api.configs.SQLConfig;
 import dev.lightdream.api.databases.ConsoleUser;
 import dev.lightdream.api.databases.User;
-import dev.lightdream.api.commands.Command;
 import dev.lightdream.api.managers.EventManager;
 import dev.lightdream.api.managers.KeyDeserializerManager;
 import dev.lightdream.api.managers.MessageManager;

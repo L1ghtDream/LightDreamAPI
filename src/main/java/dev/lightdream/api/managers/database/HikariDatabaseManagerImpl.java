@@ -15,10 +15,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class HikariDatabaseManagerImpl extends HikariDatabaseManager implements IDatabaseManagerImpl {
+
     public HikariDatabaseManagerImpl(IAPI api) {
         super(api);
     }
-
 
     @Override
     public void setup() {

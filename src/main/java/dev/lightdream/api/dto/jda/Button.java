@@ -60,7 +60,8 @@ public class Button {
         return null;
     }
 
-    public Button clone(){
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
+    public Button clone() {
         return new Button(type, id, text, emoji);
     }
 

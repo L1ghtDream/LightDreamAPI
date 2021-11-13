@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public interface IDatabaseManagerImpl extends IDatabaseManager{
+public interface IDatabaseManagerImpl extends IDatabaseManager {
 
     @NotNull User getUser(@NotNull UUID uuid);
 

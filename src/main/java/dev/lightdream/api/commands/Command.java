@@ -1,7 +1,6 @@
 package dev.lightdream.api.commands;
 
 import dev.lightdream.api.IAPI;
-import dev.lightdream.api.commands.SubCommand;
 import dev.lightdream.api.databases.User;
 import dev.lightdream.api.utils.MessageBuilder;
 import org.bukkit.command.CommandExecutor;

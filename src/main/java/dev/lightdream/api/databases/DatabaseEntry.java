@@ -1,7 +1,6 @@
 package dev.lightdream.api.databases;
 
 import dev.lightdream.api.IAPI;
-import dev.lightdream.api.annotations.DatabaseField;
 
 public abstract class DatabaseEntry {
 
@@ -18,7 +17,7 @@ public abstract class DatabaseEntry {
         save(true);
     }
 
-    public void save(boolean cache){
+    public void save(boolean cache) {
         api.getDatabaseManager().save(this, cache);
     }
 

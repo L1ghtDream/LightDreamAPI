@@ -3,7 +3,6 @@ package dev.lightdream.api.managers.database;
 import dev.lightdream.api.IAPI;
 import dev.lightdream.api.configs.SQLConfig;
 import dev.lightdream.api.dto.LambdaExecutor;
-import dev.lightdream.api.utils.Debugger;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;

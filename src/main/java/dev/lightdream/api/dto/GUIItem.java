@@ -26,6 +26,14 @@ public class GUIItem {
     }
 
     @SuppressWarnings("unused")
+    public GUIItem(Item item, HashMap<String, Object> args) {
+        this.item = item;
+        this.args = new GUIItemArgs(args);
+        this.repeated = false;
+        this.nextSlots = new ArrayList<>();
+    }
+
+    @SuppressWarnings("unused")
     public GUIItem(Item item) {
         this.item = item;
         this.args = new GUIItemArgs();

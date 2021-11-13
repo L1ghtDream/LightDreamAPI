@@ -232,8 +232,8 @@ public class Utils {
         return objects.get(index);
     }
 
-    public static double getRam(){
-        return ((double)(Runtime.getRuntime().totalMemory()/1024)/1024) - ((double)(Runtime.getRuntime().freeMemory()/1024)/1024);
+    public static double getRam() {
+        return ((double) (Runtime.getRuntime().totalMemory() / 1024) / 1024) - ((double) (Runtime.getRuntime().freeMemory() / 1024) / 1024);
     }
 
     public static double getCpuLoad() {
@@ -256,7 +256,7 @@ public class Utils {
         }
     }
 
-    public static String getJava(){
+    public static String getJava() {
         return String.format("Java Version: %s %s. \n", System.getProperty("java.vendor"), System.getProperty("java.version"));
     }
 

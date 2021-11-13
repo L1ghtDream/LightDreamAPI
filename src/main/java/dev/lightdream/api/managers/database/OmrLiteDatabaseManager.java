@@ -10,7 +10,6 @@ import com.j256.ormlite.table.TableUtils;
 import dev.lightdream.api.IAPI;
 import dev.lightdream.api.databases.DatabaseEntry;
 import dev.lightdream.api.dto.LambdaExecutor;
-import dev.lightdream.api.utils.Debugger;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 
