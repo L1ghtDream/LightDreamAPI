@@ -76,7 +76,11 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
             T obj = clazz.newInstance();
             Field[] fields = obj.getClass().getFields();
             for (Field field : fields) {
-                field.set(obj, getObject(field.getType(), rs.getObject(field.getName())));
+                if(!field.isAnnotationPresent(DatabaseField.class)){
+                    continue;
+                }
+                DatabaseField databaseField = field.getAnnotation(DatabaseField.class);
+                field.set(obj, getObject(field.getType(), rs.getObject(databaseField.columnName())));
             }
             output.add(obj);
         }
@@ -112,7 +116,11 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
             T obj = clazz.newInstance();
             Field[] fields = obj.getClass().getFields();
             for (Field field : fields) {
-                field.set(obj, getObject(field.getType(), rs.getString(field.getName())));
+                if(!field.isAnnotationPresent(DatabaseField.class)){
+                    continue;
+                }
+                DatabaseField databaseField = field.getAnnotation(DatabaseField.class);
+                field.set(obj, getObject(field.getType(), rs.getString(databaseField.columnName())));
             }
             output.add(obj);
         }
