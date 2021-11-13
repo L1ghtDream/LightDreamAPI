@@ -156,7 +156,6 @@ public class User extends DatabaseEntry {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", id=" + id +
                 ", uuid=" + uuid +
                 ", name='" + name + '\'' +
                 ", lang='" + lang + '\'' +
