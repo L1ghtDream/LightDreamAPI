@@ -61,7 +61,6 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
     //API
     public API api;
     //Commands
-    public List<SubCommand> baseSubCommands = new ArrayList<>();
     private OmrLiteDatabaseManagerImpl databaseManager;
 
     @SuppressWarnings("unused")
@@ -94,10 +93,11 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
         this.eventManager = new EventManager(this);
 
         //Commands
+        List<SubCommand> baseSubCommands = new ArrayList<>();
         baseSubCommands.add(new ReloadCommand(this));
         baseSubCommands.add(new VersionCommand(this));
         baseSubCommands.add(new HelpCommand(this));
-        loadBaseCommands();
+        baseSubCommands.addAll(getBaseSubCommands());
         baseCommand = new Command(this, projectID, baseSubCommands);
 
         //Bot
@@ -132,7 +132,7 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
         baseLang = fileManager.load(Lang.class, fileManager.getFile(baseConfig.baseLang));
     }
 
-    public abstract void loadBaseCommands();
+    public abstract List<SubCommand> getBaseSubCommands();
 
     public abstract MessageManager instantiateMessageManager();
 
