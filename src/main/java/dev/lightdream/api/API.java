@@ -115,7 +115,7 @@ public final class API implements IAPI {
         List<SubCommand> baseSubCommands = new ArrayList<>(getBaseCommands());
         command = new Command(this, getProjectID(), baseSubCommands);
 
-        dev.lightdream.api.utils.Logger.good(ChatColor.GREEN + getProjectName() + "(by github.com/L1ghtDream) has been enabled");
+        dev.lightdream.api.utils.Logger.good(getProjectName() + "(by github.com/L1ghtDream) has been enabled");
     }
 
     private Economy setupEconomy() {
@@ -268,7 +268,7 @@ public final class API implements IAPI {
 
     @Override
     public String getProjectVersion() {
-        return "4.7";
+        return "4.8";
     }
 
     @Override

@@ -111,7 +111,7 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
 
         //Register
         API.instance.plugins.add(this);
-        Logger.info(ChatColor.GREEN + projectName + "(by github.com/L1ghtDream) has been enabled");
+        Logger.info(projectName + "(by github.com/L1ghtDream) has been enabled");
     }
 
     @Override

@@ -19,7 +19,7 @@ public class Logger {
     public static void info(String message) {
         if (api == null) {
             System.out.println(Ansi.ansi().fg(Ansi.Color.RED).boldOff() + "The logger has not been initialized."
-                    + Ansi.ansi().fg(Ansi.Color.WHITE).boldOff());
+                    + Ansi.ansi().fg(Ansi.Color.DEFAULT).boldOff());
             return;
         }
         if (!api.debug()) {
@@ -42,7 +42,7 @@ public class Logger {
             return;
         }
         info(Ansi.ansi().fg(Ansi.Color.RED).boldOff() + message +
-                Ansi.ansi().fg(Ansi.Color.WHITE).boldOff());
+                Ansi.ansi().fg(Ansi.Color.DEFAULT).boldOff());
     }
 
     public static void good(Object object) {
@@ -59,7 +59,7 @@ public class Logger {
             return;
         }
         info(Ansi.ansi().fg(Ansi.Color.GREEN).boldOff() + message +
-                Ansi.ansi().fg(Ansi.Color.WHITE).boldOff());
+                Ansi.ansi().fg(Ansi.Color.DEFAULT).boldOff());
     }
 
     public static void init(IAPI api) {
