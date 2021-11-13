@@ -112,7 +112,7 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
 
         //Register
         API.instance.plugins.add(this);
-        Logger.info(projectName + "(by github.com/L1ghtDream) has been enabled");
+        Logger.good(projectName + "(by github.com/L1ghtDream) has been enabled");
     }
 
     @Override
@@ -260,6 +260,6 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
 
     @Override
     public boolean debug() {
-        return baseConfig.debug;
+        return getAPI().debug();
     }
 }

@@ -11,6 +11,5 @@ public class Config {
             "en_us",
             "ro_ro"
     );
-    public boolean debug = true;
 
 }

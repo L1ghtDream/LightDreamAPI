@@ -6,6 +6,7 @@ import dev.lightdream.api.IAPI;
 import dev.lightdream.api.annotations.DatabaseField;
 import dev.lightdream.api.annotations.DatabaseTable;
 import dev.lightdream.api.databases.DatabaseEntry;
+import dev.lightdream.api.utils.Debugger;
 import dev.lightdream.api.utils.Logger;
 import lombok.SneakyThrows;
 
@@ -251,7 +252,7 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
 
     @SneakyThrows
     private void executeUpdate(String sql, List<Object> values) {
-
+        Debugger.info(sql);
         PreparedStatement statement = getConnection().prepareStatement(sql);
 
         for (int i = 0; i < values.size(); i++) {
@@ -263,6 +264,7 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
 
     @SneakyThrows
     private ResultSet executeQuery(String sql, List<Object> values) {
+        Debugger.info(sql);
         PreparedStatement statement = getConnection().prepareStatement(sql);
 
         for (int i = 0; i < values.size(); i++) {

@@ -298,7 +298,7 @@ public final class API implements IAPI {
 
     @Override
     public boolean debug() {
-        return config.debug;
+        return apiConfig.debug;
     }
 
     @Override
