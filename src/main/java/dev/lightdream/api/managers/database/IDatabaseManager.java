@@ -20,6 +20,8 @@ public interface IDatabaseManager {
 
     void save(DatabaseEntry object, boolean cache);
 
+    void save(DatabaseEntry object);
+
     void delete(DatabaseEntry entry);
 
 }

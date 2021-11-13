@@ -1,0 +1,518 @@
+Crate:
+  CrateType: Wheel 
+  CrateName: '&2&nComet Crate'
+  StartingKeys: 5
+  InGUI: true
+  Slot: 11
+  OpeningBroadCast: false 
+  BroadCast: ''
+  Item: 'EMERALD_BLOCK'
+  Glowing: false
+  Name: '&2&nComet Crate'
+  Lore:
+    - '&2&l * &7Ai &2&n%Keys%&r &7chei pentru acest crate.'
+    - '&r'
+    - ' &2&nLeft-click&r &7pentru a deschide.'
+    - ' &2&nRight-click&r &7pentru a pre-vizualiza.'
+  PhysicalKey:
+    Name: '&2&lComet Crate Key'
+    Lore:
+      - '&7Deschide &f&lComet&r'
+      - '&f&lCrate&r &7la &f&l/warp crates&7.'
+    Item: '131' 
+    Glowing: True 
+  Prizes:
+    1:
+      DisplayName: '&8◆ &a&n$5,000&r &8◆'
+      DisplayItem: 'GOLD_NUGGET'
+      DisplayAmount: 1
+      Lore:
+        - "&2◆ &7Sansa: &a20%"
+      MaxRange: 100
+      Chance: 20
+      Firework: false
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'money give %Player% 5000'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n$5,000&r&b.'
+      BlackListed-Permissions: []
+    2:
+      DisplayName: '&8◆ &a&n$10,000&r &8◆'
+      DisplayItem: 'GOLD_NUGGET'
+      DisplayAmount: 1
+      Lore:
+        - "&2◆ &7Sansa: &a16%"
+      MaxRange: 100
+      Chance: 16
+      Firework: false
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'money give %Player% 10000'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n$10,000&r&b.'
+      BlackListed-Permissions: []
+    3:
+      DisplayName: '&8◆ &a&n$25,000&r &8◆'
+      DisplayItem: 'GOLD_NUGGET'
+      DisplayAmount: 1
+      Lore:
+        - "&2◆ &7Sansa: &a11%"
+      MaxRange: 100
+      Chance: 11
+      Firework: false
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'money give %Player% 25000'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n$25,000&r&b.'
+      BlackListed-Permissions: []
+    4:
+      DisplayName: '&8◆ &b&n500 EXP&r &8◆'
+      DisplayItem: '384'
+      DisplayAmount: 1
+      Lore:
+        - "&2◆ &7Sansa: &b20%"
+      MaxRange: 100
+      Chance: 20
+      Firework: false
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'exp add %Player% 500'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n500 EXP&r&b.'
+      BlackListed-Permissions: []
+    5:
+      DisplayName: '&8◆ &b&n1,000 EXP&r &8◆'
+      DisplayItem: '384'
+      DisplayAmount: 1
+      Lore:
+        - "&2◆ &7Sansa: &b15%"
+      MaxRange: 100
+      Chance: 15
+      Firework: false
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'exp add %Player% 1000'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n1,000 EXP&r&b.'
+      BlackListed-Permissions: []
+    6:
+      DisplayName: '&8◆ &b&n2,000 EXP&r &8◆'
+      DisplayItem: '384'
+      DisplayAmount: 1
+      Lore:
+        - "&2◆ &7Sansa: &b10%"
+      MaxRange: 100
+      Chance: 10
+      Firework: false
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'exp add %Player% 2000'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n2,000 EXP&r&b.'
+      BlackListed-Permissions: []
+    7:
+      DisplayName: '&8◆ &e&n10 Mob Coins&r &8◆'
+      DisplayItem: '175'
+      DisplayAmount: 1
+      Lore:
+        - "&2◆ &7Sansa: &a20%"
+      MaxRange: 100
+      Chance: 20
+      Firework: false
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'mobcoins give %Player% 10'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n10 Mob Coins&r&b.'
+      BlackListed-Permissions: []
+    8:
+      DisplayName: '&8◆ &e&n25 Mob Coins&r &8◆'
+      DisplayItem: '175'
+      DisplayAmount: 1
+      Lore:
+        - "&2◆ &7Sansa: &a16%"
+      MaxRange: 100
+      Chance: 16
+      Firework: false
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'mobcoins give %Player% 25'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n25 Mob Coins&r&b.'
+      BlackListed-Permissions: []
+    9:
+      DisplayName: '&8◆ &e&n50 Mob Coins&r &8◆'
+      DisplayItem: '175'
+      DisplayAmount: 1
+      Lore:
+        - "&2◆ &7Sansa: &a11%"
+      MaxRange: 100
+      Chance: 11
+      Firework: false
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'mobcoins give %Player% 50'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n50 Mob Coins&r&b.'
+      BlackListed-Permissions: []
+    10:
+      DisplayName: '&8◆ &c&nGOD Kit&r &8◆'
+      DisplayItem: '299'
+      DisplayAmount: 1
+      Lore:
+        - "&2◆ &7Sansa: &c15%"
+      MaxRange: 100
+      Chance: 15
+      Firework: false
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'cmi kit god %Player%'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n1x GOD Kit&r&b.'
+      BlackListed-Permissions: []
+    11:
+      DisplayName: '&8◆ &c&nORIGINAL&r &8◆'
+      DisplayItem: '315'
+      DisplayAmount: 1
+      Lore:
+        - "&2◆ &7Sansa: &c10%"
+      MaxRange: 100
+      Chance: 10
+      Firework: false
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'cmi kit original %Player%'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n1x Original Kit&r&b.'
+      BlackListed-Permissions: []
+    12:
+      DisplayName: '&8◆ &c&nXenon Kit&r &8◆'
+      DisplayItem: '303'
+      DisplayAmount: 1
+      Lore:
+        - "&2◆ &7Sansa: &c7.5%"
+      MaxRange: 1000
+      Chance: 75
+      Firework: false
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'cmi kit xenon %Player%'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n1x Xenon Kit&r&b.'
+      BlackListed-Permissions: []
+    13:
+      DisplayName: '&8◆ &d&nChicken Spawner&r &8◆'
+      DisplayItem: '52'
+      DisplayAmount: 1
+      Lore:
+        - "&2◆ &7Sansa: &d7.5%"
+      MaxRange: 1000
+      Chance: 75
+      Firework: false
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'ss give %Player% chicken 1'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n1x Chicken Spawner&r&b.'
+      BlackListed-Permissions: []
+    14:
+      DisplayName: '&8◆ &d&nPig Spawner&r &8◆'
+      DisplayItem: '52'
+      DisplayAmount: 1
+      Lore:
+        - "&2◆ &7Sansa: &d7.5%"
+      MaxRange: 1000
+      Chance: 75
+      Firework: false
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'ss give %Player% pig 1'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n1x Pig Spawner&r&b.'
+      BlackListed-Permissions: []
+    15:
+      DisplayName: '&8◆ &d&nSheep Spawner&r &8◆'
+      DisplayItem: '52'
+      DisplayAmount: 1
+      Lore:
+        - "&2◆ &7Sansa: &d7.5%"
+      MaxRange: 1000
+      Chance: 75
+      Firework: false
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'ss give %Player% sheep 1'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n1x Sheep Spawner&r&b.'
+      BlackListed-Permissions: []
+    16:
+      DisplayName: '&8◆ &d&nRabbit Spawner&r &8◆'
+      DisplayItem: '52'
+      DisplayAmount: 1
+      Lore:
+        - "&2◆ &7Sansa: &d7.5%"
+      MaxRange: 1000
+      Chance: 75
+      Firework: false
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'ss give %Player% rabbit 1'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n1x Rabbit Spawner&r&b.'
+      BlackListed-Permissions: []
+    17:
+      DisplayName: '&8◆ &e&n4x Hoppers&r &8◆'
+      DisplayItem: '154'
+      DisplayAmount: 4
+      Lore:
+        - "&2◆ &7Sansa: &e10%"
+      MaxRange: 100
+      Chance: 10
+      Firework: false
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'give %Player% 154 4'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n4x Hoppers&r&b.'
+      BlackListed-Permissions: []
+    18:
+      DisplayName: '&8◆ &d&n1x Nova Key&r &8◆'
+      DisplayItem: '131'
+      DisplayAmount: 1
+      Lore:
+        - "&d◆ &7Sansa: &35%"
+      MaxRange: 100
+      Chance: 5
+      Firework: true
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'crazycrate give v Nova 1 %Player%'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n1x Pulsar Key&r&b.'
+      BlackListed-Permissions: []
+    19:
+      DisplayName: '&8◆ &2&n2x Comet Keys&r &8◆'
+      DisplayItem: '131'
+      DisplayAmount: 2
+      Lore:
+        - "&2◆ &7Sansa: &24.5%"
+      MaxRange: 1000
+      Chance: 45
+      Firework: true
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'crazycrate give v Comet 2 %Player%'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n2x Comet Keys&r&b.'
+      BlackListed-Permissions: []
+    20:
+      DisplayName: '&8◆ &e&n32x TNT&r &8◆'
+      DisplayItem: '46'
+      DisplayAmount: 32
+      Lore:
+        - "&2◆ &7Sansa: &e10%"
+      MaxRange: 100
+      Chance: 10
+      Firework: false
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'give %Player% 46 32'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n32x TNT&r&b.'
+      BlackListed-Permissions: []
+    21:
+      DisplayName: '&8◆ &e&n64x Obsidian&r &8◆'
+      DisplayItem: '49'
+      DisplayAmount: 64
+      Lore:
+        - "&2◆ &7Sansa: &e10%"
+      MaxRange: 100
+      Chance: 10
+      Firework: false
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'give %Player% 49 64'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n64x Obsidian&r&b.'
+      BlackListed-Permissions: []
+    22:
+      DisplayName: '&8◆ &e&n1x Creeper Egg&r &8◆'
+      DisplayItem: '383:50'
+      DisplayAmount: 1
+      Lore:
+        - "&2◆ &7Sansa: &e2.5%"
+      MaxRange: 1000
+      Chance: 25
+      Firework: true
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'give %Player% 383:50 1'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n1x Creeper Egg&r&b.'
+      BlackListed-Permissions: []
+    23:
+      DisplayName: '&8◆ &e&n16x Iron Blocks&r &8◆'
+      DisplayItem: '42'
+      DisplayAmount: 16
+      Lore:
+        - "&2◆ &7Sansa: &e6.5%"
+      MaxRange: 1000
+      Chance: 65
+      Firework: false
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'give %Player% 42 16'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n16x Iron Blocks&r&b.'
+      BlackListed-Permissions: []
+    24:
+      DisplayName: '&8◆ &e&n16x Gold Blocks&r &8◆'
+      DisplayItem: '41'
+      DisplayAmount: 16
+      Lore:
+        - "&2◆ &7Sansa: &e4.5%"
+      MaxRange: 1000
+      Chance: 45
+      Firework: false
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'give %Player% 41 16'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n16x Gold Blocks&r&b.'
+      BlackListed-Permissions: []
+    25:
+      DisplayName: '&8◆ &e&n16x Diamond Blocks&r &8◆'
+      DisplayItem: '57'
+      DisplayAmount: 16
+      Lore:
+        - "&2◆ &7Sansa: &e3%"
+      MaxRange: 100
+      Chance: 3
+      Firework: false
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'give %Player% 57 16'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n16x Diamond Blocks&r&b.'
+      BlackListed-Permissions: []
+    26:
+      DisplayName: '&8◆ &e&n16x Emerald Blocks&r &8◆'
+      DisplayItem: '133'
+      DisplayAmount: 16
+      Lore:
+        - "&2◆ &7Sansa: &e1%"
+      MaxRange: 100
+      Chance: 1
+      Firework: true
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'give %Player% 133 16'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n16x Emerald Blocks&r&b.'
+      BlackListed-Permissions: []
+    27:
+      DisplayName: '&8◆ &e&n1x Treasure Goblin Boss&r &8◆'
+      DisplayItem: '383:62'
+      DisplayAmount: 1
+      Lore:
+        - "&2◆ &7Sansa: &a1%"
+      MaxRange: 100
+      Chance: 1
+      Firework: true
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'giveegg %Player% Goblin 1'
+        - 'broadcast &7%Player% &bhas opened a &2&nComet Crate&r &bsi ai castigat &2&n1x Treasure Goblin Boss&r&b.'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n1x Treasure Goblin Boss&r&b.'
+      BlackListed-Permissions: []
+    28:
+      DisplayName: '&8◆ &b&n4x Simple Enchantment Books&r &8◆'
+      DisplayItem: '340'
+      DisplayAmount: 4
+      Lore:
+        - "&2◆ &7Sansa: &b10%"
+      MaxRange: 100
+      Chance: 10
+      Firework: true
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'ce lostbook Simple 4 %Player%'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n4x Common Enchantment Books&r&b.'
+      BlackListed-Permissions: []
+    29:
+      DisplayName: '&8◆ &e&n2x Rare Enchantment Books&r &8◆'
+      DisplayItem: '340'
+      DisplayAmount: 2
+      Lore:
+        - "&2◆ &7Sansa: &e8%"
+      MaxRange: 100
+      Chance: 8
+      Firework: true
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      Commands:
+        - 'ce lostbook Rare 2 %Player%'
+      Messages:
+        - '&b(!) Ai deschis o &2&nComet Crate&r &bsi ai castigat &2&n2x Rare Enchantment Books&r&b.'
+      BlackListed-Permissions: []
