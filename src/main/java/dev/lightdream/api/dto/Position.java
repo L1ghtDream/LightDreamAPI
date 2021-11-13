@@ -1,7 +1,6 @@
 package dev.lightdream.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sk89q.worldedit.Vector;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -41,11 +40,6 @@ public class Position extends Serializable implements java.io.Serializable {
         return pos.x <= x &&
                 pos.y <= y &&
                 pos.z <= z;
-    }
-
-    @JsonIgnore
-    public Vector toVector() {
-        return new Vector(x, y, z);
     }
 
     @SuppressWarnings("MethodDoesntCallSuperMethod")
