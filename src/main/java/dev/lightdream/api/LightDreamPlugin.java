@@ -237,7 +237,7 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
     }
 
     @Override
-    public Command getBaseCommandManager() {
+    public Command getBaseCommand() {
         return baseCommand;
     }
 

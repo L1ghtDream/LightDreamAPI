@@ -16,7 +16,7 @@ public class HelpCommand extends SubCommand {
 
     @Override
     public void execute(User user, List<String> list) {
-        api.getBaseCommandManager().sendUsage(user);
+        api.getBaseCommand().sendUsage(user);
     }
 
     @Override

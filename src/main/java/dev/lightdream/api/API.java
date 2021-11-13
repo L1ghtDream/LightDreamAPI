@@ -171,7 +171,7 @@ public final class API implements IAPI {
     }
 
     @Override
-    public Command getBaseCommandManager() {
+    public Command getBaseCommand() {
         return command;
     }
 
@@ -272,7 +272,7 @@ public final class API implements IAPI {
 
     @Override
     public String getProjectVersion() {
-        return "4.2";
+        return "4.3";
     }
 
     @Override

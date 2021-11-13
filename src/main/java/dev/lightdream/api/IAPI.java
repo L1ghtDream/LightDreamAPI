@@ -68,7 +68,7 @@ public interface IAPI {
     @SuppressWarnings("EmptyMethod")
     void registerFileManagerModules();
 
-    Command getBaseCommandManager();
+    Command getBaseCommand();
 
     ConsoleUser getConsoleUser();
 
