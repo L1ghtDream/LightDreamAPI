@@ -2,14 +2,13 @@ package dev.lightdream.api;
 
 import dev.lightdream.api.configs.SQLConfig;
 import dev.lightdream.api.dto.Test;
+import dev.lightdream.api.dto.TestBattery;
 import dev.lightdream.api.managers.database.HikariDatabaseManagerImpl;
 import dev.lightdream.api.utils.Debugger;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @SuppressWarnings("unused")
 public final class APIPlugin extends JavaPlugin {
@@ -24,43 +23,31 @@ public final class APIPlugin extends JavaPlugin {
             return;
         }
 
-        test(Arrays.asList(
-                new Test((x) -> {
-                    return true;
-                }),
+        TestBattery testBattery = new TestBattery(api, Arrays.asList(
+                new Test((x) -> true),
                 new Test((x) -> {
                     SQLConfig backup = api.sqlConfig;
                     api.sqlConfig = new SQLConfig();
-                    api.sqlConfig.database = "Tests.db";
+                    api.sqlConfig.database = "tests";
                     HikariDatabaseManagerImpl dbManager = new HikariDatabaseManagerImpl(api);
 
-                    UUID uuid = UUID.randomUUID();
-                    dbManager.getUser(uuid);
-                    System.out.println(dbManager.getUser(uuid));
+                    UUID uuid1 = UUID.randomUUID();
+                    dbManager.getUser(uuid1);
 
-                    uuid = UUID.randomUUID();
-                    dbManager.getUser(uuid);
-                    System.out.println(dbManager.getUser(uuid));
+                    UUID uuid2 = UUID.randomUUID();
+                    dbManager.getUser(uuid2);
 
                     api.sqlConfig = backup;
-                    return true;
+                    return !dbManager.getUser(uuid1).equals(dbManager.getUser(uuid2));
                 })
         ));
+
+        testBattery.test();
     }
 
     @Override
     public void onDisable() {
         api.disable();
     }
-
-    public void test(List<Test> tests) {
-        AtomicInteger testCount = new AtomicInteger();
-        tests.forEach(test -> {
-            test.test();
-            getLogger().info("Test " + testCount + ": " + (test.status ? "Passed" : "Failed"));
-            testCount.getAndIncrement();
-        });
-    }
-
 
 }
