@@ -21,11 +21,10 @@ import dev.lightdream.api.utils.Debugger;
 import dev.lightdream.api.utils.Logger;
 import fr.minuskube.inv.InventoryManager;
 import lombok.SneakyThrows;
+import net.dv8tion.jda.api.entities.MessageActivity;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
-import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -34,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -270,16 +270,19 @@ public final class API implements IAPI {
         return "ld-api";
     }
 
+    @SuppressWarnings("ConstantConditions")
     @SneakyThrows
     @Override
     public String getProjectVersion() {
         MavenXpp3Reader reader = new MavenXpp3Reader();
-        Model model = reader.read(new FileReader("pom.xml"));
-        System.out.println(model.getId());
-        System.out.println(model.getGroupId());
-        System.out.println(model.getArtifactId());
-        System.out.println(model.getVersion());
-        return "4.8";
+
+        if ((new File("pom.xml")).exists()) {
+            return reader.read(new FileReader("pom.xml")).getVersion();
+        }
+
+        return reader.read(new InputStreamReader(MessageActivity.Application.class.getResourceAsStream(
+                "/META-INF/maven/de.scrum-master.stackoverflow/aspectj-introduce-method/pom.xml"
+        ))).getVersion();
     }
 
     @Override
