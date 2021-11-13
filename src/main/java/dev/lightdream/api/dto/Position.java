@@ -1,5 +1,6 @@
 package dev.lightdream.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sk89q.worldedit.Vector;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class Position extends Serializable implements java.io.Serializable {
     }
 
     @SuppressWarnings("unused")
+    @JsonIgnore
     public PluginLocation getPluginLocation(String world) {
         return new PluginLocation(world, x, y, z);
     }
@@ -41,6 +43,7 @@ public class Position extends Serializable implements java.io.Serializable {
                 pos.z <= z;
     }
 
+    @JsonIgnore
     public Vector toVector() {
         return new Vector(x, y, z);
     }

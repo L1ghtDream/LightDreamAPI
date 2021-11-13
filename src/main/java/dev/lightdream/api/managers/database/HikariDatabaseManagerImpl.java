@@ -35,7 +35,7 @@ public class HikariDatabaseManagerImpl extends HikariDatabaseManager implements 
 
         User user = new User(api, uuid, Bukkit.getOfflinePlayer(uuid).getName(), api.getSettings().baseLang);
         save(user, false);
-        return user;
+        return getUser(uuid);
     }
 
     @SuppressWarnings("unused")
