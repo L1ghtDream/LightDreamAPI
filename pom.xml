@@ -7,7 +7,7 @@
     <groupId>dev.lightdream</groupId>
     <artifactId>LightDreamAPI</artifactId>
     <packaging>jar</packaging>
-    <version>4.8</version>
+    <version>4.9</version>
 
     <url>https://lightdream.dev</url>
 
@@ -118,6 +118,10 @@
         <repository>
             <id>sql-dialect</id>
             <url>https://mvnrepository.com/artifact/com.zsoltfabok/sqlite-dialect</url>
+        </repository>
+        <repository>
+            <id>maven-model</id>
+            <url>https://mvnrepository.com/artifact/org.apache.maven/maven-model</url>
         </repository>
     </repositories>
 
@@ -238,6 +242,13 @@
             <version>1.18.20</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-model</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
+
 
         <!-- DEPENDENCY -->
         <dependency>
