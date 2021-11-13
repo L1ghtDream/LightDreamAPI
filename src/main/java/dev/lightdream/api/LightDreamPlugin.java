@@ -19,13 +19,18 @@ import fr.minuskube.inv.InventoryManager;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.MessageActivity;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -189,9 +194,19 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
         return projectID;
     }
 
+    @SuppressWarnings("ConstantConditions")
+    @SneakyThrows
     @Override
     public String getProjectVersion() {
-        return projectVersion;
+        MavenXpp3Reader reader = new MavenXpp3Reader();
+
+        if ((new File("pom.xml")).exists()) {
+            return reader.read(new FileReader("pom.xml")).getVersion();
+        }
+
+        return reader.read(new InputStreamReader(MessageActivity.Application.class.getResourceAsStream(
+                "/META-INF/maven/dev.lightdream/" + projectName + "/pom.xml"
+        ))).getVersion();
     }
 
     @Override
