@@ -85,6 +85,8 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
                 field.set(obj, getObject(field.getType(), rs.getObject(databaseField.columnName())));
             }
             output.add(obj);
+            DatabaseEntry entry = (DatabaseEntry) obj;
+            entry.setAPI(api);
         }
         return output;
     }
@@ -124,6 +126,8 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
                 DatabaseField databaseField = field.getAnnotation(DatabaseField.class);
                 field.set(obj, getObject(field.getType(), rs.getObject(databaseField.columnName())));
             }
+            DatabaseEntry entry = (DatabaseEntry) obj;
+            entry.setAPI(api);
             output.add(obj);
         }
         return output;
