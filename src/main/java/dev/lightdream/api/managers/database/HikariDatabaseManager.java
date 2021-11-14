@@ -222,7 +222,6 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
 
             placeholder1 = new StringBuilder(placeholder1.toString().replace(",,", ""));
             placeholder2 = new StringBuilder(placeholder2.toString().replace(",,", ""));
-
             executeUpdate(
                     sqlConfig.driver.insert
                             .replace("%placeholder-1%", placeholder1.toString())
@@ -242,7 +241,7 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
                 continue;
             }
             DatabaseField dbField = field.getAnnotation(DatabaseField.class);
-            placeholder.append(field.getName()).append("=").append(formatQueryArgument(field.get(entry)));
+            placeholder.append(field.getName()).append("=").append(formatQueryArgument(field.get(entry))).append(",");
         }
 
         placeholder.append(",");
