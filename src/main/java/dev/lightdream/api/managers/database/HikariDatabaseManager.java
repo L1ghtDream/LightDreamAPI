@@ -23,6 +23,7 @@ import java.util.List;
 public abstract class HikariDatabaseManager extends DatabaseManager {
 
     private HikariDataSource ds;
+    private Connection connection;
 
     @SuppressWarnings("FieldMayBeFinal")
 
@@ -32,6 +33,7 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
         connect();
     }
 
+    @SneakyThrows
     @SuppressWarnings("SwitchStatementWithTooFewBranches")
     public void connect() {
         HikariConfig config = new HikariConfig();
@@ -51,12 +53,13 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
                 break;
         }
         ds = new HikariDataSource(config);
+        connection = ds.getConnection();
         setup();
     }
 
     @SneakyThrows
     public Connection getConnection() {
-        return ds.getConnection();
+        return connection;
     }
 
     @SuppressWarnings("SqlNoDataSourceInspection")
