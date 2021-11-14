@@ -122,7 +122,7 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
                     continue;
                 }
                 DatabaseField databaseField = field.getAnnotation(DatabaseField.class);
-                field.set(obj, getObject(field.getType(), rs.getString(databaseField.columnName())));
+                field.set(obj, getObject(field.getType(), rs.getObject(databaseField.columnName())));
             }
             output.add(obj);
         }
