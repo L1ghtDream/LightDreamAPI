@@ -246,7 +246,6 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
 
         placeholder.append(",");
         placeholder = new StringBuilder(placeholder.toString().replace(",,", ""));
-        placeholder.append(")");
 
         executeUpdate(
                 sqlConfig.driver.update.replace("%placeholder%", placeholder.toString())
