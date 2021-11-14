@@ -241,7 +241,7 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
                 continue;
             }
             DatabaseField dbField = field.getAnnotation(DatabaseField.class);
-            placeholder.append(field.getName()).append("=").append(formatQueryArgument(field.get(entry))).append(",");
+            placeholder.append(dbField.columnName()).append("=").append(formatQueryArgument(field.get(entry))).append(",");
         }
 
         placeholder.append(",");
