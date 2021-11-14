@@ -39,9 +39,11 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
         config.setUsername(sqlConfig.username);
         config.setPassword(sqlConfig.password);
         config.setConnectionTestQuery("SELECT 1");
-        config.setMaxLifetime(60000);
-        config.setIdleTimeout(45000);
+        config.setMinimumIdle(5);
         config.setMaximumPoolSize(50);
+        config.setConnectionTimeout(10000);
+        config.setIdleTimeout(600000);
+        config.setMaxLifetime(1800000);
         switch (sqlConfig.driver) {
             case SQLITE:
                 config.setDriverClassName("org.sqlite.JDBC");
