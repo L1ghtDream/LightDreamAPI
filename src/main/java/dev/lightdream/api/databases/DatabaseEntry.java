@@ -1,11 +1,12 @@
 package dev.lightdream.api.databases;
 
 import dev.lightdream.api.IAPI;
+import dev.lightdream.api.annotations.database.DatabaseField;
 
 public abstract class DatabaseEntry {
 
     @com.j256.ormlite.field.DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
-    @dev.lightdream.api.annotations.DatabaseField(columnName = "id", autoGenerate = true)
+    @DatabaseField(columnName = "id", autoGenerate = true)
     public int id;
     private IAPI api;
 
@@ -21,6 +22,7 @@ public abstract class DatabaseEntry {
         api.getDatabaseManager().save(this, cache);
     }
 
+    @SuppressWarnings("unused")
     public void delete() {
         api.getDatabaseManager().delete(this);
     }

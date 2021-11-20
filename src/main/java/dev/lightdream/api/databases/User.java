@@ -17,17 +17,17 @@ import java.util.Objects;
 import java.util.UUID;
 
 @DatabaseTable(tableName = "users")
-@dev.lightdream.api.annotations.DatabaseTable(table = "users")
+@dev.lightdream.api.annotations.database.DatabaseTable(table = "users")
 public class User extends DatabaseEntry {
 
     @DatabaseField(columnName = "uuid", unique = true)
-    @dev.lightdream.api.annotations.DatabaseField(columnName = "uuid", unique = true)
+    @dev.lightdream.api.annotations.database.DatabaseField(columnName = "uuid", unique = true)
     public UUID uuid;
     @DatabaseField(columnName = "name", unique = true)
-    @dev.lightdream.api.annotations.DatabaseField(columnName = "name", unique = true)
+    @dev.lightdream.api.annotations.database.DatabaseField(columnName = "name", unique = true)
     public String name;
     @DatabaseField(columnName = "lang")
-    @dev.lightdream.api.annotations.DatabaseField(columnName = "lang")
+    @dev.lightdream.api.annotations.database.DatabaseField(columnName = "lang")
     public String lang;
 
     public User() {

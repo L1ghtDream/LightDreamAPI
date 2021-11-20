@@ -6,12 +6,15 @@ import dev.lightdream.api.databases.User;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+@dev.lightdream.api.annotations.commands.SubCommand(
+        aliases = "help"
+)
 public class HelpCommand extends SubCommand {
     public HelpCommand(@NotNull IAPI api) {
-        super(api, Collections.singletonList("help"), "", "", false, false, "");
+        super(api);
+        //super(api, Collections.singletonList("help"), "", "", false, false, "", 0);
     }
 
     @Override

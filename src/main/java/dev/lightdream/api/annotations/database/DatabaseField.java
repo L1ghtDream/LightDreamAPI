@@ -1,4 +1,4 @@
-package dev.lightdream.api.annotations;
+package dev.lightdream.api.annotations.database;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -14,8 +14,6 @@ import java.util.*;
 
 public class Command implements CommandExecutor, TabCompleter {
 
-    //todo add minimum required arguments
-
     private final IAPI api;
     private List<SubCommand> subCommands;
 

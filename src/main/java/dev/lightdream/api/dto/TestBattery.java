@@ -2,7 +2,6 @@ package dev.lightdream.api.dto;
 
 import dev.lightdream.api.IAPI;
 import dev.lightdream.api.utils.Logger;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.fusesource.jansi.Ansi;
 
 import java.util.List;
@@ -13,12 +12,12 @@ public class TestBattery {
     public List<Test> tests;
     public IAPI api;
 
-    public TestBattery(IAPI api, List<Test> tests){
-        this.api=api;
+    public TestBattery(IAPI api, List<Test> tests) {
+        this.api = api;
         this.tests = tests;
     }
 
-    public void test(){
+    public void test() {
         AtomicInteger testCount = new AtomicInteger();
         tests.forEach(test -> {
             test.test();

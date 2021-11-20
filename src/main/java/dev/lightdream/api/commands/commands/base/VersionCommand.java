@@ -7,14 +7,17 @@ import dev.lightdream.api.utils.MessageBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+@dev.lightdream.api.annotations.commands.SubCommand(
+        aliases = "version"
+)
 public class VersionCommand extends SubCommand {
 
     public VersionCommand(@NotNull IAPI api) {
-        super(api, Collections.singletonList("version"), "", "", false, false, "");
+        super(api);
+        //super(api, Collections.singletonList("version"), "", "", false, false, "", 0);
     }
 
     @Override

@@ -2,6 +2,7 @@ package dev.lightdream.api.commands;
 
 import dev.lightdream.api.IAPI;
 import dev.lightdream.api.databases.User;
+import dev.lightdream.api.utils.Logger;
 import dev.lightdream.api.utils.MessageBuilder;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -20,9 +21,48 @@ public abstract class SubCommand {
     public final boolean onlyForConsole;
     public final String usage;
     public final IAPI api;
+    public final int minimumArgs;
 
-    public SubCommand(@NotNull IAPI api, @NotNull List<String> aliases, @NotNull String description, @NotNull String permission, boolean onlyForPlayers, boolean onlyForConsole, @NotNull String usage) {
+    public SubCommand(@NotNull IAPI api) {
         this.api = api;
+
+        if (!getClass().isAnnotationPresent(dev.lightdream.api.annotations.commands.SubCommand.class)) {
+            Logger.error("Class " + getClass().getSimpleName() + " has not been annotated with @SubCommand");
+            this.description = "";
+            this.permission = "";
+            this.onlyForConsole = false;
+            this.onlyForPlayers = false;
+            this.usage = "";
+            this.minimumArgs = 0;
+            return;
+        }
+
+        dev.lightdream.api.annotations.commands.SubCommand subCommand =
+                getClass().getAnnotation(dev.lightdream.api.annotations.commands.SubCommand.class);
+
+        if (subCommand.aliases().length == 0) {
+            this.aliases.add("");
+        }
+        for (String alias : subCommand.aliases()) {
+            this.aliases.add(alias.toLowerCase());
+        }
+
+        this.description = subCommand.description();
+        if (subCommand.permission().equals("")) {
+            this.permission = api.getProjectID() + "." + aliases.get(0);
+        } else {
+            this.permission = api.getProjectID() + "." + subCommand.permission();
+        }
+        this.onlyForPlayers = subCommand.onlyForPlayers();
+        this.onlyForConsole = subCommand.onlyForConsole();
+        this.usage = "/" + api.getProjectID() + " " + aliases.get(0) + " " + subCommand.usage();
+        this.minimumArgs = subCommand.minimumArgs();
+    }
+
+    @Deprecated
+    public SubCommand(@NotNull IAPI api, @NotNull List<String> aliases, @NotNull String description, @NotNull String permission, boolean onlyForPlayers, boolean onlyForConsole, @NotNull String usage, int minimumArgs) {
+        this.api = api;
+        this.minimumArgs = minimumArgs;
         for (String alias : aliases) {
             this.aliases.add(alias.toLowerCase());
         }
@@ -37,9 +77,11 @@ public abstract class SubCommand {
         this.usage = "/" + api.getProjectID() + " " + aliases.get(0) + " " + usage;
     }
 
+    @Deprecated
     @SuppressWarnings("unused")
-    public SubCommand(@NotNull IAPI api, String alias, boolean onlyForPlayers, boolean onlyForConsole, @NotNull String usage) {
+    public SubCommand(@NotNull IAPI api, String alias, boolean onlyForPlayers, boolean onlyForConsole, @NotNull String usage, int minimumArgs) {
         this.api = api;
+        this.minimumArgs = minimumArgs;
         this.aliases.add(alias.toLowerCase());
         this.description = "";
         this.permission = api.getProjectID() + "." + aliases.get(0);
@@ -48,9 +90,11 @@ public abstract class SubCommand {
         this.usage = "/" + api.getProjectID() + " " + aliases.get(0) + " " + usage;
     }
 
+    @Deprecated
     @SuppressWarnings("unused")
-    public SubCommand(@NotNull IAPI api, List<String> aliases, boolean onlyForPlayers, boolean onlyForConsole, @NotNull String usage) {
+    public SubCommand(@NotNull IAPI api, List<String> aliases, boolean onlyForPlayers, boolean onlyForConsole, @NotNull String usage, int minimumArgs) {
         this.api = api;
+        this.minimumArgs = minimumArgs;
         for (String alias : aliases) {
             this.aliases.add(alias.toLowerCase());
         }
@@ -62,11 +106,34 @@ public abstract class SubCommand {
     }
 
     public void execute(CommandSender sender, List<String> args) {
-        if (sender instanceof Player) {
-            execute(api.getDatabaseManager().getUser(sender), args);
-        } else {
-            execute(api.getConsoleUser(), args);
+        if (check(sender, args)) {
+            sendUsage(sender);
+            return;
         }
+
+        if (sender instanceof Player) {
+            interExecute(api.getDatabaseManager().getUser(sender), args);
+        } else {
+            interExecute(api.getConsoleUser(), args);
+        }
+    }
+
+    @SuppressWarnings("unused")
+    private boolean check(CommandSender sender, List<String> args) {
+        return args.size() < minimumArgs;
+    }
+
+    @SuppressWarnings("unused")
+    private boolean check(User user, List<String> args) {
+        return args.size() < minimumArgs;
+    }
+
+    private void interExecute(User user, List<String> args) {
+        if (check(user, args)) {
+            sendUsage(user);
+            return;
+        }
+        execute(user, args);
     }
 
     public abstract void execute(User user, List<String> args);

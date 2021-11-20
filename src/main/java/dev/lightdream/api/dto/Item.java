@@ -203,7 +203,7 @@ public class Item {
                 item.lore = new ArrayList<>();
             }
 
-            return amount == item.amount &&
+            return amount.equals(item.amount) &&
                     material == item.material &&
                     Objects.equals(displayName, item.displayName) &&
                     Objects.equals(headData, item.headData) &&

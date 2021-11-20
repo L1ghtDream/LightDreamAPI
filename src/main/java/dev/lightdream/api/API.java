@@ -17,7 +17,6 @@ import dev.lightdream.api.databases.User;
 import dev.lightdream.api.dto.Position;
 import dev.lightdream.api.managers.*;
 import dev.lightdream.api.managers.database.IDatabaseManagerImpl;
-import dev.lightdream.api.managers.database.OmrLiteDatabaseManagerImpl;
 import dev.lightdream.api.utils.Debugger;
 import dev.lightdream.api.utils.Logger;
 import fr.minuskube.inv.InventoryManager;
@@ -254,7 +253,7 @@ public final class API implements IAPI {
 
     @Override
     public IDatabaseManagerImpl getDatabaseManager() {
-        if(plugins.size()!=0){
+        if (plugins.size() != 0) {
             return plugins.get(0).getDatabaseManager();
         }
         return null;
@@ -291,9 +290,7 @@ public final class API implements IAPI {
 
     @Override
     public void setLang(Player player, String lang) {
-        plugins.forEach(plugin->{
-            plugin.setLang(player, lang);
-        });
+        plugins.forEach(plugin -> plugin.setLang(player, lang));
     }
 
     @Override
@@ -309,8 +306,6 @@ public final class API implements IAPI {
 
     @Override
     public void registerUser(Player player) {
-        plugins.forEach(plugin->{
-            plugin.registerUser(player);
-        });
+        plugins.forEach(plugin -> plugin.registerUser(player));
     }
 }

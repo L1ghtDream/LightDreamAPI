@@ -6,12 +6,15 @@ import dev.lightdream.api.databases.User;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+@dev.lightdream.api.annotations.commands.SubCommand(
+        aliases = "reload"
+)
 public class ReloadCommand extends SubCommand {
     public ReloadCommand(@NotNull IAPI api) {
-        super(api, Collections.singletonList("reload"), "", "", false, false, "");
+        super(api);
+        //super(api, Collections.singletonList("reload"), "", "", false, false, "", 0);
     }
 
     @Override
