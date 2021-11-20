@@ -81,7 +81,7 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
             T obj = clazz.newInstance();
             Field[] fields = obj.getClass().getFields();
             for (Field field : fields) {
-                if(!field.isAnnotationPresent(DatabaseField.class)){
+                if (!field.isAnnotationPresent(DatabaseField.class)) {
                     continue;
                 }
                 DatabaseField databaseField = field.getAnnotation(DatabaseField.class);
@@ -123,7 +123,7 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
             T obj = clazz.newInstance();
             Field[] fields = obj.getClass().getFields();
             for (Field field : fields) {
-                if(!field.isAnnotationPresent(DatabaseField.class)){
+                if (!field.isAnnotationPresent(DatabaseField.class)) {
                     continue;
                 }
                 DatabaseField databaseField = field.getAnnotation(DatabaseField.class);
@@ -280,7 +280,14 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
     @SneakyThrows
     private ResultSet executeQuery(String sql, List<Object> values) {
         Debugger.info(sql);
-        PreparedStatement statement = getConnection().prepareStatement(sql);
+        PreparedStatement statement;
+        try {
+            statement = getConnection().prepareStatement(sql);
+        } catch (Throwable t) {
+            Logger.error("The connection to the database has been lost trying to reconnect!");
+            connect();
+            return executeQuery(sql, values);
+        }
 
         for (int i = 0; i < values.size(); i++) {
             statement.setObject(i + 1, values.get(i));

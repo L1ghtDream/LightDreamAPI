@@ -67,7 +67,7 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
 
     @SuppressWarnings("unused")
     @SneakyThrows
-    public void init(String projectName, String projectID) {
+    public void init(String projectName, String projectID, String baseCommand) {
         if (API.instance == null) {
             api = new API(this);
         } else {
@@ -100,7 +100,7 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
         baseSubCommands.add(new VersionCommand(this));
         baseSubCommands.add(new HelpCommand(this));
         baseSubCommands.addAll(getBaseSubCommands());
-        baseCommand = new Command(this, projectID, baseSubCommands);
+        this.baseCommand = new Command(this, baseCommand, baseSubCommands);
 
         //Bot
         if (baseJdaConfig != null) {
@@ -203,7 +203,7 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
         }
 
         return reader.read(new InputStreamReader(MessageActivity.Application.class.getResourceAsStream(
-                "/META-INF/maven/dev.lightdream/" + projectName + "/pom.xml"
+                "/META-INF/maven/dev.lightdream/" + projectID + "/pom.xml"
         ))).getVersion();
     }
 

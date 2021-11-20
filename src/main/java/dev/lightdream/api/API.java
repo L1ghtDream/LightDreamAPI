@@ -16,6 +16,7 @@ import dev.lightdream.api.databases.ConsoleUser;
 import dev.lightdream.api.databases.User;
 import dev.lightdream.api.dto.Position;
 import dev.lightdream.api.managers.*;
+import dev.lightdream.api.managers.database.IDatabaseManagerImpl;
 import dev.lightdream.api.managers.database.OmrLiteDatabaseManagerImpl;
 import dev.lightdream.api.utils.Debugger;
 import dev.lightdream.api.utils.Logger;
@@ -60,7 +61,7 @@ public final class API implements IAPI {
     //Managers
     public LangManager langManager;
     public MessageManager messageManager;
-    public OmrLiteDatabaseManagerImpl databaseManager;
+    //public OmrLiteDatabaseManagerImpl databaseManager;
     public FileManager fileManager;
     public KeyDeserializerManager keyDeserializerManager;
     public Command command;
@@ -110,8 +111,8 @@ public final class API implements IAPI {
 
         //Managers
         messageManager = new MessageManager(this, API.class);
-        this.databaseManager = new OmrLiteDatabaseManagerImpl(this);
-        this.databaseManager.setup(User.class);
+        //this.databaseManager = new OmrLiteDatabaseManagerImpl(this);
+        //this.databaseManager.setup(User.class);
         this.langManager = new LangManager(API.class, getLangs());
         this.eventManager = new EventManager(this);
 
@@ -161,7 +162,7 @@ public final class API implements IAPI {
 
     @Override
     public void disable() {
-        this.databaseManager.save();
+        //this.databaseManager.save();
         this.enabled = false;
     }
 
@@ -252,8 +253,11 @@ public final class API implements IAPI {
     }
 
     @Override
-    public OmrLiteDatabaseManagerImpl getDatabaseManager() {
-        return databaseManager;
+    public IDatabaseManagerImpl getDatabaseManager() {
+        if(plugins.size()!=0){
+            return plugins.get(0).getDatabaseManager();
+        }
+        return null;
     }
 
     public File getDataFolder() {
@@ -287,7 +291,9 @@ public final class API implements IAPI {
 
     @Override
     public void setLang(Player player, String lang) {
-        setLang(databaseManager.getUser(player), lang);
+        plugins.forEach(plugin->{
+            plugin.setLang(player, lang);
+        });
     }
 
     @Override
@@ -303,7 +309,6 @@ public final class API implements IAPI {
 
     @Override
     public void registerUser(Player player) {
-        databaseManager.getUser(player);
         plugins.forEach(plugin->{
             plugin.registerUser(player);
         });

@@ -1,7 +1,6 @@
 package dev.lightdream.api.managers.database;
 
 import dev.lightdream.api.IAPI;
-import dev.lightdream.api.databases.DatabaseEntry;
 import dev.lightdream.api.databases.User;
 import dev.lightdream.api.dto.LambdaExecutor;
 import org.bukkit.Bukkit;
