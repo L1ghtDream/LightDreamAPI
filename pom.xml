@@ -13,9 +13,8 @@
 
     <distributionManagement>
         <repository>
-            <id>central</id>
-            <name>rs-zap586150-1-releases</name>
-            <url>https://repo.lightdream.dev/artifactory/lightdream-api-libs-release-local</url>
+            <id>lightdream-api</id>
+            <url>https://repo.lightdream.dev/repository/LightDream-API/</url>
         </repository>
     </distributionManagement>
 
