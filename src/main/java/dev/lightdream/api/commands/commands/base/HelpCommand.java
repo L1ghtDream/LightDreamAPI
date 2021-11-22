@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @dev.lightdream.api.annotations.commands.SubCommand(
-        aliases = "help"
+        aliases = "help",
+        parentCommand = ""
 )
 public class HelpCommand extends SubCommand {
-    public HelpCommand(@NotNull IAPI api) {
-        super(api);
-        //super(api, Collections.singletonList("help"), "", "", false, false, "", 0);
+    public HelpCommand(@NotNull IAPI api, String parentCommand) {
+        super(api, parentCommand);
     }
 
     @Override

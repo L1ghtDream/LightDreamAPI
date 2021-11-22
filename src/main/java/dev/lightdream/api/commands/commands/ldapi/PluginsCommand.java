@@ -11,7 +11,8 @@ import java.util.List;
 
 @dev.lightdream.api.annotations.commands.SubCommand(
         aliases = {"plugins", "pl"},
-        minimumArgs = 1
+        minimumArgs = 1,
+        parentCommand = "ld-api"
 )
 public class PluginsCommand extends SubCommand {
     public PluginsCommand(@NotNull IAPI api) {

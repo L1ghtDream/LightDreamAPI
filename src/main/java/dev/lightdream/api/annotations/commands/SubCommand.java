@@ -1,5 +1,7 @@
 package dev.lightdream.api.annotations.commands;
 
+import dev.lightdream.api.API;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -22,5 +24,7 @@ public @interface SubCommand {
     int minimumArgs() default 0;
 
     String[] aliases() default {};
+
+    String parentCommand() default "";
 
 }

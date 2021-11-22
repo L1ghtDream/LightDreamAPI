@@ -22,6 +22,7 @@ public abstract class SubCommand {
     public final String usage;
     public final IAPI api;
     public final int minimumArgs;
+    public final String parentCommand;
 
     public SubCommand(@NotNull IAPI api) {
         this.api = api;
@@ -34,6 +35,45 @@ public abstract class SubCommand {
             this.onlyForPlayers = false;
             this.usage = "";
             this.minimumArgs = 0;
+            this.parentCommand="";
+            return;
+        }
+
+        dev.lightdream.api.annotations.commands.SubCommand subCommand =
+                getClass().getAnnotation(dev.lightdream.api.annotations.commands.SubCommand.class);
+
+        if (subCommand.aliases().length == 0) {
+            this.aliases.add("");
+        }
+        for (String alias : subCommand.aliases()) {
+            this.aliases.add(alias.toLowerCase());
+        }
+        this.parentCommand= subCommand.parentCommand();
+
+        this.description = subCommand.description();
+        if (subCommand.permission().equals("")) {
+            this.permission = api.getProjectID() + "." +parentCommand + "." + aliases.get(0);
+        } else {
+            this.permission = api.getProjectID() + "." +parentCommand + "." + subCommand.permission();
+        }
+        this.onlyForPlayers = subCommand.onlyForPlayers();
+        this.onlyForConsole = subCommand.onlyForConsole();
+        this.usage = "/" + parentCommand + " " + aliases.get(0) + " " + subCommand.usage();
+        this.minimumArgs = subCommand.minimumArgs();
+    }
+
+    public SubCommand(@NotNull IAPI api, String parentCommand) {
+        this.api = api;
+
+        if (!getClass().isAnnotationPresent(dev.lightdream.api.annotations.commands.SubCommand.class)) {
+            Logger.error("Class " + getClass().getSimpleName() + " has not been annotated with @SubCommand");
+            this.description = "";
+            this.permission = "";
+            this.onlyForConsole = false;
+            this.onlyForPlayers = false;
+            this.usage = "";
+            this.minimumArgs = 0;
+            this.parentCommand="";
             return;
         }
 
@@ -49,60 +89,64 @@ public abstract class SubCommand {
 
         this.description = subCommand.description();
         if (subCommand.permission().equals("")) {
-            this.permission = api.getProjectID() + "." + aliases.get(0);
+            this.permission = api.getProjectID() + "." +parentCommand + "." + aliases.get(0);
         } else {
-            this.permission = api.getProjectID() + "." + subCommand.permission();
+            this.permission = api.getProjectID() + "." +parentCommand + "." + subCommand.permission();
         }
         this.onlyForPlayers = subCommand.onlyForPlayers();
         this.onlyForConsole = subCommand.onlyForConsole();
-        this.usage = "/" + api.getProjectID() + " " + aliases.get(0) + " " + subCommand.usage();
+        this.usage = "/" + parentCommand + " " + aliases.get(0) + " " + subCommand.usage();
         this.minimumArgs = subCommand.minimumArgs();
+        this.parentCommand=parentCommand;
     }
 
     @Deprecated
-    public SubCommand(@NotNull IAPI api, @NotNull List<String> aliases, @NotNull String description, @NotNull String permission, boolean onlyForPlayers, boolean onlyForConsole, @NotNull String usage, int minimumArgs) {
+    public SubCommand(@NotNull IAPI api, @NotNull List<String> aliases, @NotNull String description, @NotNull String permission, boolean onlyForPlayers, boolean onlyForConsole, @NotNull String usage, int minimumArgs, String parentCommand) {
         this.api = api;
         this.minimumArgs = minimumArgs;
+        this.parentCommand = parentCommand;
         for (String alias : aliases) {
             this.aliases.add(alias.toLowerCase());
         }
         this.description = description;
         if (permission.equals("")) {
-            this.permission = api.getProjectID() + "." + aliases.get(0);
+            this.permission = api.getProjectID() + "." +parentCommand + "." + aliases.get(0);
         } else {
-            this.permission = api.getProjectID() + "." + permission;
+            this.permission = api.getProjectID() + "." +parentCommand + "." + permission;
         }
         this.onlyForPlayers = onlyForPlayers;
         this.onlyForConsole = onlyForConsole;
-        this.usage = "/" + api.getProjectID() + " " + aliases.get(0) + " " + usage;
+        this.usage = "/" + parentCommand+ " " + aliases.get(0) + " " + usage;
     }
 
     @Deprecated
     @SuppressWarnings("unused")
-    public SubCommand(@NotNull IAPI api, String alias, boolean onlyForPlayers, boolean onlyForConsole, @NotNull String usage, int minimumArgs) {
+    public SubCommand(@NotNull IAPI api, String alias, boolean onlyForPlayers, boolean onlyForConsole, @NotNull String usage, int minimumArgs, String parentCommand) {
         this.api = api;
         this.minimumArgs = minimumArgs;
+        this.parentCommand = parentCommand;
         this.aliases.add(alias.toLowerCase());
         this.description = "";
-        this.permission = api.getProjectID() + "." + aliases.get(0);
+        this.permission = api.getProjectID() + "." +parentCommand + "." + aliases.get(0);
         this.onlyForPlayers = onlyForPlayers;
         this.onlyForConsole = onlyForConsole;
-        this.usage = "/" + api.getProjectID() + " " + aliases.get(0) + " " + usage;
+        this.usage = "/" + parentCommand + " " + aliases.get(0) + " " + usage;
     }
 
     @Deprecated
     @SuppressWarnings("unused")
-    public SubCommand(@NotNull IAPI api, List<String> aliases, boolean onlyForPlayers, boolean onlyForConsole, @NotNull String usage, int minimumArgs) {
+    public SubCommand(@NotNull IAPI api, List<String> aliases, boolean onlyForPlayers, boolean onlyForConsole, @NotNull String usage, int minimumArgs, String parentCommand) {
         this.api = api;
         this.minimumArgs = minimumArgs;
+        this.parentCommand = parentCommand;
         for (String alias : aliases) {
             this.aliases.add(alias.toLowerCase());
         }
         this.description = "";
-        this.permission = api.getProjectID() + "." + aliases.get(0);
+        this.permission = api.getProjectID() + "."+parentCommand + "."  + aliases.get(0);
         this.onlyForPlayers = onlyForPlayers;
         this.onlyForConsole = onlyForConsole;
-        this.usage = "/" + api.getProjectID() + " " + aliases.get(0) + " " + usage;
+        this.usage = "/" + parentCommand + " " + aliases.get(0) + " " + usage;
     }
 
     public void execute(CommandSender sender, List<String> args) {

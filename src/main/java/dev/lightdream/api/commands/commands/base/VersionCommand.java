@@ -15,8 +15,8 @@ import java.util.List;
 )
 public class VersionCommand extends SubCommand {
 
-    public VersionCommand(@NotNull IAPI api) {
-        super(api);
+    public VersionCommand(@NotNull IAPI api, String parentCommand) {
+        super(api, parentCommand);
         //super(api, Collections.singletonList("version"), "", "", false, false, "", 0);
     }
 

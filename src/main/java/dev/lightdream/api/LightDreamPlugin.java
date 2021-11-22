@@ -96,9 +96,9 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
 
         //Commands
         List<SubCommand> baseSubCommands = new ArrayList<>();
-        baseSubCommands.add(new ReloadCommand(this));
-        baseSubCommands.add(new VersionCommand(this));
-        baseSubCommands.add(new HelpCommand(this));
+        baseSubCommands.add(new ReloadCommand(this, baseCommand));
+        baseSubCommands.add(new VersionCommand(this, baseCommand));
+        baseSubCommands.add(new HelpCommand(this, baseCommand));
         baseSubCommands.addAll(getBaseSubCommands());
         this.baseCommand = new Command(this, baseCommand, baseSubCommands);
 

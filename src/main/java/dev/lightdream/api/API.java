@@ -145,10 +145,10 @@ public final class API implements IAPI {
     public List<SubCommand> getBaseCommands() {
         return Arrays.asList(
                 new ChoseLangCommand(this),
-                new ReloadCommand(this),
-                new VersionCommand(this),
+                new ReloadCommand(this,getProjectID()),
+                new VersionCommand(this,getProjectID()),
                 new PluginsCommand(this),
-                new HelpCommand(this)
+                new HelpCommand(this,getProjectID())
         );
     }
 

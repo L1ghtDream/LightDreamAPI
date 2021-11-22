@@ -12,7 +12,8 @@ import java.util.List;
         aliases = "choseLang",
         usage = "[lang]",
         onlyForPlayers = true,
-        minimumArgs = 1
+        minimumArgs = 1,
+        parentCommand = "ld-api"
 )
 public class ChoseLangCommand extends SubCommand {
     public ChoseLangCommand(@NotNull IAPI api) {

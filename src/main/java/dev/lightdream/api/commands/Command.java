@@ -14,10 +14,12 @@ import java.util.*;
 
 public class Command implements CommandExecutor, TabCompleter {
 
+    public final String command;
     private final IAPI api;
     private List<SubCommand> subCommands;
 
     public Command(IAPI api, String command, List<SubCommand> subCommands) {
+        this.command = command;
         this.api = api;
         try {
             api.getPlugin().getCommand(command).setExecutor(this);

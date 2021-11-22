@@ -74,4 +74,5 @@ public interface IAPI {
     boolean debug();
 
     void registerUser(Player player);
+
 }

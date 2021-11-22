@@ -12,8 +12,8 @@ import java.util.List;
         aliases = "reload"
 )
 public class ReloadCommand extends SubCommand {
-    public ReloadCommand(@NotNull IAPI api) {
-        super(api);
+    public ReloadCommand(@NotNull IAPI api, String parentCommand) {
+        super(api, parentCommand);
         //super(api, Collections.singletonList("reload"), "", "", false, false, "", 0);
     }
 
