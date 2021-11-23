@@ -64,6 +64,9 @@ public class SQLConfig {
                     put(double.class, "REAL");
                     put(Double.class, "REAL");
                     put(UUID.class, "TEXT");
+                    put(Long.class, "LONG");
+                    put(long.class, "LONG");
+
                 }},
                 "PRIMARY KEY AUTOINCREMENT"
         );
