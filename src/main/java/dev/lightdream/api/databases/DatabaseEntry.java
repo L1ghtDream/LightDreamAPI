@@ -6,7 +6,7 @@ import dev.lightdream.api.annotations.database.DatabaseField;
 public abstract class DatabaseEntry {
 
     @com.j256.ormlite.field.DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
-    @DatabaseField(columnName = "id", autoGenerate = true)
+    @DatabaseField(columnName = "id", autoGenerate = true, unique = true, primaryKey = true)
     public int id;
     private IAPI api;
 

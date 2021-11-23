@@ -147,6 +147,7 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
 
         Object obj = clazz.newInstance();
         String placeholder = "";
+        String keys = ",";
 
         Field[] fields = obj.getClass().getFields();
         for (Field field : fields) {
@@ -159,13 +160,18 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
                     (dbField.unique() ? "UNIQUE " : "") +
                     (dbField.autoGenerate() ? sqlConfig.driver.autoIncrement : "") +
                     ",";
+            keys+=dbField.columnName()+",";
         }
 
+        keys+=",";
+        keys=keys.replace(",,", "");
         placeholder += ",";
         placeholder = placeholder.replace(",,", "");
 
         executeUpdate(
-                sqlConfig.driver.createTable.replace("%placeholder%", placeholder)
+                sqlConfig.driver.createTable
+                        .replace("%placeholder%", placeholder)
+                        .replace("%keys%", keys)
                         .replace("%table%", clazz.getAnnotation(DatabaseTable.class).table()),
                 new ArrayList<>()
         );

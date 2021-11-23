@@ -15,4 +15,6 @@ public @interface DatabaseField {
 
     boolean unique() default false;
 
+    boolean primaryKey() default false;
+
 }
