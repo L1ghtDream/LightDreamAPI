@@ -147,7 +147,7 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
 
         Object obj = clazz.newInstance();
         String placeholder = "";
-        String keys = ",";
+        String keys = "";
 
         Field[] fields = obj.getClass().getFields();
         for (Field field : fields) {
