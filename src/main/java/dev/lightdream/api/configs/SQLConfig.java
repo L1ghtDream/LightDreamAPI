@@ -37,8 +37,8 @@ public class SQLConfig {
                     put(double.class, "DOUBLE");
                     put(Double.class, "DOUBLE");
                     put(UUID.class, "TEXT");
-                    put(Long.class, "LONG");
-                    put(long.class, "LONG");
+                    put(Long.class, "BIGINT");
+                    put(long.class, "BIGINT");
                 }},
                 "AUTO_INCREMENT"
         ),
@@ -64,8 +64,8 @@ public class SQLConfig {
                     put(double.class, "REAL");
                     put(Double.class, "REAL");
                     put(UUID.class, "TEXT");
-                    put(Long.class, "LONG");
-                    put(long.class, "LONG");
+                    put(Long.class, "BIGINT");
+                    put(long.class, "BIGINT");
 
                 }},
                 "PRIMARY KEY AUTOINCREMENT"
