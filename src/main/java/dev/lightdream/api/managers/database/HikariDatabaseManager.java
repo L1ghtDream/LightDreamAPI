@@ -160,7 +160,10 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
                     (dbField.unique() ? "UNIQUE " : "") +
                     (dbField.autoGenerate() ? sqlConfig.driver.autoIncrement : "") +
                     ",";
-            keys+=dbField.columnName()+",";
+
+            if(dbField.primaryKey()) {
+                keys += dbField.columnName() + ",";
+            }
         }
 
         keys+=",";

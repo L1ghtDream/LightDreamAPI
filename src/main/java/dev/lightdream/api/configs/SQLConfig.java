@@ -24,7 +24,7 @@ public class SQLConfig {
                 "SELECT * FROM %table% WHERE 1",
                 "UPDATE %table% SET %placeholder% WHERE id=?",
                 "INSERT INTO %table% (%placeholder-1%) VALUES(%placeholder-2%)",
-                "CREATE TABLE IF NOT EXISTS %table% (%placeholder%, %keys%)",
+                "CREATE TABLE IF NOT EXISTS %table% (%placeholder%, PRIMARY KEY(%keys%))",
                 "DELETE FROM %table% WHERE id=?",
                 new HashMap<Class<?>, String>() {{
                     put(int.class, "INT");
