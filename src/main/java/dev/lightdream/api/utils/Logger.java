@@ -22,9 +22,6 @@ public class Logger {
                     + Ansi.ansi().fg(Ansi.Color.DEFAULT).boldOff());
             return;
         }
-        if (!api.debug()) {
-            return;
-        }
         api.getPlugin().getLogger().info(message);
     }
 

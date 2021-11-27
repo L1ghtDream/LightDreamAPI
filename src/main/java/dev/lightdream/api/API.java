@@ -145,10 +145,10 @@ public final class API implements IAPI {
     public List<SubCommand> getBaseCommands() {
         return Arrays.asList(
                 new ChoseLangCommand(this),
-                new ReloadCommand(this,getProjectID()),
-                new VersionCommand(this,getProjectID()),
+                new ReloadCommand(this, getProjectID()),
+                new VersionCommand(this, getProjectID()),
                 new PluginsCommand(this),
-                new HelpCommand(this,getProjectID())
+                new HelpCommand(this, getProjectID())
         );
     }
 
@@ -301,6 +301,9 @@ public final class API implements IAPI {
 
     @Override
     public boolean debug() {
+        if (apiConfig == null) {
+            return false;
+        }
         return apiConfig.debug;
     }
 
