@@ -137,4 +137,10 @@ public class PluginLocation extends Position {
         this.y = Math.floor(y);
         this.z = Math.floor(z);
     }
+
+    @SuppressWarnings("unused")
+    public PluginLocation multiply(Position position) {
+        return new PluginLocation(world, x * position.x, y * position.y, z * position.z);
+    }
+
 }
