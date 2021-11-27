@@ -21,7 +21,7 @@ public class TestBattery {
         AtomicInteger testCount = new AtomicInteger();
         tests.forEach(test -> {
             test.test();
-            Logger.info("Test " + testCount + ": " + (test.status ?
+            Logger.info("\nTest " + testCount + ": " + (test.status ?
                     Ansi.ansi().fg(Ansi.Color.GREEN).boldOff() + "Passed" + Ansi.ansi().fg(Ansi.Color.DEFAULT).boldOff() :
                     Ansi.ansi().fg(Ansi.Color.RED).boldOff() + "Failed\nResult: " + test.result + "\nExpected result: " + test.expectedResult) + Ansi.ansi().fg(Ansi.Color.DEFAULT).boldOff());
             testCount.getAndIncrement();
