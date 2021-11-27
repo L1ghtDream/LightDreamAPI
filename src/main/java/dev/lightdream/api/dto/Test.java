@@ -1,18 +1,30 @@
 package dev.lightdream.api.dto;
 
-import java.util.function.Predicate;
+import java.util.function.Consumer;
 
 public class Test {
 
     public boolean status;
-    public Predicate<Void> consumer;
+    public Object result;
+    public Object expectedResult;
+    public Consumer<Test> consumer;
 
-    public Test(Predicate<Void> consumer) {
+    public Test(Object expectedResult, Consumer<Test> consumer) {
         this.consumer = consumer;
+        this.expectedResult = expectedResult;
     }
 
     public void test() {
-        status = consumer.test(null);
+        consumer.accept(this);
+    }
+
+    public void setExpectedResult(Object expectedResult) {
+        this.expectedResult = expectedResult;
+    }
+
+    public void submitResults(Object result) {
+        this.status = result.equals(expectedResult);
+        this.result = result;
     }
 
 }

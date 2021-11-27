@@ -15,6 +15,7 @@ public final class APIPlugin extends JavaPlugin {
 
     public API api;
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void onEnable() {
         this.api = new API(this);
@@ -23,9 +24,9 @@ public final class APIPlugin extends JavaPlugin {
             return;
         }
 
-        TestBattery testBattery = new TestBattery(api, Arrays.asList(
-                new Test((x) -> true),
-                new Test((x) -> {
+        new TestBattery(api, Arrays.asList(
+                new Test(null, (test) -> test.submitResults(null)),
+                new Test(null, (test) -> {
                     SQLConfig backup = api.sqlConfig;
                     api.sqlConfig = new SQLConfig();
                     api.sqlConfig.database = "tests";
@@ -38,11 +39,10 @@ public final class APIPlugin extends JavaPlugin {
                     dbManager.getUser(uuid2);
 
                     api.sqlConfig = backup;
-                    return !dbManager.getUser(uuid1).equals(dbManager.getUser(uuid2));
+                    test.setExpectedResult(dbManager.getUser(uuid1));
+                    test.submitResults(dbManager.getUser(uuid2));
                 })
-        ));
-
-        testBattery.test();
+        )).test();
     }
 
     @Override

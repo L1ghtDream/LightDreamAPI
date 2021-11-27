@@ -23,7 +23,7 @@ public class TestBattery {
             test.test();
             Logger.info("Test " + testCount + ": " + (test.status ?
                     Ansi.ansi().fg(Ansi.Color.GREEN).boldOff() + "Passed" + Ansi.ansi().fg(Ansi.Color.DEFAULT).boldOff() :
-                    Ansi.ansi().fg(Ansi.Color.RED).boldOff() + "Failed") + Ansi.ansi().fg(Ansi.Color.DEFAULT).boldOff());
+                    Ansi.ansi().fg(Ansi.Color.RED).boldOff() + "Failed\nResult: " + test.result + "\nExpected result: " + test.expectedResult) + Ansi.ansi().fg(Ansi.Color.DEFAULT).boldOff());
             testCount.getAndIncrement();
         });
     }
