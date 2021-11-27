@@ -70,9 +70,9 @@ public abstract class DatabaseManager implements IDatabaseManager {
             return "NULL";
         }
         Class<?> clazz = object.getClass();
-        String output = null;
+        Object output = null;
         if (serializeMap.get(clazz) != null) {
-            output = (String) serializeMap.get(clazz).execute(object);
+            output = serializeMap.get(clazz).execute(object);
         }
 
         if (output == null) {
@@ -82,12 +82,12 @@ public abstract class DatabaseManager implements IDatabaseManager {
                 return object.toString();
             }
             if (additionalSerializeMap.get(clazz) != null) {
-                output = (String) additionalSerializeMap.get(clazz).execute(object);
+                output = additionalSerializeMap.get(clazz).execute(object);
             }
         }
 
         if (output != null) {
-            return output;
+            return output.toString();
         }
 
         return object.toString();
