@@ -8,6 +8,7 @@ import dev.lightdream.api.dto.PluginLocation;
 import dev.lightdream.api.utils.MessageBuilder;
 import dev.lightdream.api.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -150,6 +151,20 @@ public class User extends DatabaseEntry {
             return false;
         }
         return getPlayer().hasPermission(permission);
+    }
+
+    @SuppressWarnings("unused")
+    public void teleport(PluginLocation pluginLocation) {
+        teleport(pluginLocation.toLocation());
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public void teleport(Location location) {
+        if (!isOnline()) {
+            return;
+        }
+
+        getPlayer().teleport(location);
     }
 
     @Override
