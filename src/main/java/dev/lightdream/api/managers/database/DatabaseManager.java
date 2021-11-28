@@ -1,5 +1,6 @@
 package dev.lightdream.api.managers.database;
 
+import com.google.gson.Gson;
 import dev.lightdream.api.IAPI;
 import dev.lightdream.api.configs.SQLConfig;
 import dev.lightdream.api.dto.LambdaExecutor;
@@ -8,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public abstract class DatabaseManager implements IDatabaseManager {
@@ -15,11 +17,13 @@ public abstract class DatabaseManager implements IDatabaseManager {
     public IAPI api;
     public SQLConfig sqlConfig;
     public HashMap<Class<?>, LambdaExecutor> deserializeMap = new HashMap<Class<?>, LambdaExecutor>() {{
-        put(UUID.class, (object) -> UUID.fromString(object.toString()));
+        put(UUID.class, object -> UUID.fromString(object.toString()));
+        put(List.class, object -> new Gson().fromJson(object.toString(), List.class));
     }};
     public HashMap<Class<?>, LambdaExecutor> serializeMap = new HashMap<Class<?>, LambdaExecutor>() {{
-        put(String.class, (object) -> "\"" + object.toString() + "\"");
-        put(UUID.class, (object) -> "\"" + object.toString() + "\"");
+        put(String.class, object -> "\"" + object.toString() + "\"");
+        put(UUID.class, object -> "\"" + object.toString() + "\"");
+        put(List.class, object -> new Gson().toJson(object));
     }};
 
     public @NotNull String getDatabaseURL() {
