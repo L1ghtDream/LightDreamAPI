@@ -49,6 +49,7 @@ public class ProtocolLibManager {
 
         protocolManager.sendServerPacket(player, packet1);
         protocolManager.sendServerPacket(player, packet2);
+        protocolManager.sendServerPacket(player, packet3);
     }
 
     @SuppressWarnings({"unused"})
