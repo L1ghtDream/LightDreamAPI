@@ -161,13 +161,13 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
                     (dbField.autoGenerate() ? sqlConfig.driver.autoIncrement : "") +
                     ",";
 
-            if(dbField.primaryKey()) {
+            if (dbField.primaryKey()) {
                 keys += dbField.columnName() + ",";
             }
         }
 
-        keys+=",";
-        keys=keys.replace(",,", "");
+        keys += ",";
+        keys = keys.replace(",,", "");
         placeholder += ",";
         placeholder = placeholder.replace(",,", "");
 
@@ -200,73 +200,69 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
     @Override
     public void save(DatabaseEntry entry, boolean cache) {
         if (!entry.getClass().isAnnotationPresent(DatabaseTable.class)) {
-            //todo logger
+            Logger.error("The class " + entry.getClass().getSimpleName() + " is not annotated as " + DatabaseTable.class.getSimpleName());
             return;
         }
-        List<? extends DatabaseEntry> currentEntries = new ArrayList<>();
-        if (entry.id == 0) {
-            Debugger.info("DatabaseEntry does not have an id attempting to get it from the database");
-            currentEntries = get(entry.getClass(), new HashMap<String, Object>() {{
-                put("id", entry.id);
-            }});
-        }
-        if (currentEntries.size() == 0) {
-            StringBuilder placeholder1 = new StringBuilder();
-            StringBuilder placeholder2 = new StringBuilder();
+
+        //update
+        if (entry.id != 0) {
+            StringBuilder placeholder = new StringBuilder();
 
             Field[] fields = entry.getClass().getFields();
             for (Field field : fields) {
                 if (!field.isAnnotationPresent(DatabaseField.class)) {
                     continue;
                 }
-                DatabaseField databaseField = field.getAnnotation(DatabaseField.class);
-
-                if (databaseField.autoGenerate()) {
+                DatabaseField dbField = field.getAnnotation(DatabaseField.class);
+                if (dbField.autoGenerate()) {
                     continue;
                 }
-
-                String columnName = databaseField.columnName();
-                placeholder1.append(columnName).append(",");
-                placeholder2.append(formatQueryArgument(field.get(entry))).append(",");
+                placeholder.append(dbField.columnName()).append("=").append(formatQueryArgument(field.get(entry))).append(",");
             }
 
-            placeholder1.append(",");
-            placeholder2.append(",");
+            placeholder.append(",");
+            placeholder = new StringBuilder(placeholder.toString().replace(",,", ""));
 
-            placeholder1 = new StringBuilder(placeholder1.toString().replace(",,", ""));
-            placeholder2 = new StringBuilder(placeholder2.toString().replace(",,", ""));
             executeUpdate(
-                    sqlConfig.driver.insert
-                            .replace("%placeholder-1%", placeholder1.toString())
-                            .replace("%placeholder-2%", placeholder2.toString())
+                    sqlConfig.driver.update.replace("%placeholder%", placeholder.toString())
                             .replace("%table%", entry.getClass().getAnnotation(DatabaseTable.class).table()),
-                    new ArrayList<>(
-
-                    ));
+                    Arrays.asList(entry.id));
             return;
         }
 
-        StringBuilder placeholder = new StringBuilder();
+        //insert
+        StringBuilder placeholder1 = new StringBuilder();
+        StringBuilder placeholder2 = new StringBuilder();
 
         Field[] fields = entry.getClass().getFields();
         for (Field field : fields) {
             if (!field.isAnnotationPresent(DatabaseField.class)) {
                 continue;
             }
-            DatabaseField dbField = field.getAnnotation(DatabaseField.class);
-            if(dbField.autoGenerate()){
+            DatabaseField databaseField = field.getAnnotation(DatabaseField.class);
+
+            if (databaseField.autoGenerate()) {
                 continue;
             }
-            placeholder.append(dbField.columnName()).append("=").append(formatQueryArgument(field.get(entry))).append(",");
+
+            String columnName = databaseField.columnName();
+            placeholder1.append(columnName).append(",");
+            placeholder2.append(formatQueryArgument(field.get(entry))).append(",");
         }
 
-        placeholder.append(",");
-        placeholder = new StringBuilder(placeholder.toString().replace(",,", ""));
+        placeholder1.append(",");
+        placeholder2.append(",");
 
+        placeholder1 = new StringBuilder(placeholder1.toString().replace(",,", ""));
+        placeholder2 = new StringBuilder(placeholder2.toString().replace(",,", ""));
         executeUpdate(
-                sqlConfig.driver.update.replace("%placeholder%", placeholder.toString())
+                sqlConfig.driver.insert
+                        .replace("%placeholder-1%", placeholder1.toString())
+                        .replace("%placeholder-2%", placeholder2.toString())
                         .replace("%table%", entry.getClass().getAnnotation(DatabaseTable.class).table()),
-                Arrays.asList(entry.id));
+                new ArrayList<>(
+
+                ));
     }
 
     @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
