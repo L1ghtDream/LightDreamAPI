@@ -204,7 +204,7 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
             return;
         }
         List<? extends DatabaseEntry> currentEntries = new ArrayList<>();
-        if (entry.id != 0) {
+        if (entry.id == 0) {
             Debugger.info("DatabaseEntry does not have an id attempting to get it from the database");
             currentEntries = get(entry.getClass(), new HashMap<String, Object>() {{
                 put("id", entry.id);
