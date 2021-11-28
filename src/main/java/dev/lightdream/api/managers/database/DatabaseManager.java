@@ -18,12 +18,10 @@ public abstract class DatabaseManager implements IDatabaseManager {
     public SQLConfig sqlConfig;
     public HashMap<Class<?>, LambdaExecutor> deserializeMap = new HashMap<Class<?>, LambdaExecutor>() {{
         put(UUID.class, object -> UUID.fromString(object.toString()));
-        put(List.class, object -> new Gson().fromJson(object.toString(), List.class));
     }};
     public HashMap<Class<?>, LambdaExecutor> serializeMap = new HashMap<Class<?>, LambdaExecutor>() {{
         put(String.class, object -> "\"" + object.toString() + "\"");
         put(UUID.class, object -> "\"" + object.toString() + "\"");
-        put(List.class, object -> new Gson().toJson(object));
     }};
 
     public @NotNull String getDatabaseURL() {
