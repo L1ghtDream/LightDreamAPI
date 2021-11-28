@@ -23,14 +23,17 @@ public class ProtocolLibManager {
 
         PacketContainer packet1 = protocolManager.createPacket(PacketType.Play.Server.WORLD_BORDER);
         PacketContainer packet2 = protocolManager.createPacket(PacketType.Play.Server.WORLD_BORDER);
-
         packet1.getWorldBorderActions().writeSafely(0, EnumWrappers.WorldBorderAction.SET_CENTER);
         packet2.getWorldBorderActions().writeSafely(0, EnumWrappers.WorldBorderAction.SET_SIZE);
 
-        packet1.getDoubles().write(0, x);
-        packet1.getDoubles().write(1, z);
+        packet1
+                .getDoubles()
+                .write(0, x)
+                .write(1, z);
 
-        packet2.getDoubles().write(0, diameter);
+        packet2
+                .getDoubles()
+                .write(0, diameter);
 
         protocolManager.sendServerPacket(player, packet1);
         protocolManager.sendServerPacket(player, packet2);
@@ -39,6 +42,6 @@ public class ProtocolLibManager {
     @SuppressWarnings({"unused"})
     @SneakyThrows
     public void sendWorldBorder(Player player, PluginLocation location, double newDiam) {
-        sendWorldBorder(player,location.x, location.z, newDiam);
+        sendWorldBorder(player, location.x, location.z, newDiam);
     }
 }
