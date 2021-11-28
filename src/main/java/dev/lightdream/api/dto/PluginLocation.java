@@ -1,5 +1,6 @@
 package dev.lightdream.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
@@ -47,6 +48,7 @@ public class PluginLocation extends Position {
         return new Location(Bukkit.getWorld(world), x, y, z, rotationX, rotationY);
     }
 
+    @JsonIgnore
     public Block getBlock() {
         return Bukkit.getWorld(world).getBlockAt(toLocation());
     }
