@@ -17,12 +17,15 @@ public class ProtocolLibManager {
         protocolManager = ProtocolLibrary.getProtocolManager();
     }
 
-    @SuppressWarnings({"unused"})
+    @SuppressWarnings({"unused", "deprecation"})
     @SneakyThrows
     public void sendWorldBorder(Player player, double x, double z, double diameter) {
 
-        PacketContainer packet1 = protocolManager.createPacket(PacketType.Play.Server.SET_BORDER_CENTER);
-        PacketContainer packet2 = protocolManager.createPacket(PacketType.Play.Server.SET_BORDER_SIZE);
+        PacketContainer packet1 = protocolManager.createPacket(PacketType.Play.Server.WORLD_BORDER);
+        PacketContainer packet2 = protocolManager.createPacket(PacketType.Play.Server.WORLD_BORDER);
+
+        packet1.getWorldBorderActions().writeSafely(0, EnumWrappers.WorldBorderAction.SET_CENTER);
+        packet2.getWorldBorderActions().writeSafely(0, EnumWrappers.WorldBorderAction.SET_SIZE);
 
         packet1.getDoubles().write(0, x);
         packet1.getDoubles().write(1, z);
