@@ -21,7 +21,10 @@ public class TestBattery {
         AtomicInteger testCount = new AtomicInteger();
         StringBuilder output = new StringBuilder();
         tests.forEach(test -> {
+            Debugger.info("Starting test " + testCount);
+
             test.test();
+
             //noinspection StringConcatenationInsideStringBufferAppend
             output.append("\nTest " + testCount + ": " + (test.status ?
                     Ansi.ansi().fg(Ansi.Color.GREEN).boldOff() + "Passed" + Ansi.ansi().fg(Ansi.Color.DEFAULT).boldOff() :
