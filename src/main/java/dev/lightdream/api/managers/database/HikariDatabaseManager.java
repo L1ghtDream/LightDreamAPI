@@ -127,8 +127,6 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
                     continue;
                 }
                 DatabaseField databaseField = field.getAnnotation(DatabaseField.class);
-                Debugger.info(databaseField.columnName());
-                Debugger.info(field.getName());
                 field.set(obj, getObject(field.getType(), rs.getObject(databaseField.columnName())));
             }
             DatabaseEntry entry = (DatabaseEntry) obj;
