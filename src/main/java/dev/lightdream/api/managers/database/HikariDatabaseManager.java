@@ -205,6 +205,7 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
         }
         List<? extends DatabaseEntry> currentEntries = new ArrayList<>();
         if (entry.id != 0) {
+            Debugger.info("DatabaseEntry does not have an id attempting to get it from the database");
             currentEntries = get(entry.getClass(), new HashMap<String, Object>() {{
                 put("id", entry.id);
             }});
@@ -253,6 +254,9 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
                 continue;
             }
             DatabaseField dbField = field.getAnnotation(DatabaseField.class);
+            if(dbField.autoGenerate()){
+                continue;
+            }
             placeholder.append(dbField.columnName()).append("=").append(formatQueryArgument(field.get(entry))).append(",");
         }
 
