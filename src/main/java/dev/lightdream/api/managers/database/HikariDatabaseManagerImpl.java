@@ -28,10 +28,16 @@ public class HikariDatabaseManagerImpl extends HikariDatabaseManager implements 
     @SuppressWarnings("unused")
     public @NotNull User createUser(@NotNull Player player) {
         User user = getUser(player.getUniqueId());
-        if (user != null) {
-            return user;
+        if (user == null) {
+            user = getUser(player.getName());
         }
-        return new User(api, player.getUniqueId(), player.getName(), api.getSettings().baseLang);
+        if (user != null) {
+            user.uuid = player.getUniqueId();
+        } else {
+            user = new User(api, player.getUniqueId(), player.getName(), api.getSettings().baseLang);
+        }
+        user.save();
+        return user;
     }
 
     @SuppressWarnings("NullableProblems")
