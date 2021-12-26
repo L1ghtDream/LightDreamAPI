@@ -3,7 +3,6 @@ package dev.lightdream.api.managers.database;
 import dev.lightdream.api.IAPI;
 import dev.lightdream.api.databases.User;
 import dev.lightdream.api.dto.LambdaExecutor;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -26,7 +25,7 @@ public class HikariDatabaseManagerImpl extends HikariDatabaseManager implements 
     }
 
     @SuppressWarnings("unused")
-    public @NotNull User createUser(@NotNull Player player) {
+    public @NotNull User createUser(@NotNull OfflinePlayer player) {
         User user = getUser(player.getUniqueId());
         if (user == null) {
             user = getUser(player.getName());
@@ -56,14 +55,12 @@ public class HikariDatabaseManagerImpl extends HikariDatabaseManager implements 
     }
 
     @SuppressWarnings("unused")
-    @Override
     public @NotNull User getUser(@NotNull OfflinePlayer player) {
-        return getUser(player.getUniqueId());
+        return createUser(player);
     }
 
-    @Override
     public @NotNull User getUser(@NotNull Player player) {
-        return getUser(player.getUniqueId());
+        return createUser(player);
     }
 
     @SuppressWarnings("unused")
