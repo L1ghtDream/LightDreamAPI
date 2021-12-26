@@ -25,17 +25,20 @@ public class HikariDatabaseManagerImpl extends HikariDatabaseManager implements 
         setup(User.class);
     }
 
-    @Override
-    public @NotNull User getUser(@NotNull UUID uuid) {
-        Optional<User> optionalUser = getAll(User.class).stream().filter(user -> user.uuid.equals(uuid)).findFirst();
-
-        if (optionalUser.isPresent()) {
-            return optionalUser.get();
+    @SuppressWarnings("unused")
+    public @NotNull User createUser(@NotNull Player player) {
+        User user = getUser(player.getUniqueId());
+        if (user != null) {
+            return user;
         }
+        return new User(api, player.getUniqueId(), player.getName(), api.getSettings().baseLang);
+    }
 
-        User user = new User(api, uuid, Bukkit.getOfflinePlayer(uuid).getName(), api.getSettings().baseLang);
-        save(user, false);
-        return getUser(uuid);
+    @SuppressWarnings("NullableProblems")
+    public @Nullable User getUser(@NotNull UUID uuid) {
+        return get(User.class, new HashMap<String, Object>() {{
+            put("uuid", uuid);
+        }}).stream().findFirst().orElse(null);
     }
 
     @SuppressWarnings("unused")
