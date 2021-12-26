@@ -199,7 +199,9 @@
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>5.0.0</version>
+            <!--suppress MavenPackageUpdate -->
+            <!-- Breaks compatibility wit Java 1.8 -->
+            <version>4.0.3</version>
         </dependency>
 
 
