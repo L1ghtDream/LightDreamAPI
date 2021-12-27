@@ -6,7 +6,7 @@
 <repositories>
     <repository>
         <id>lightdream-repo</id>
-        <url>https://repo.lightdream.dev/artifactory/lightdream-api-libs-release-local/</url>
+        <url>https://repo.lightdream.dev/repository/LightDream-API/</url>
     </repository>
     <!-- Other repositories -->
 </repositories>
