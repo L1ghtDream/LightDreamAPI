@@ -221,7 +221,7 @@ public abstract class GUI implements InventoryProvider {
     public final void a(InventoryCloseEvent event) {
         User eventUser = api.getDatabaseManager().getUser(event.getPlayer());
 
-        if (!event.getView().getTopInventory().getTitle().equals(Utils.color(config.title))) {
+        if (!event.getView().getTitle().equals(Utils.color(config.title))) {
             return;
         }
 
@@ -236,7 +236,7 @@ public abstract class GUI implements InventoryProvider {
     public final void b(InventoryClickEvent event) {
         User eventUser = api.getDatabaseManager().getUser((Player) event.getWhoClicked());
 
-        if (!event.getView().getTopInventory().getTitle().equals(Utils.color(config.title))) {
+        if (!event.getView().getTitle().equals(Utils.color(config.title))) {
             return;
         }
 
@@ -254,7 +254,7 @@ public abstract class GUI implements InventoryProvider {
             return;
         }
 
-        if (!event.getView().getTopInventory().getTitle().equals(Utils.color(config.title))) {
+        if (!event.getView().getTitle().equals(Utils.color(config.title))) {
             return;
         }
 
