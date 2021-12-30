@@ -247,7 +247,7 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
     }
 
     @SneakyThrows
-    private void executeUpdate(String sql, List<Object> values) {
+    public void executeUpdate(String sql, List<Object> values) {
         Debugger.info(sql);
         PreparedStatement statement = getConnection().prepareStatement(sql);
 
@@ -259,7 +259,7 @@ public abstract class HikariDatabaseManager extends DatabaseManager {
     }
 
     @SneakyThrows
-    private ResultSet executeQuery(String sql, List<Object> values) {
+    public ResultSet executeQuery(String sql, List<Object> values) {
         Debugger.info(sql);
         PreparedStatement statement;
         try {
