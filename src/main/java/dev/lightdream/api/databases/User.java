@@ -1,12 +1,11 @@
 package dev.lightdream.api.databases;
 
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
 import dev.lightdream.api.API;
 import dev.lightdream.api.IAPI;
-import dev.lightdream.api.dto.PluginLocation;
+import dev.lightdream.api.dto.location.PluginLocation;
 import dev.lightdream.api.utils.MessageBuilder;
 import dev.lightdream.api.utils.Utils;
+import dev.lightdream.databasehandler.dto.DatabaseEntry;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -17,17 +16,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.UUID;
 
-@DatabaseTable(tableName = "users")
 @dev.lightdream.api.annotations.database.DatabaseTable(table = "users")
 public class User extends DatabaseEntry {
 
-    @DatabaseField(columnName = "uuid", unique = true)
     @dev.lightdream.api.annotations.database.DatabaseField(columnName = "uuid", unique = true)
     public UUID uuid;
-    @DatabaseField(columnName = "name", unique = true)
     @dev.lightdream.api.annotations.database.DatabaseField(columnName = "name", unique = true)
     public String name;
-    @DatabaseField(columnName = "lang")
     @dev.lightdream.api.annotations.database.DatabaseField(columnName = "lang")
     public String lang;
 

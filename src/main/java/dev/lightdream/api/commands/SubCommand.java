@@ -2,8 +2,8 @@ package dev.lightdream.api.commands;
 
 import dev.lightdream.api.IAPI;
 import dev.lightdream.api.databases.User;
-import dev.lightdream.api.utils.Logger;
 import dev.lightdream.api.utils.MessageBuilder;
+import dev.lightdream.logger.Logger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -35,12 +35,11 @@ public abstract class SubCommand {
             this.onlyForPlayers = false;
             this.usage = "";
             this.minimumArgs = 0;
-            this.parentCommand="";
+            this.parentCommand = "";
             return;
         }
 
-        dev.lightdream.api.annotations.commands.SubCommand subCommand =
-                getClass().getAnnotation(dev.lightdream.api.annotations.commands.SubCommand.class);
+        dev.lightdream.api.annotations.commands.SubCommand subCommand = getClass().getAnnotation(dev.lightdream.api.annotations.commands.SubCommand.class);
 
         if (subCommand.aliases().length == 0) {
             this.aliases.add("");
@@ -48,13 +47,13 @@ public abstract class SubCommand {
         for (String alias : subCommand.aliases()) {
             this.aliases.add(alias.toLowerCase());
         }
-        this.parentCommand= subCommand.parentCommand();
+        this.parentCommand = subCommand.parentCommand();
 
         this.description = subCommand.description();
         if (subCommand.permission().equals("")) {
-            this.permission = api.getProjectID() + "." +parentCommand + "." + aliases.get(0);
+            this.permission = api.getProjectID() + "." + parentCommand + "." + aliases.get(0);
         } else {
-            this.permission = api.getProjectID() + "." +parentCommand + "." + subCommand.permission();
+            this.permission = api.getProjectID() + "." + parentCommand + "." + subCommand.permission();
         }
         this.onlyForPlayers = subCommand.onlyForPlayers();
         this.onlyForConsole = subCommand.onlyForConsole();
@@ -73,12 +72,11 @@ public abstract class SubCommand {
             this.onlyForPlayers = false;
             this.usage = "";
             this.minimumArgs = 0;
-            this.parentCommand="";
+            this.parentCommand = "";
             return;
         }
 
-        dev.lightdream.api.annotations.commands.SubCommand subCommand =
-                getClass().getAnnotation(dev.lightdream.api.annotations.commands.SubCommand.class);
+        dev.lightdream.api.annotations.commands.SubCommand subCommand = getClass().getAnnotation(dev.lightdream.api.annotations.commands.SubCommand.class);
 
         if (subCommand.aliases().length == 0) {
             this.aliases.add("");
@@ -89,15 +87,15 @@ public abstract class SubCommand {
 
         this.description = subCommand.description();
         if (subCommand.permission().equals("")) {
-            this.permission = api.getProjectID() + "." +parentCommand + "." + aliases.get(0);
+            this.permission = api.getProjectID() + "." + parentCommand + "." + aliases.get(0);
         } else {
-            this.permission = api.getProjectID() + "." +parentCommand + "." + subCommand.permission();
+            this.permission = api.getProjectID() + "." + parentCommand + "." + subCommand.permission();
         }
         this.onlyForPlayers = subCommand.onlyForPlayers();
         this.onlyForConsole = subCommand.onlyForConsole();
         this.usage = "/" + parentCommand + " " + aliases.get(0) + " " + subCommand.usage();
         this.minimumArgs = subCommand.minimumArgs();
-        this.parentCommand=parentCommand;
+        this.parentCommand = parentCommand;
     }
 
     @Deprecated
@@ -110,13 +108,13 @@ public abstract class SubCommand {
         }
         this.description = description;
         if (permission.equals("")) {
-            this.permission = api.getProjectID() + "." +parentCommand + "." + aliases.get(0);
+            this.permission = api.getProjectID() + "." + parentCommand + "." + aliases.get(0);
         } else {
-            this.permission = api.getProjectID() + "." +parentCommand + "." + permission;
+            this.permission = api.getProjectID() + "." + parentCommand + "." + permission;
         }
         this.onlyForPlayers = onlyForPlayers;
         this.onlyForConsole = onlyForConsole;
-        this.usage = "/" + parentCommand+ " " + aliases.get(0) + " " + usage;
+        this.usage = "/" + parentCommand + " " + aliases.get(0) + " " + usage;
     }
 
     @Deprecated
@@ -127,7 +125,7 @@ public abstract class SubCommand {
         this.parentCommand = parentCommand;
         this.aliases.add(alias.toLowerCase());
         this.description = "";
-        this.permission = api.getProjectID() + "." +parentCommand + "." + aliases.get(0);
+        this.permission = api.getProjectID() + "." + parentCommand + "." + aliases.get(0);
         this.onlyForPlayers = onlyForPlayers;
         this.onlyForConsole = onlyForConsole;
         this.usage = "/" + parentCommand + " " + aliases.get(0) + " " + usage;
@@ -143,7 +141,7 @@ public abstract class SubCommand {
             this.aliases.add(alias.toLowerCase());
         }
         this.description = "";
-        this.permission = api.getProjectID() + "."+parentCommand + "."  + aliases.get(0);
+        this.permission = api.getProjectID() + "." + parentCommand + "." + aliases.get(0);
         this.onlyForPlayers = onlyForPlayers;
         this.onlyForConsole = onlyForConsole;
         this.usage = "/" + parentCommand + " " + aliases.get(0) + " " + usage;

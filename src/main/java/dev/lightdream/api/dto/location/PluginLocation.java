@@ -1,4 +1,4 @@
-package dev.lightdream.api.dto;
+package dev.lightdream.api.dto.location;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

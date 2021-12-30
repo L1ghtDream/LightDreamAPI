@@ -7,7 +7,7 @@ import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import dev.lightdream.api.LightDreamPlugin;
-import dev.lightdream.api.dto.PluginLocation;
+import dev.lightdream.api.dto.location.PluginLocation;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.World;

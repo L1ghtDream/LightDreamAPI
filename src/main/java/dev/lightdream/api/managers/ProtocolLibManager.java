@@ -5,7 +5,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.EnumWrappers;
-import dev.lightdream.api.dto.PluginLocation;
+import dev.lightdream.api.dto.location.PluginLocation;
 import lombok.SneakyThrows;
 import org.bukkit.entity.Player;
 

@@ -1,8 +1,9 @@
-package dev.lightdream.api.managers.database;
+package dev.lightdream.api.managers;
 
 import dev.lightdream.api.IAPI;
 import dev.lightdream.api.databases.User;
-import dev.lightdream.api.dto.LambdaExecutor;
+import dev.lightdream.databasehandler.database.HikariDatabaseManager;
+import dev.lightdream.databasehandler.dto.LambdaExecutor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -13,15 +14,32 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
-public class HikariDatabaseManagerImpl extends HikariDatabaseManager implements IDatabaseManagerImpl {
+public class DatabaseManager extends HikariDatabaseManager {
+    private final IAPI api;
 
-    public HikariDatabaseManagerImpl(IAPI api) {
+    public DatabaseManager(IAPI api) {
         super(api);
+        this.api = api;
     }
 
     @Override
     public void setup() {
         setup(User.class);
+    }
+
+    @Override
+    public HashMap<Class<?>, LambdaExecutor> getSerializeMap() {
+        return new HashMap<Class<?>, LambdaExecutor>() {{
+            put(String.class, object -> "\"" + object.toString() + "\"");
+            put(UUID.class, object -> "\"" + object.toString() + "\"");
+        }};
+    }
+
+    @Override
+    public HashMap<Class<?>, LambdaExecutor> getDeserializeMap() {
+        return new HashMap<Class<?>, LambdaExecutor>() {{
+            put(UUID.class, object -> UUID.fromString(object.toString()));
+        }};
     }
 
     @SuppressWarnings("unused")
@@ -39,7 +57,6 @@ public class HikariDatabaseManagerImpl extends HikariDatabaseManager implements 
         return user;
     }
 
-    @SuppressWarnings("NullableProblems")
     public @Nullable User getUser(@NotNull UUID uuid) {
         return get(User.class, new HashMap<String, Object>() {{
             put("uuid", uuid);
@@ -47,7 +64,6 @@ public class HikariDatabaseManagerImpl extends HikariDatabaseManager implements 
     }
 
     @SuppressWarnings("unused")
-    @Override
     public @Nullable User getUser(@NotNull String name) {
         Optional<User> optionalUser = getAll(User.class).stream().filter(user -> user.name.equals(name)).findFirst();
 
@@ -64,7 +80,6 @@ public class HikariDatabaseManagerImpl extends HikariDatabaseManager implements 
     }
 
     @SuppressWarnings("unused")
-    @Override
     public @Nullable User getUser(int id) {
         Optional<User> optionalUser = getAll(User.class).stream().filter(user -> user.id == id).findFirst();
 
@@ -77,20 +92,5 @@ public class HikariDatabaseManagerImpl extends HikariDatabaseManager implements 
             return getUser((Player) sender);
         }
         return api.getConsoleUser();
-    }
-
-    @Override
-    public HashMap<Class<?>, String> getDataTypes() {
-        return null;
-    }
-
-    @Override
-    public HashMap<Class<?>, LambdaExecutor> getSerializeMap() {
-        return null;
-    }
-
-    @Override
-    public HashMap<Class<?>, LambdaExecutor> getDeserializeMap() {
-        return null;
     }
 }

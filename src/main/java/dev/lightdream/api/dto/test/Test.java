@@ -1,4 +1,4 @@
-package dev.lightdream.api.dto;
+package dev.lightdream.api.dto.test;
 
 import java.util.function.Consumer;
 

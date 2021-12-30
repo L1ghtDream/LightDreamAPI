@@ -1,4 +1,4 @@
-package dev.lightdream.api.dto;
+package dev.lightdream.api.dto.location;
 
 import dev.lightdream.api.utils.Utils;
 import lombok.AllArgsConstructor;

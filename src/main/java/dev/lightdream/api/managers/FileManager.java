@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import dev.lightdream.api.IAPI;
-import dev.lightdream.api.dto.Position;
-import dev.lightdream.api.utils.Logger;
+import dev.lightdream.api.dto.location.Position;
+import dev.lightdream.logger.Logger;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -129,7 +129,6 @@ public class FileManager {
                 outputStream.write(bytes, 0, read);
             }
         }
-
     }
 
     private InputStream getFileFromResource(String fileName) {
@@ -144,8 +143,7 @@ public class FileManager {
 
     public enum PersistType {
 
-        YAML(".yml", new YAMLFactory()),
-        JSON(".json", new JsonFactory());
+        YAML(".yml", new YAMLFactory()), JSON(".json", new JsonFactory());
 
         private final String extension;
         private final JsonFactory factory;

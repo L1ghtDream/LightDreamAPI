@@ -9,12 +9,11 @@ import dev.lightdream.api.commands.commands.base.VersionCommand;
 import dev.lightdream.api.configs.Config;
 import dev.lightdream.api.configs.JdaConfig;
 import dev.lightdream.api.configs.Lang;
-import dev.lightdream.api.configs.SQLConfig;
 import dev.lightdream.api.databases.ConsoleUser;
 import dev.lightdream.api.databases.User;
 import dev.lightdream.api.managers.*;
-import dev.lightdream.api.managers.database.OmrLiteDatabaseManagerImpl;
-import dev.lightdream.api.utils.Logger;
+import dev.lightdream.databasehandler.dto.SQLConfig;
+import dev.lightdream.logger.Logger;
 import fr.minuskube.inv.InventoryManager;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.JDA;
@@ -62,8 +61,7 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
     public JDA bot;
     //API
     public API api;
-    //Commands
-    private OmrLiteDatabaseManagerImpl databaseManager;
+    public DatabaseManager databaseManager;
 
     @SuppressWarnings("unused")
     @SneakyThrows
@@ -87,7 +85,7 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
         registerLangManager();
         this.economy = api.economy;
         this.permission = api.permission;
-        this.databaseManager = new OmrLiteDatabaseManagerImpl(this);
+        this.databaseManager = new DatabaseManager(this);
         this.inventoryManager = new InventoryManager(this);
         this.inventoryManager.init();
         this.messageManager = instantiateMessageManager();
@@ -108,7 +106,6 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
                 bot = JDABuilder.createDefault(baseJdaConfig.botToken).build();
             }
         }
-
 
         //Register
         API.instance.plugins.add(this);
@@ -168,7 +165,7 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
     }
 
     @Override
-    public SQLConfig getSQLConfig() {
+    public SQLConfig getSqlConfig() {
         return sqlConfig;
     }
 
@@ -202,9 +199,7 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
             return reader.read(new FileReader("pom.xml")).getVersion();
         }
 
-        return reader.read(new InputStreamReader(MessageActivity.Application.class.getResourceAsStream(
-                "/META-INF/maven/dev.lightdream/" + projectID + "/pom.xml"
-        ))).getVersion();
+        return reader.read(new InputStreamReader(MessageActivity.Application.class.getResourceAsStream("/META-INF/maven/dev.lightdream/" + projectID + "/pom.xml"))).getVersion();
     }
 
     @Override
@@ -262,4 +257,11 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
     public boolean debug() {
         return getAPI().debug();
     }
+
+    @Override
+    public void log(String s) {
+        System.out.println(s);
+    }
+
+
 }

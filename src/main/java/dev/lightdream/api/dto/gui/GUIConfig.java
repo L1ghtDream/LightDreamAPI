@@ -1,5 +1,6 @@
-package dev.lightdream.api.dto;
+package dev.lightdream.api.dto.gui;
 
+import dev.lightdream.api.dto.Item;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 

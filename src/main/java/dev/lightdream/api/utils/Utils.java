@@ -1,8 +1,9 @@
 package dev.lightdream.api.utils;
 
 import dev.lightdream.api.dto.Item;
-import dev.lightdream.api.dto.PluginLocation;
 import dev.lightdream.api.dto.Randomizable;
+import dev.lightdream.api.dto.WeightedRandomItem;
+import dev.lightdream.api.dto.location.PluginLocation;
 import fr.minuskube.inv.content.SlotPos;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -24,6 +25,7 @@ import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Utils {
 
@@ -213,16 +215,16 @@ public class Utils {
         if (!(objects.get(0) instanceof Randomizable)) {
             return null;
         }
-        int chances = getTotalChances((List<Randomizable>) objects); //200
+        int chances = getTotalChances((List<Randomizable>) objects);
         int index = -1;
-        int rnd = generateRandom(0, chances); //90
+        int rnd = generateRandom(0, chances);
 
         do {
-            if (index >= objects.size()) { // 0>=2(false)
+            if (index >= objects.size()) {
                 break;
             }
             index++;
-            rnd -= ((Randomizable) objects.get(index)).getChance(); // rnd=-10
+            rnd -= ((Randomizable) objects.get(index)).getChance();
         } while (rnd > 0);
 
         if (index >= objects.size()) {
@@ -232,10 +234,12 @@ public class Utils {
         return objects.get(index);
     }
 
+    @SuppressWarnings("unused")
     public static double getRam() {
         return ((double) (Runtime.getRuntime().totalMemory() / 1024) / 1024) - ((double) (Runtime.getRuntime().freeMemory() / 1024) / 1024);
     }
 
+    @SuppressWarnings("unused")
     public static double getCpuLoad() {
         try {
             MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
@@ -258,6 +262,23 @@ public class Utils {
 
     public static String getJava() {
         return String.format("Java Version: %s %s. \n", System.getProperty("java.vendor"), System.getProperty("java.version"));
+    }
+
+    @SuppressWarnings("unused")
+    public static <T extends WeightedRandomItem> T generateRandomWeighted(List<T> items) {
+        AtomicReference<Double> maxChances = new AtomicReference<>(0.0);
+        items.forEach(quality -> maxChances.updateAndGet(v -> v + quality.getWeight()));
+        double rnd = Utils.generateRandom(0, maxChances.get());
+
+        for (T loot : items) {
+            if (rnd <= loot.getWeight()) {
+                return loot;
+            } else {
+                rnd -= loot.getWeight();
+            }
+        }
+
+        return null;
     }
 
 

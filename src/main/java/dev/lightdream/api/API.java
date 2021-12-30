@@ -11,14 +11,13 @@ import dev.lightdream.api.commands.commands.ldapi.PluginsCommand;
 import dev.lightdream.api.configs.ApiConfig;
 import dev.lightdream.api.configs.Config;
 import dev.lightdream.api.configs.Lang;
-import dev.lightdream.api.configs.SQLConfig;
 import dev.lightdream.api.databases.ConsoleUser;
 import dev.lightdream.api.databases.User;
-import dev.lightdream.api.dto.Position;
+import dev.lightdream.api.dto.location.Position;
 import dev.lightdream.api.managers.*;
-import dev.lightdream.api.managers.database.IDatabaseManagerImpl;
-import dev.lightdream.api.utils.Debugger;
-import dev.lightdream.api.utils.Logger;
+import dev.lightdream.databasehandler.dto.SQLConfig;
+import dev.lightdream.logger.Debugger;
+import dev.lightdream.logger.Logger;
 import fr.minuskube.inv.InventoryManager;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.entities.MessageActivity;
@@ -89,9 +88,9 @@ public final class API implements IAPI {
         //Load settings
         loadConfigs();
 
-        dev.lightdream.api.utils.Logger.info("API Settings");
-        dev.lightdream.api.utils.Logger.info("Use Economy (by Vault): " + apiConfig.useEconomy);
-        dev.lightdream.api.utils.Logger.info("Use Permissions (by Vault): " + apiConfig.usePermissions);
+        Logger.info("API Settings");
+        Logger.info("Use Economy (by Vault): " + apiConfig.useEconomy);
+        Logger.info("Use Permissions (by Vault): " + apiConfig.usePermissions);
 
         //Events
         new BalanceChangeEventRunnable(this);
@@ -119,7 +118,7 @@ public final class API implements IAPI {
         List<SubCommand> baseSubCommands = new ArrayList<>(getBaseCommands());
         command = new Command(this, getProjectID(), baseSubCommands);
 
-        dev.lightdream.api.utils.Logger.good(getProjectName() + "(by github.com/L1ghtDream) has been enabled");
+        Logger.good(getProjectName() + "(by github.com/L1ghtDream) has been enabled");
     }
 
     private Economy setupEconomy() {
@@ -133,8 +132,7 @@ public final class API implements IAPI {
     }
 
     @SuppressWarnings({"SwitchStatementWithTooFewBranches", "unused"})
-    public @NotNull
-    String parsePapi(OfflinePlayer player, String identifier) {
+    public @NotNull String parsePapi(OfflinePlayer player, String identifier) {
         switch (identifier) {
             case "api_version":
                 return getProjectVersion();
@@ -143,13 +141,7 @@ public final class API implements IAPI {
     }
 
     public List<SubCommand> getBaseCommands() {
-        return Arrays.asList(
-                new ChoseLangCommand(this),
-                new ReloadCommand(this, getProjectID()),
-                new VersionCommand(this, getProjectID()),
-                new PluginsCommand(this),
-                new HelpCommand(this, getProjectID())
-        );
+        return Arrays.asList(new ChoseLangCommand(this), new ReloadCommand(this, getProjectID()), new VersionCommand(this, getProjectID()), new PluginsCommand(this), new HelpCommand(this, getProjectID()));
     }
 
     public void loadConfigs() {
@@ -242,17 +234,12 @@ public final class API implements IAPI {
     }
 
     @Override
-    public SQLConfig getSQLConfig() {
-        return sqlConfig;
-    }
-
-    @Override
     public MessageManager getMessageManager() {
         return messageManager;
     }
 
     @Override
-    public IDatabaseManagerImpl getDatabaseManager() {
+    public DatabaseManager getDatabaseManager() {
         if (plugins.size() != 0) {
             return plugins.get(0).getDatabaseManager();
         }
@@ -261,6 +248,11 @@ public final class API implements IAPI {
 
     public File getDataFolder() {
         return new File("plugins/LightDreamAPI");
+    }
+
+    @Override
+    public SQLConfig getSqlConfig() {
+        return sqlConfig;
     }
 
     @Override
@@ -283,9 +275,7 @@ public final class API implements IAPI {
             return reader.read(new FileReader("pom.xml")).getVersion();
         }
 
-        return reader.read(new InputStreamReader(MessageActivity.Application.class.getResourceAsStream(
-                "/META-INF/maven/dev.lightdream/LightDreamAPI/pom.xml"
-        ))).getVersion();
+        return reader.read(new InputStreamReader(MessageActivity.Application.class.getResourceAsStream("/META-INF/maven/dev.lightdream/LightDreamAPI/pom.xml"))).getVersion();
     }
 
     @Override
@@ -308,7 +298,13 @@ public final class API implements IAPI {
     }
 
     @Override
+    public void log(String s) {
+        System.out.println(s);
+    }
+
+    @Override
     public void registerUser(Player player) {
         plugins.forEach(plugin -> plugin.registerUser(player));
     }
+
 }

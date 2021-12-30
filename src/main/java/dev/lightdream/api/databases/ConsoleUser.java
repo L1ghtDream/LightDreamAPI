@@ -1,7 +1,7 @@
 package dev.lightdream.api.databases;
 
 import dev.lightdream.api.IAPI;
-import dev.lightdream.api.dto.PluginLocation;
+import dev.lightdream.api.dto.location.PluginLocation;
 import dev.lightdream.api.utils.MessageBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
