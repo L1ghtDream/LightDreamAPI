@@ -15,7 +15,7 @@ import dev.lightdream.api.databases.ConsoleUser;
 import dev.lightdream.api.databases.User;
 import dev.lightdream.api.dto.location.Position;
 import dev.lightdream.api.managers.*;
-import dev.lightdream.databasehandler.dto.SQLConfig;
+import dev.lightdream.databasemanager.dto.SQLConfig;
 import dev.lightdream.filemanager.FileManager;
 import dev.lightdream.logger.Debugger;
 import dev.lightdream.logger.Logger;

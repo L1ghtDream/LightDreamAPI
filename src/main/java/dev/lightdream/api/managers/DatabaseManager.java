@@ -2,8 +2,8 @@ package dev.lightdream.api.managers;
 
 import dev.lightdream.api.IAPI;
 import dev.lightdream.api.databases.User;
-import dev.lightdream.databasehandler.database.HikariDatabaseManager;
-import dev.lightdream.databasehandler.dto.LambdaExecutor;
+import dev.lightdream.databasemanager.database.HikariDatabaseManager;
+import dev.lightdream.databasemanager.dto.LambdaExecutor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

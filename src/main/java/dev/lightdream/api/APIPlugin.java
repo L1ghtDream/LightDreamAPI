@@ -3,7 +3,7 @@ package dev.lightdream.api;
 import dev.lightdream.api.dto.test.Test;
 import dev.lightdream.api.dto.test.TestBattery;
 import dev.lightdream.api.managers.DatabaseManager;
-import dev.lightdream.databasehandler.dto.SQLConfig;
+import dev.lightdream.databasemanager.dto.SQLConfig;
 import dev.lightdream.logger.Debugger;
 import org.bukkit.plugin.java.JavaPlugin;
 
