@@ -7,7 +7,7 @@
     <groupId>dev.lightdream</groupId>
     <artifactId>LightDreamAPI</artifactId>
     <packaging>jar</packaging>
-    <version>5.0</version>
+    <version>5.1</version>
 
     <url>https://lightdream.dev</url>
 
@@ -130,6 +130,10 @@
             <id>jansi</id>
             <url>https://mvnrepository.com/artifact/org.fusesource.jansi/jansi</url>
         </repository>
+        <repository>
+            <id>lightdream</id>
+            <url>https://repo.lightdream.dev/repository/LightDream-API/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -157,6 +161,7 @@
         </dependency>
 
         <!-- FILE -->
+        <!--
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -187,6 +192,7 @@
             <version>1.29</version>
             <scope>compile</scope>
         </dependency>
+        -->
 
         <!-- DATABASE -->
         <dependency>
@@ -270,7 +276,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Own Modules -->
+        <!-- LightDream Modules -->
         <dependency>
             <groupId>dev.lightdream</groupId>
             <artifactId>Logger</artifactId>
@@ -281,7 +287,10 @@
             <artifactId>DatabaseManager</artifactId>
             <version>1.11</version>
         </dependency>
-
-
+        <dependency>
+            <groupId>dev.lightdream</groupId>
+            <artifactId>FileManager</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 </project>

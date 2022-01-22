@@ -11,17 +11,16 @@ import dev.lightdream.api.managers.EventManager;
 import dev.lightdream.api.managers.KeyDeserializerManager;
 import dev.lightdream.api.managers.MessageManager;
 import dev.lightdream.databasehandler.DatabaseMain;
-import dev.lightdream.databasehandler.database.IDatabaseManager;
+import dev.lightdream.filemanager.FileManagerMain;
 import dev.lightdream.logger.LoggableMain;
 import fr.minuskube.inv.InventoryManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
 import java.util.List;
 
-public interface IAPI extends LoggableMain, DatabaseMain {
+public interface IAPI extends LoggableMain, DatabaseMain, FileManagerMain {
 
     JavaPlugin getPlugin();
 
@@ -32,8 +31,6 @@ public interface IAPI extends LoggableMain, DatabaseMain {
     Config getSettings();
 
     MessageManager getMessageManager();
-
-    File getDataFolder();
 
     String getProjectName();
 
