@@ -5,6 +5,8 @@ import dev.lightdream.api.IAPI;
 import dev.lightdream.api.dto.location.PluginLocation;
 import dev.lightdream.api.utils.MessageBuilder;
 import dev.lightdream.api.utils.Utils;
+import dev.lightdream.databasemanager.annotations.database.DatabaseField;
+import dev.lightdream.databasemanager.annotations.database.DatabaseTable;
 import dev.lightdream.databasemanager.dto.DatabaseEntry;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -16,14 +18,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.UUID;
 
-@dev.lightdream.api.annotations.database.DatabaseTable(table = "users")
+@DatabaseTable(table = "users")
 public class User extends DatabaseEntry {
 
-    @dev.lightdream.api.annotations.database.DatabaseField(columnName = "uuid", unique = true)
+    @DatabaseField(columnName = "uuid", unique = true)
     public UUID uuid;
-    @dev.lightdream.api.annotations.database.DatabaseField(columnName = "name", unique = true)
+    @DatabaseField(columnName = "name", unique = true)
     public String name;
-    @dev.lightdream.api.annotations.database.DatabaseField(columnName = "lang")
+    @DatabaseField(columnName = "lang")
     public String lang;
 
     public User() {

@@ -7,7 +7,7 @@
     <groupId>dev.lightdream</groupId>
     <artifactId>LightDreamAPI</artifactId>
     <packaging>jar</packaging>
-    <version>5.4</version>
+    <version>5.5</version>
 
     <url>https://lightdream.dev</url>
 
@@ -257,6 +257,38 @@
             <groupId>dev.lightdream</groupId>
             <artifactId>FileManager</artifactId>
             <version>1.3</version>
+        </dependency>
+
+        <!-- DO NOT FUCKING DELETE THESE OR ELSE YOU WILL BE STUCK FOR 3 HOURS DEBUGGING A STUPID ASS ERROR FROM snakeyml -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.13.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.13.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
+            <version>2.13.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.13.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.30</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
