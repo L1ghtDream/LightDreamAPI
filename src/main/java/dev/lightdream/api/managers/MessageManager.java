@@ -87,7 +87,7 @@ public class MessageManager {
         if (enabled) {
             return;
         }
-        List<String> mineDownVersions = Arrays.asList("1.16", "1.17");
+        List<String> mineDownVersions = Arrays.asList("1.16", "1.17", "1.18");
         boolean useMineDown = false;
         for (String version : mineDownVersions) {
             if (Bukkit.getServer().getVersion().contains(version)) {
