@@ -223,4 +223,9 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
     public Lang getLang() {
         return baseLang;
     }
+
+    @Override
+    public DatabaseManager getDatabaseManager() {
+        return databaseManager;
+    }
 }
