@@ -7,6 +7,3 @@ softdepend:
   - Vault
   - PlaceholderAPI
   - WorldEdit
-commands:
-  ld-api:
-    description: NA
