@@ -22,7 +22,7 @@ import java.util.List;
 
 public abstract class Command extends Executable {
 
-    private final IAPI api;
+    public final IAPI api;
     public final List<dev.lightdream.api.commands.SubCommand> subCommands = new ArrayList<>();
 
     @SneakyThrows
