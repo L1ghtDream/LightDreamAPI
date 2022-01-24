@@ -1,7 +1,6 @@
 package dev.lightdream.api;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import dev.lightdream.api.configs.Config;
 import dev.lightdream.api.configs.Lang;
 import dev.lightdream.api.databases.ConsoleUser;
 import dev.lightdream.api.managers.CommandManager;
@@ -23,8 +22,6 @@ public interface IAPI extends LoggableMain, DatabaseMain, FileManagerMain {
     JavaPlugin getPlugin();
 
     Economy getEconomy();
-
-    Config getSettings();
 
     String getProjectName();
 

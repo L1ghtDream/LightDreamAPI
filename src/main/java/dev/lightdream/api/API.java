@@ -2,7 +2,6 @@ package dev.lightdream.api;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import dev.lightdream.api.configs.ApiConfig;
-import dev.lightdream.api.configs.Config;
 import dev.lightdream.api.configs.Lang;
 import dev.lightdream.api.databases.ConsoleUser;
 import dev.lightdream.api.dto.location.Position;
@@ -35,7 +34,6 @@ public final class API implements IAPI {
     public static API instance;
     private final JavaPlugin plugin;
     public SQLConfig sqlConfig;
-    public Config config;
     public Lang lang;
     public boolean enabled;
     //Plugins
@@ -115,7 +113,6 @@ public final class API implements IAPI {
 
     public void loadConfigs() {
         sqlConfig = fileManager.load(SQLConfig.class, fileManager.getFile("LightDreamAPI", SQLConfig.class.getSimpleName()));
-        config = fileManager.load(Config.class, fileManager.getFile("LightDreamAPI", Config.class.getSimpleName()));
         lang = fileManager.load(Lang.class, fileManager.getFile("LightDreamAPI"));
         apiConfig = fileManager.load(ApiConfig.class, fileManager.getFile("LightDreamAPI", ApiConfig.class.getSimpleName()));
     }
@@ -166,17 +163,6 @@ public final class API implements IAPI {
         return keyDeserializerManager;
     }
 
-    public HashMap<String, Object> getLangs() {
-        HashMap<String, Object> langs = new HashMap<>();
-
-        config.langs.forEach(lang -> {
-            Lang l = fileManager.load(Lang.class, fileManager.getFile(lang));
-            langs.put(lang, l);
-        });
-
-        return langs;
-    }
-
     @Override
     public JavaPlugin getPlugin() {
         return plugin;
@@ -188,11 +174,6 @@ public final class API implements IAPI {
             return null;
         }
         return vaultManager.economy;
-    }
-
-    @Override
-    public Config getSettings() {
-        return config;
     }
 
     @Override

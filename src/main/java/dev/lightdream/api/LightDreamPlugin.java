@@ -1,7 +1,6 @@
 package dev.lightdream.api;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import dev.lightdream.api.configs.Config;
 import dev.lightdream.api.configs.JdaConfig;
 import dev.lightdream.api.configs.Lang;
 import dev.lightdream.api.databases.ConsoleUser;
@@ -40,7 +39,6 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
     //Config
     public SQLConfig sqlConfig;
     public JdaConfig baseJdaConfig;
-    public Config baseConfig;
     public Lang baseLang;
 
     //Managers
@@ -106,7 +104,6 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
 
     public void loadConfigs() {
         sqlConfig = fileManager.load(SQLConfig.class);
-        baseConfig = fileManager.load(Config.class);
         baseJdaConfig = fileManager.load(JdaConfig.class);
         baseLang = fileManager.load(Lang.class);
     }
@@ -124,11 +121,6 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
     @Override
     public SQLConfig getSqlConfig() {
         return sqlConfig;
-    }
-
-    @Override
-    public Config getSettings() {
-        return baseConfig;
     }
 
     @Override

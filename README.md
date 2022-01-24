@@ -55,5 +55,7 @@
 - 6.x:
   - Added reflected annotation based command instantiation
   - Properly implemented soft dependencies
+- 7.x:
+  - Deprecated lang chosing / changing
 
 
