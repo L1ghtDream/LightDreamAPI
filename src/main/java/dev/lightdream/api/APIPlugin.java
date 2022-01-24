@@ -34,7 +34,6 @@ public final class APIPlugin extends LightDreamPlugin {
     @Override
     public void registerLangManager() {
         dev.lightdream.api.API.instance.langManager.register(getClass(), getLangs());
-
     }
 
     @Override
