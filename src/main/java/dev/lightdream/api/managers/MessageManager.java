@@ -53,7 +53,7 @@ public class MessageManager {
             ConsoleUser consoleUser = (ConsoleUser) user;
             consoleUser.sendMessage(builder);
         }
-        if (user.isOnline()) {
+        if (!user.isOnline()) {
             return;
         }
         sendMessage(user.getPlayer(), builder);
