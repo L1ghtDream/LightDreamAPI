@@ -50,5 +50,10 @@ public final class APIPlugin extends LightDreamPlugin {
         return api.getProjectVersion();
     }
 
+    @Override
+    public DatabaseManager registerDatabaseManager() {
+        return new DatabaseManager(this);
+    }
+
 
 }

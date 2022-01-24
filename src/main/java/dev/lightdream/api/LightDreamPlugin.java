@@ -217,9 +217,7 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
         return api.useProtocolLib();
     }
 
-    public DatabaseManager registerDatabaseManager() {
-        return new DatabaseManager(this);
-    }
+    public abstract DatabaseManager registerDatabaseManager();
 
     @Override
     public Lang getLang() {
