@@ -29,9 +29,9 @@ public class PluginsCommand extends SubCommand {
             put("project-version", plugin.getProjectVersion());
         }}).parse()));
 
-        user.sendMessage(api, new MessageBuilder(api.getLang().pluginList).addPlaceholders(new HashMap<String, String>() {{
+        new MessageBuilder(api.getLang().pluginList).addPlaceholders(new HashMap<String, String>() {{
             put("plugins", s.toString());
-        }}));
+        }}).send(user);
     }
 
     @Override

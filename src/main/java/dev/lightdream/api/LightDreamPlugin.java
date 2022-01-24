@@ -5,8 +5,10 @@ import dev.lightdream.api.configs.Config;
 import dev.lightdream.api.configs.JdaConfig;
 import dev.lightdream.api.configs.Lang;
 import dev.lightdream.api.databases.ConsoleUser;
-import dev.lightdream.api.databases.User;
-import dev.lightdream.api.managers.*;
+import dev.lightdream.api.managers.CommandManager;
+import dev.lightdream.api.managers.DatabaseManager;
+import dev.lightdream.api.managers.EventManager;
+import dev.lightdream.api.managers.KeyDeserializerManager;
 import dev.lightdream.databasemanager.dto.SQLConfig;
 import dev.lightdream.filemanager.FileManager;
 import dev.lightdream.logger.Logger;
@@ -18,7 +20,6 @@ import net.dv8tion.jda.api.entities.MessageActivity;
 import net.milkbowl.vault.economy.Economy;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +27,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @SuppressWarnings("CanBeFinal")
@@ -46,7 +46,6 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
     //Managers
     public FileManager fileManager;
     public InventoryManager inventoryManager;
-    public MessageManager messageManager;
     public EventManager eventManager;
     //Bot
     public JDA bot;
@@ -73,11 +72,9 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
         loadConfigs();
 
         //Managers
-        registerLangManager();
         databaseManager = registerDatabaseManager();
         this.inventoryManager = new InventoryManager(this);
         this.inventoryManager.init();
-        this.messageManager = instantiateMessageManager();
         this.eventManager = new EventManager(this);
 
         //Bot
@@ -111,23 +108,7 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
         sqlConfig = fileManager.load(SQLConfig.class);
         baseConfig = fileManager.load(Config.class);
         baseJdaConfig = fileManager.load(JdaConfig.class);
-        baseLang = fileManager.load(Lang.class, fileManager.getFile(baseConfig.baseLang));
-    }
-
-    public abstract MessageManager instantiateMessageManager();
-
-    public abstract void registerLangManager();
-
-    @SuppressWarnings("unused")
-    public HashMap<String, Object> getLangs() {
-        HashMap<String, Object> langs = new HashMap<>();
-
-        baseConfig.langs.forEach(lang -> {
-            Lang l = fileManager.load(Lang.class, fileManager.getFile(lang));
-            langs.put(lang, l);
-        });
-
-        return langs;
+        baseLang = fileManager.load(Lang.class);
     }
 
     @Override
@@ -141,18 +122,8 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
     }
 
     @Override
-    public Lang getLang() {
-        return baseLang;
-    }
-
-    @Override
     public SQLConfig getSqlConfig() {
         return sqlConfig;
-    }
-
-    @Override
-    public MessageManager getMessageManager() {
-        return messageManager;
     }
 
     @Override
@@ -182,17 +153,6 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
 
         return reader.read(new InputStreamReader(MessageActivity.Application.class.getResourceAsStream("/META-INF/maven/dev.lightdream/" + projectID + "/pom.xml")))
                 .getVersion();
-    }
-
-    @Override
-    public void setLang(Player player, String lang) {
-        setLang(databaseManager.getUser(player), lang);
-    }
-
-    @Override
-    public void setLang(User user, String lang) {
-        user.setLang(lang);
-        user.save();
     }
 
     @Override
@@ -265,7 +225,12 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
         return api.useProtocolLib();
     }
 
-    public DatabaseManager registerDatabaseManager(){
+    public DatabaseManager registerDatabaseManager() {
         return new DatabaseManager(this);
+    }
+
+    @Override
+    public Lang getLang() {
+        return baseLang;
     }
 }

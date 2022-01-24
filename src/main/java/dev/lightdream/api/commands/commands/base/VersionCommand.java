@@ -20,10 +20,10 @@ public class VersionCommand extends dev.lightdream.api.commands.SubCommand {
 
     @Override
     public void execute(User user, List<String> args) {
-        user.sendMessage(api, new MessageBuilder(api.getLang().version).addPlaceholders(new HashMap<String, String>() {{
+        new MessageBuilder(api.getLang().version).addPlaceholders(new HashMap<String, String>() {{
             put("project_name", api.getProjectName());
             put("version", api.getProjectVersion());
-        }}));
+        }}).send(user);
     }
 
     @Override

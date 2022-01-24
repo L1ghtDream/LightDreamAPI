@@ -3,6 +3,7 @@ package dev.lightdream.api.databases;
 import dev.lightdream.api.API;
 import dev.lightdream.api.IAPI;
 import dev.lightdream.api.dto.location.PluginLocation;
+import dev.lightdream.api.managers.MessageManager;
 import dev.lightdream.api.utils.MessageBuilder;
 import dev.lightdream.api.utils.Utils;
 import dev.lightdream.databasemanager.annotations.database.DatabaseField;
@@ -27,18 +28,15 @@ public class User extends DatabaseEntry {
     @DatabaseField(columnName = "name",
             unique = true)
     public String name;
-    @DatabaseField(columnName = "lang")
-    public String lang;
 
     public User() {
         super(null);
     }
 
-    public User(IAPI api, UUID uuid, String name, String lang) {
+    public User(IAPI api, UUID uuid, String name) {
         super(api);
         this.uuid = uuid;
         this.name = name;
-        this.lang = lang;
     }
 
     public @Nullable Player getPlayer() {
@@ -75,11 +73,6 @@ public class User extends DatabaseEntry {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    @SuppressWarnings("unused")
-    public void setLang(String lang) {
-        this.lang = lang;
     }
 
     @SuppressWarnings({"unused", "ConstantConditions"})
@@ -147,13 +140,13 @@ public class User extends DatabaseEntry {
     }
 
     @SuppressWarnings("unused")
-    public void sendMessage(IAPI api, String msg) {
-        api.getMessageManager().sendMessage(this, msg);
+    public void sendMessage(String msg) {
+        MessageManager.sendMessage(this, msg);
     }
 
     @SuppressWarnings("unused")
-    public void sendMessage(IAPI api, MessageBuilder msg) {
-        api.getMessageManager().sendMessage(this, msg);
+    public void sendMessage(MessageBuilder msg) {
+        MessageManager.sendMessage(this, msg);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -176,10 +169,5 @@ public class User extends DatabaseEntry {
         }
 
         getPlayer().teleport(location);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" + "id=" + id + ", uuid=" + uuid + ", name='" + name + '\'' + ", lang='" + lang + '\'' + '}';
     }
 }

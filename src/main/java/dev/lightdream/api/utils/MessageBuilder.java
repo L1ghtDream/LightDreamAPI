@@ -1,10 +1,17 @@
 package dev.lightdream.api.utils;
 
+import dev.lightdream.api.databases.User;
 import dev.lightdream.api.dto.Serializable;
+import dev.lightdream.api.managers.MessageManager;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+@SuppressWarnings("unused")
 public class MessageBuilder extends Serializable implements java.io.Serializable {
 
     private String base;
@@ -166,8 +173,7 @@ public class MessageBuilder extends Serializable implements java.io.Serializable
         return null;
     }
 
-    @SuppressWarnings({"unused", "ConstantConditions"})
-    public @Nullable String parseString() {
+    public @NotNull String parseString() {
         if (isList()) {
             StringBuilder output = new StringBuilder();
             for (String s : parseStringList()) {
@@ -179,10 +185,28 @@ public class MessageBuilder extends Serializable implements java.io.Serializable
     }
 
     @SuppressWarnings({"unchecked", "unused"})
-    public @Nullable List<String> parseStringList() {
+    public @NotNull List<String> parseStringList() {
         if (isList()) {
             return (List<String>) parse();
         }
         return Collections.singletonList((String) parse());
+    }
+
+    public void send(User user) {
+        user.sendMessage(this);
+    }
+
+    public void send(CommandSender sender) {
+        MessageManager.sendMessage(sender, this);
+    }
+
+    @SuppressWarnings("unused")
+    public void send(Player player) {
+        MessageManager.sendMessage(player, this);
+    }
+
+    @SuppressWarnings("unused")
+    public void send(OfflinePlayer offlinePlayer) {
+        MessageManager.sendMessage(offlinePlayer, this);
     }
 }

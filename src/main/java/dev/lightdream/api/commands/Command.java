@@ -3,6 +3,7 @@ package dev.lightdream.api.commands;
 import dev.lightdream.api.IAPI;
 import dev.lightdream.api.annotations.commands.SubCommand;
 import dev.lightdream.api.databases.User;
+import dev.lightdream.api.managers.MessageManager;
 import dev.lightdream.api.utils.MessageBuilder;
 import dev.lightdream.logger.Logger;
 import lombok.SneakyThrows;
@@ -86,7 +87,7 @@ public abstract class Command extends Executable {
             helpCommandOutput.append(api.getLang().helpCommand);
         }
 
-        user.sendMessage(api, helpCommandOutput.toString());
+        user.sendMessage(helpCommandOutput.toString());
     }
 
     @Override
@@ -102,17 +103,17 @@ public abstract class Command extends Executable {
             }
 
             if (subCommand.onlyForPlayers() && !(sender instanceof Player)) {
-                api.getMessageManager().sendMessage(sender, new MessageBuilder(api.getLang().mustBeAPlayer));
+                MessageManager.sendMessage(sender, new MessageBuilder(api.getLang().mustBeAPlayer));
                 return true;
             }
 
             if (subCommand.onlyForConsole() && !(sender instanceof ConsoleCommandSender)) {
-                api.getMessageManager().sendMessage(sender, new MessageBuilder(api.getLang().mustBeConsole));
+                MessageManager.sendMessage(sender, new MessageBuilder(api.getLang().mustBeConsole));
                 return true;
             }
 
             if (!hasPermission(sender, subCommand.getPermission())) {
-                api.getMessageManager().sendMessage(sender, new MessageBuilder(api.getLang().noPermission));
+                MessageManager.sendMessage(sender, new MessageBuilder(api.getLang().noPermission));
                 return true;
             }
 

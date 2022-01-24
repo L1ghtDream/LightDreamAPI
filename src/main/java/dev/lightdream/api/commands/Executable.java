@@ -75,11 +75,11 @@ public abstract class Executable extends Command {
 
     @SuppressWarnings("unused")
     public void sendUsage(CommandSender sender) {
-        api.getMessageManager().sendMessage(sender, new MessageBuilder(getUsage()));
+        new MessageBuilder(getUsage()).send(sender);
     }
 
     public void sendUsage(User user) {
-        user.sendMessage(api, getUsage());
+        user.sendMessage(getUsage());
     }
 
 }

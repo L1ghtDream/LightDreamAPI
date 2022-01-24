@@ -1,16 +1,13 @@
 package dev.lightdream.api.databases;
 
-import dev.lightdream.api.IAPI;
 import dev.lightdream.api.dto.location.PluginLocation;
-import dev.lightdream.api.utils.MessageBuilder;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 public class ConsoleUser extends User {
     public ConsoleUser() {
-        super(null, null, "CONSOLE", "");
+        super(null, null, "CONSOLE");
     }
 
     @Override
@@ -37,10 +34,6 @@ public class ConsoleUser extends User {
     @Override
     public boolean equals(Object o) {
         return super.equals(o);
-    }
-
-    @Override
-    public void setLang(String lang) {
     }
 
     @Override
@@ -77,16 +70,6 @@ public class ConsoleUser extends User {
     @Override
     public int getXP() {
         return 0;
-    }
-
-    @Override
-    public void sendMessage(IAPI api, String msg) {
-        Bukkit.getConsoleSender().sendMessage(msg);
-    }
-
-    @Override
-    public void sendMessage(IAPI api, MessageBuilder msg) {
-        Bukkit.getConsoleSender().sendMessage(msg.parseString());
     }
 
     @Override

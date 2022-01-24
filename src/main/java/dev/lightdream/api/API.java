@@ -5,7 +5,6 @@ import dev.lightdream.api.configs.ApiConfig;
 import dev.lightdream.api.configs.Config;
 import dev.lightdream.api.configs.Lang;
 import dev.lightdream.api.databases.ConsoleUser;
-import dev.lightdream.api.databases.User;
 import dev.lightdream.api.dto.location.Position;
 import dev.lightdream.api.managers.*;
 import dev.lightdream.databasemanager.dto.SQLConfig;
@@ -42,8 +41,6 @@ public final class API implements IAPI {
     //Plugins
     public List<LightDreamPlugin> plugins = new ArrayList<>();
     //Managers
-    public LangManager langManager;
-    public MessageManager messageManager;
     public FileManager fileManager;
     public KeyDeserializerManager keyDeserializerManager;
     public EventManager eventManager;
@@ -98,8 +95,6 @@ public final class API implements IAPI {
         }
 
         //Managers
-        this.messageManager = new MessageManager(this, API.class);
-        this.langManager = new LangManager(API.class, getLangs());
         this.eventManager = new EventManager(this);
 
         //Commands
@@ -121,7 +116,7 @@ public final class API implements IAPI {
     public void loadConfigs() {
         sqlConfig = fileManager.load(SQLConfig.class, fileManager.getFile("LightDreamAPI", SQLConfig.class.getSimpleName()));
         config = fileManager.load(Config.class, fileManager.getFile("LightDreamAPI", Config.class.getSimpleName()));
-        lang = fileManager.load(Lang.class, fileManager.getFile("LightDreamAPI", config.baseLang));
+        lang = fileManager.load(Lang.class, fileManager.getFile("LightDreamAPI"));
         apiConfig = fileManager.load(ApiConfig.class, fileManager.getFile("LightDreamAPI", ApiConfig.class.getSimpleName()));
     }
 
@@ -196,18 +191,8 @@ public final class API implements IAPI {
     }
 
     @Override
-    public Lang getLang() {
-        return lang;
-    }
-
-    @Override
     public Config getSettings() {
         return config;
-    }
-
-    @Override
-    public MessageManager getMessageManager() {
-        return messageManager;
     }
 
     @Override
@@ -236,6 +221,11 @@ public final class API implements IAPI {
     @Override
     public boolean useProtocolLib() {
         return apiConfig.useProtocolLib;
+    }
+
+    @Override
+    public Lang getLang() {
+        return lang;
     }
 
     @Override
@@ -274,17 +264,6 @@ public final class API implements IAPI {
 
         return reader.read(new InputStreamReader(MessageActivity.Application.class.getResourceAsStream(
                 "/META-INF/maven/dev.lightdream/LightDreamAPI/pom.xml"))).getVersion();
-    }
-
-    @Override
-    public void setLang(Player player, String lang) {
-        plugins.forEach(plugin -> plugin.setLang(player, lang));
-    }
-
-    @Override
-    public void setLang(User user, String lang) {
-        user.setLang(lang);
-        user.save();
     }
 
     @Override

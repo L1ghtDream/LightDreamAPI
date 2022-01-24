@@ -51,7 +51,7 @@ public class DatabaseManager extends HikariDatabaseManager {
         if (user != null) {
             user.uuid = player.getUniqueId();
         } else {
-            user = new User(api, player.getUniqueId(), player.getName(), api.getSettings().baseLang);
+            user = new User(api, player.getUniqueId(), player.getName());
         }
         user.save();
         return user;

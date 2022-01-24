@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import dev.lightdream.api.configs.Config;
 import dev.lightdream.api.configs.Lang;
 import dev.lightdream.api.databases.ConsoleUser;
-import dev.lightdream.api.databases.User;
-import dev.lightdream.api.managers.*;
+import dev.lightdream.api.managers.CommandManager;
+import dev.lightdream.api.managers.DatabaseManager;
+import dev.lightdream.api.managers.EventManager;
+import dev.lightdream.api.managers.KeyDeserializerManager;
 import dev.lightdream.databasemanager.DatabaseMain;
 import dev.lightdream.filemanager.FileManagerMain;
 import dev.lightdream.logger.LoggableMain;
@@ -22,21 +24,13 @@ public interface IAPI extends LoggableMain, DatabaseMain, FileManagerMain {
 
     Economy getEconomy();
 
-    Lang getLang();
-
     Config getSettings();
-
-    MessageManager getMessageManager();
 
     String getProjectName();
 
     String getProjectID();
 
     String getProjectVersion();
-
-    void setLang(Player player, String lang);
-
-    void setLang(User user, String lang);
 
     void loadConfigs();
 
@@ -78,5 +72,7 @@ public interface IAPI extends LoggableMain, DatabaseMain, FileManagerMain {
 
     @SuppressWarnings("unused")
     boolean useProtocolLib();
+
+    Lang getLang();
 
 }
