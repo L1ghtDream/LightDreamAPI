@@ -33,7 +33,6 @@ public final class API implements IAPI {
     //Settings
     public static API instance;
     private final JavaPlugin plugin;
-    public SQLConfig sqlConfig;
     public Lang lang;
     public boolean enabled;
     //Plugins
@@ -112,8 +111,7 @@ public final class API implements IAPI {
     }
 
     public void loadConfigs() {
-        sqlConfig = fileManager.load(SQLConfig.class, fileManager.getFile("LightDreamAPI", SQLConfig.class.getSimpleName()));
-        lang = fileManager.load(Lang.class, fileManager.getFile("LightDreamAPI"));
+        lang = fileManager.load(Lang.class);
         apiConfig = fileManager.load(ApiConfig.class, fileManager.getFile("LightDreamAPI", ApiConfig.class.getSimpleName()));
     }
 
@@ -220,7 +218,7 @@ public final class API implements IAPI {
 
     @Override
     public SQLConfig getSqlConfig() {
-        return sqlConfig;
+        return null;
     }
 
     @Override
