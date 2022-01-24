@@ -82,9 +82,6 @@ public final class API implements IAPI {
         Logger.setting("Use PlaceholderAPI: " + apiConfig.usePAPI + (apiConfig.usePAPI ? " (if available)" : ""));
         Logger.setting("Use ProtocolLib: " + apiConfig.useProtocolLib + (apiConfig.useProtocolLib ? " (if available)" : ""));
 
-        //Events
-        new BalanceChangeEventRunnable(this);
-
         if (apiConfig.usePAPI && plugin.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new PAPI(this).register();
         }

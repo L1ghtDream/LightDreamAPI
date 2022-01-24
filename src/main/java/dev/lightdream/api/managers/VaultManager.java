@@ -16,6 +16,7 @@ public class VaultManager {
         this.api = api;
         if (api.useEconomy()) {
             economy = setupEconomy();
+            new BalanceChangeEventRunnable(api);
         }
         if (api.usePermissions()) {
             permission = setupPermissions();
