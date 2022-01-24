@@ -18,7 +18,7 @@ public class KeyDeserializerManager extends KeyDeserializer {
 
     @SneakyThrows
     @Override
-    public Object deserializeKey(String key, DeserializationContext ctxt) {
+    public Object deserializeKey(String key, DeserializationContext context) {
         String className = key.split("\\{")[0];
 
         if (!clazzes.containsKey(className)) {

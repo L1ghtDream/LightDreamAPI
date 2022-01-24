@@ -7,7 +7,7 @@ public class Test {
     public boolean status;
     public Object result;
     public Object expectedResult;
-    public Consumer<Test> consumer;
+    public final Consumer<Test> consumer;
 
     public Test(Object expectedResult, Consumer<Test> consumer) {
         this.consumer = consumer;
@@ -18,10 +18,12 @@ public class Test {
         consumer.accept(this);
     }
 
+    @SuppressWarnings("unused")
     public void setExpectedResult(Object expectedResult) {
         this.expectedResult = expectedResult;
     }
 
+    @SuppressWarnings("unused")
     public void submitResults(Object result) {
         this.status = result.equals(expectedResult);
         this.result = result;

@@ -64,14 +64,7 @@ public class PluginLocation extends Position {
 
     @Override
     public String toString() {
-        return "PluginLocation{" +
-                "world='" + world + '\'' +
-                ", rotationX=" + rotationX +
-                ", rotationY=" + rotationY +
-                ", x=" + x +
-                ", y=" + y +
-                ", z=" + z +
-                '}';
+        return "PluginLocation{" + "world='" + world + '\'' + ", rotationX=" + rotationX + ", rotationY=" + rotationY + ", x=" + x + ", y=" + y + ", z=" + z + '}';
     }
 
     @Override
@@ -79,7 +72,8 @@ public class PluginLocation extends Position {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PluginLocation that = (PluginLocation) o;
-        return Double.compare(that.x, x) == 0 && Double.compare(that.y, y) == 0 && Double.compare(that.z, z) == 0 && Objects.equals(world, that.world);
+        return Double.compare(that.x, x) == 0 && Double.compare(that.y, y) == 0 && Double.compare(that.z, z) == 0 && Objects.equals(world,
+                that.world);
     }
 
     @Override

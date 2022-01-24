@@ -1,45 +1,69 @@
 package dev.lightdream.api.commands;
 
 import dev.lightdream.api.IAPI;
+import dev.lightdream.api.annotations.commands.SubCommand;
 import dev.lightdream.api.databases.User;
 import dev.lightdream.api.utils.MessageBuilder;
 import dev.lightdream.logger.Logger;
-import org.bukkit.command.CommandExecutor;
+import lombok.SneakyThrows;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.reflections.Reflections;
 
-import java.util.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-public class Command implements CommandExecutor, TabCompleter {
+public abstract class Command extends Executable {
 
-    public final String command;
     private final IAPI api;
-    private List<SubCommand> subCommands;
+    public final List<dev.lightdream.api.commands.SubCommand> subCommands = new ArrayList<>();
 
-    public Command(IAPI api, String command, List<SubCommand> subCommands) {
-        this.command = command;
+    @SneakyThrows
+    public Command(IAPI api) {
+        super(api);
         this.api = api;
-        try {
-            api.getPlugin().getCommand(command).setExecutor(this);
-            api.getPlugin().getCommand(command).setTabCompleter(this);
-        } catch (NullPointerException e) {
-            Logger.error("The command '" + command + "' does not exist in plugin.yml");
+
+        if (!getClass().isAnnotationPresent(dev.lightdream.api.annotations.commands.Command.class)) {
+            Logger.error("Class " + getClass().getSimpleName() + " is not annotated as @Command");
             return;
         }
 
-        List<SubCommand> sc = new ArrayList<>();
+        setName(getCommand());
 
-        subCommands.forEach(subCommand -> {
-            if (!sc.contains(subCommand)) {
-                sc.add(subCommand);
+        //Register the command
+        Field fCommandMap = Bukkit.getPluginManager().getClass().getDeclaredField("commandMap");
+        fCommandMap.setAccessible(true);
+
+        Object commandMapObject = fCommandMap.get(Bukkit.getPluginManager());
+        if (commandMapObject instanceof CommandMap) {
+            CommandMap commandMap = (CommandMap) commandMapObject;
+            commandMap.register(getCommand(), this);
+        } else {
+            Logger.error("Command " + getCommand() + " could not be initialized");
+            return;
+        }
+        Logger.good("Command " + getCommand() + " initialized successfully");
+
+        //Get all the subcommands
+        new Reflections("dev.lightdream").getTypesAnnotatedWith(SubCommand.class).forEach(aClass -> {
+            if (aClass.getAnnotation(SubCommand.class).parent().getSimpleName().equals(getClass().getSimpleName())) {
+                try {
+                    subCommands.add((dev.lightdream.api.commands.SubCommand) aClass.getDeclaredConstructors()[0].newInstance(api));
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
-        this.subCommands = sc;
-        this.subCommands.sort(Comparator.comparing(com -> com.aliases.get(0)));
     }
+
 
     public void sendUsage(CommandSender sender) {
         sendUsage(api.getDatabaseManager().getUser(sender));
@@ -50,9 +74,11 @@ public class Command implements CommandExecutor, TabCompleter {
         helpCommandOutput.append("\n");
 
         if (api.getLang().helpCommand.equals("")) {
-            for (SubCommand subCommand : subCommands) {
-                if (user.hasPermission(subCommand.permission)) {
-                    helpCommandOutput.append(subCommand.usage);
+            for (dev.lightdream.api.commands.SubCommand subCommand : subCommands) {
+                if (user.hasPermission(subCommand.getPermission())) {
+                    helpCommandOutput.append(subCommand.getCommand());
+                    helpCommandOutput.append(" ");
+                    helpCommandOutput.append(subCommand.getUsage());
                     helpCommandOutput.append("\n");
                 }
             }
@@ -64,34 +90,28 @@ public class Command implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, org.bukkit.command.Command bukkitCommand, String label, String[] args) {
+    public boolean execute(CommandSender sender, String label, String[] args) {
         if (args.length == 0) {
-            for (SubCommand subCommand : subCommands) {
-                if (subCommand.aliases.get(0).equals("")) {
-                    subCommand.execute(sender, Arrays.asList(args));
-                    return true;
-                }
-            }
-            sendUsage(sender);
+            execute(sender, Arrays.asList(args));
             return true;
         }
 
-        for (SubCommand subCommand : subCommands) {
-            if (!(subCommand.aliases.contains(args[0].toLowerCase()))) {
+        for (dev.lightdream.api.commands.SubCommand subCommand : subCommands) {
+            if (!(subCommand.getAliases().contains(args[0].toLowerCase()))) {
                 continue;
             }
 
-            if (subCommand.onlyForPlayers && !(sender instanceof Player)) {
+            if (subCommand.onlyForPlayers() && !(sender instanceof Player)) {
                 api.getMessageManager().sendMessage(sender, new MessageBuilder(api.getLang().mustBeAPlayer));
                 return true;
             }
 
-            if (subCommand.onlyForConsole && !(sender instanceof ConsoleCommandSender)) {
+            if (subCommand.onlyForConsole() && !(sender instanceof ConsoleCommandSender)) {
                 api.getMessageManager().sendMessage(sender, new MessageBuilder(api.getLang().mustBeConsole));
                 return true;
             }
 
-            if (!hasPermission(sender, subCommand.permission)) {
+            if (!hasPermission(sender, subCommand.getPermission())) {
                 api.getMessageManager().sendMessage(sender, new MessageBuilder(api.getLang().noPermission));
                 return true;
             }
@@ -100,24 +120,17 @@ public class Command implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        for (SubCommand subCommand : subCommands) {
-            if (subCommand.aliases.get(0).equals("")) {
-                subCommand.execute(sender, Arrays.asList(args));
-                return true;
-            }
-        }
-
-        api.getMessageManager().sendMessage(sender, new MessageBuilder(api.getLang().unknownCommand));
+        execute(sender, Arrays.asList(args));
         return true;
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, org.bukkit.command.Command bukkitCommand, String bukkitAlias, String[] args) {
+    public List<String> tabComplete(CommandSender sender, String bukkitAlias, String[] args) throws IllegalArgumentException {
         if (args.length == 1) {
             ArrayList<String> result = new ArrayList<>();
-            for (SubCommand subCommand : subCommands) {
-                for (String alias : subCommand.aliases) {
-                    if (alias.toLowerCase().startsWith(args[0].toLowerCase()) && hasPermission(sender, subCommand.permission)) {
+            for (dev.lightdream.api.commands.SubCommand subCommand : subCommands) {
+                for (String alias : subCommand.getAliases()) {
+                    if (alias.toLowerCase().startsWith(args[0].toLowerCase()) && hasPermission(sender, subCommand.getPermission())) {
                         result.add(alias);
                     }
                 }
@@ -125,8 +138,8 @@ public class Command implements CommandExecutor, TabCompleter {
             return result;
         }
 
-        for (SubCommand subCommand : subCommands) {
-            if (subCommand.aliases.contains(args[0]) && hasPermission(sender, subCommand.permission)) {
+        for (dev.lightdream.api.commands.SubCommand subCommand : subCommands) {
+            if (subCommand.getAliases().contains(args[0]) && hasPermission(sender, subCommand.getPermission())) {
                 return subCommand.onTabComplete(sender, new ArrayList<>(Arrays.asList(args).subList(1, args.length)));
             }
         }
@@ -136,5 +149,39 @@ public class Command implements CommandExecutor, TabCompleter {
 
     private boolean hasPermission(CommandSender sender, String permission) {
         return ((sender.hasPermission(permission) || permission.equalsIgnoreCase("")));
+    }
+
+    private String getCommand() {
+        return getClass().getAnnotation(dev.lightdream.api.annotations.commands.Command.class).command();
+    }
+
+    @Override
+    public String getPermission() {
+        return getClass().getAnnotation(dev.lightdream.api.annotations.commands.Command.class).permission();
+    }
+
+    @Override
+    public String getUsage() {
+        return getClass().getAnnotation(dev.lightdream.api.annotations.commands.Command.class).usage();
+    }
+
+    @Override
+    public boolean onlyForPlayers() {
+        return getClass().getAnnotation(dev.lightdream.api.annotations.commands.Command.class).onlyForPlayers();
+    }
+
+    @Override
+    public boolean onlyForConsole() {
+        return getClass().getAnnotation(dev.lightdream.api.annotations.commands.Command.class).onlyForConsole();
+    }
+
+    @Override
+    public List<String> getAliases() {
+        return Arrays.asList(getClass().getAnnotation(dev.lightdream.api.annotations.commands.Command.class).aliases());
+    }
+
+    @Override
+    public int getMinimumArgs() {
+        return 0;
     }
 }

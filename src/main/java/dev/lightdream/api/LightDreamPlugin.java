@@ -1,11 +1,6 @@
 package dev.lightdream.api;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import dev.lightdream.api.commands.Command;
-import dev.lightdream.api.commands.SubCommand;
-import dev.lightdream.api.commands.commands.base.HelpCommand;
-import dev.lightdream.api.commands.commands.base.ReloadCommand;
-import dev.lightdream.api.commands.commands.base.VersionCommand;
 import dev.lightdream.api.configs.Config;
 import dev.lightdream.api.configs.JdaConfig;
 import dev.lightdream.api.configs.Lang;
@@ -21,7 +16,6 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.MessageActivity;
 import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -50,14 +44,10 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
     public Lang baseLang;
 
     //Managers
-    public Economy economy;
-    public Permission permission;
     public FileManager fileManager;
     public InventoryManager inventoryManager;
     public MessageManager messageManager;
-    public Command baseCommand;
     public EventManager eventManager;
-    public ProtocolLibManager protocolLibManager;
     //Bot
     public JDA bot;
     //API
@@ -66,7 +56,7 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
 
     @SuppressWarnings("unused")
     @SneakyThrows
-    public void init(String projectName, String projectID, String baseCommand) {
+    public void init(String projectName, String projectID) {
         if (API.instance == null) {
             api = new API(this);
         } else {
@@ -84,22 +74,11 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
 
         //Managers
         registerLangManager();
-        this.economy = api.economy;
-        this.permission = api.permission;
         this.databaseManager = new DatabaseManager(this);
         this.inventoryManager = new InventoryManager(this);
         this.inventoryManager.init();
         this.messageManager = instantiateMessageManager();
         this.eventManager = new EventManager(this);
-        this.protocolLibManager = new ProtocolLibManager();
-
-        //Commands
-        List<SubCommand> baseSubCommands = new ArrayList<>();
-        baseSubCommands.add(new ReloadCommand(this, baseCommand));
-        baseSubCommands.add(new VersionCommand(this, baseCommand));
-        baseSubCommands.add(new HelpCommand(this, baseCommand));
-        baseSubCommands.addAll(getBaseSubCommands());
-        this.baseCommand = new Command(this, baseCommand, baseSubCommands);
 
         //Bot
         if (baseJdaConfig != null) {
@@ -110,6 +89,7 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
 
         //Register
         API.instance.plugins.add(this);
+        api.getCommandManager().register(this, getProjectID());
         Logger.good(projectName + "(by github.com/L1ghtDream) has been enabled");
     }
 
@@ -123,7 +103,9 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
         }
     }
 
-    public abstract @NotNull String parsePapi(OfflinePlayer player, String identifier);
+    public @NotNull String parsePapi(OfflinePlayer player, String identifier) {
+        return "";
+    }
 
     public void loadConfigs() {
         sqlConfig = fileManager.load(SQLConfig.class);
@@ -131,8 +113,6 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
         baseJdaConfig = fileManager.load(JdaConfig.class);
         baseLang = fileManager.load(Lang.class, fileManager.getFile(baseConfig.baseLang));
     }
-
-    public abstract List<SubCommand> getBaseSubCommands();
 
     public abstract MessageManager instantiateMessageManager();
 
@@ -157,7 +137,7 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
 
     @Override
     public Economy getEconomy() {
-        return economy;
+        return api.getEconomy();
     }
 
     @Override
@@ -200,7 +180,8 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
             return reader.read(new FileReader("pom.xml")).getVersion();
         }
 
-        return reader.read(new InputStreamReader(MessageActivity.Application.class.getResourceAsStream("/META-INF/maven/dev.lightdream/" + projectID + "/pom.xml"))).getVersion();
+        return reader.read(new InputStreamReader(MessageActivity.Application.class.getResourceAsStream("/META-INF/maven/dev.lightdream/" + projectID + "/pom.xml")))
+                .getVersion();
     }
 
     @Override
@@ -245,11 +226,6 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
     }
 
     @Override
-    public Command getBaseCommand() {
-        return baseCommand;
-    }
-
-    @Override
     public EventManager getEventManager() {
         return eventManager;
     }
@@ -264,5 +240,28 @@ public abstract class LightDreamPlugin extends JavaPlugin implements IAPI {
         System.out.println(s);
     }
 
+    @Override
+    public CommandManager getCommandManager() {
+        return api.getCommandManager();
+    }
 
+    @Override
+    public boolean useEconomy() {
+        return api.useEconomy();
+    }
+
+    @Override
+    public boolean usePermissions() {
+        return api.usePermissions();
+    }
+
+    @Override
+    public boolean usePAPI() {
+        return api.usePAPI();
+    }
+
+    @Override
+    public boolean useProtocolLib() {
+        return api.useProtocolLib();
+    }
 }

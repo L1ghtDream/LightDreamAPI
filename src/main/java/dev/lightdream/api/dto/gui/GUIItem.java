@@ -80,11 +80,7 @@ public class GUIItem {
 
     @Override
     public String toString() {
-        return "GUIItem{" +
-                "item=" + item +
-                ", args=" + args +
-                ", repeatedItem=" + repeated +
-                '}';
+        return "GUIItem{" + "item=" + item + ", args=" + args + ", repeatedItem=" + repeated + '}';
     }
 
     @NoArgsConstructor
@@ -110,10 +106,7 @@ public class GUIItem {
 
         @Override
         public String toString() {
-            return "GUIItemArg{" +
-                    "function='" + function + '\'' +
-                    ", args=" + args +
-                    '}';
+            return "GUIItemArg{" + "function='" + function + '\'' + ", args=" + args + '}';
         }
     }
 
@@ -135,26 +128,6 @@ public class GUIItem {
                     this.args.add(new GUIItemArg(function, (List<String>) args));
                 }
             });
-
-            /*
-            HashMap<MessageBuilder, MessageBuilder> f = new HashMap<>();
-            functions.forEach((function, arg) -> {
-                if (function instanceof String) {
-                    if (arg instanceof String) {
-                        f.put(new MessageBuilder((String) function), new MessageBuilder((String) arg));
-                    } else if (arg instanceof MessageBuilder) {
-                        f.put(new MessageBuilder((String) function), (MessageBuilder) arg);
-                    }
-                } else if (function instanceof MessageBuilder) {
-                    if (arg instanceof String) {
-                        f.put((MessageBuilder) function, new MessageBuilder((String) arg));
-                    } else if (arg instanceof MessageBuilder) {
-                        f.put((MessageBuilder) function, (MessageBuilder) arg);
-                    }
-                }
-            });
-            this.functions = f;
-            */
         }
 
         public List<String> args() {
@@ -185,15 +158,14 @@ public class GUIItem {
 
         public GUIItemArgs parse(BiConsumer<MessageBuilder, MessageBuilder> parser) {
             List<GUIItemArg> args = new ArrayList<>();
-            this.args.forEach(arg -> parser.andThen((k, v) -> args.add(new GUIItemArg(k.getBaseString(), v.getBaseList()))).accept(new MessageBuilder(arg.function), new MessageBuilder(arg.args)));
+            this.args.forEach(arg -> parser.andThen((k, v) -> args.add(new GUIItemArg(k.getBaseString(), v.getBaseList())))
+                    .accept(new MessageBuilder(arg.function), new MessageBuilder(arg.args)));
             return new GUIItemArgs(args);
         }
 
         @Override
         public String toString() {
-            return "GUIItemArgs{" +
-                    "args=" + args +
-                    '}';
+            return "GUIItemArgs{" + "args=" + args + '}';
         }
     }
 }

@@ -1,7 +1,7 @@
 package dev.lightdream.api.commands.commands.base;
 
 import dev.lightdream.api.IAPI;
-import dev.lightdream.api.commands.SubCommand;
+import dev.lightdream.api.annotations.commands.SubCommand;
 import dev.lightdream.api.databases.User;
 import dev.lightdream.api.utils.MessageBuilder;
 import org.jetbrains.annotations.NotNull;
@@ -10,14 +10,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@dev.lightdream.api.annotations.commands.SubCommand(
-        aliases = "version"
-)
-public class VersionCommand extends SubCommand {
+@SubCommand(parent = VersionCommand.class,
+        command = "version")
+public class VersionCommand extends dev.lightdream.api.commands.SubCommand {
 
-    public VersionCommand(@NotNull IAPI api, String parentCommand) {
-        super(api, parentCommand);
-        //super(api, Collections.singletonList("version"), "", "", false, false, "", 0);
+    public VersionCommand(@NotNull IAPI api) {
+        super(api);
     }
 
     @Override

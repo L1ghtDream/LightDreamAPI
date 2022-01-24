@@ -40,11 +40,6 @@ public class ConsoleUser extends User {
     }
 
     @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    @Override
     public void setLang(String lang) {
     }
 

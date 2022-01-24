@@ -46,16 +46,7 @@ public class JdaEmbed {
 
     @Override
     public String toString() {
-        return "JdaEmbed{" +
-                "red=" + red +
-                ", green=" + green +
-                ", blue=" + blue +
-                ", title='" + title + '\'' +
-                ", thumbnail='" + thumbnail + '\'' +
-                ", description='" + description + '\'' +
-                ", fields=" + fields +
-                ", buttons=" + buttons +
-                '}';
+        return "JdaEmbed{" + "red=" + red + ", green=" + green + ", blue=" + blue + ", title='" + title + '\'' + ", thumbnail='" + thumbnail + '\'' + ", description='" + description + '\'' + ", fields=" + fields + ", buttons=" + buttons + '}';
     }
 
     public EmbedBuilder build() {

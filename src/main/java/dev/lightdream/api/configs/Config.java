@@ -7,9 +7,6 @@ import java.util.List;
 public class Config {
 
     public String baseLang = "en_us";
-    public List<String> langs = Arrays.asList(
-            "en_us",
-            "ro_ro"
-    );
+    public List<String> langs = Arrays.asList("en_us", "ro_ro");
 
 }

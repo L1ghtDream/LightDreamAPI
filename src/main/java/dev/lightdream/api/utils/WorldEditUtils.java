@@ -23,9 +23,10 @@ public class WorldEditUtils {
         BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
 
         EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(new BukkitWorld(world), 10000000);
-        ForwardExtentCopy forwardExtentCopy = new ForwardExtentCopy(
-                editSession, region, clipboard, new Vector(Math.min(pos1.x, pos2.x), Math.min(pos1.y, pos2.y), Math.min(pos1.z, pos2.z))
-        );
+        ForwardExtentCopy forwardExtentCopy = new ForwardExtentCopy(editSession,
+                region,
+                clipboard,
+                new Vector(Math.min(pos1.x, pos2.x), Math.min(pos1.y, pos2.y), Math.min(pos1.z, pos2.z)));
         Operations.complete(forwardExtentCopy);
 
         return clipboard;

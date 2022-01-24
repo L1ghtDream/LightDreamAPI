@@ -44,7 +44,7 @@
       - More optimized database access
 - 4.x:
   - Added hikari database manager
-- 5.0:
+- 5.x:
   - Separated out modules
     - DatabaseManager
     - Logger
@@ -52,5 +52,8 @@
   - Removed JdaUtils.class
   - Removed JsonUtils.class
   - Removed XPUtils.class
+- 6.x:
+  - Added reflected annotation based command instantiation
+  - Properly implemented soft dependencies
 
 

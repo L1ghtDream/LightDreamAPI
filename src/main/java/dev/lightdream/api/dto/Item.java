@@ -178,16 +178,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Item{" +
-                "material=" + material +
-                ", amount=" + amount +
-                ", displayName='" + displayName + '\'' +
-                ", headData='" + headData + '\'' +
-                ", headOwner='" + headOwner + '\'' +
-                ", lore=" + lore +
-                ", slot=" + slot +
-                ", nbtTags=" + nbtTags +
-                '}';
+        return "Item{" + "material=" + material + ", amount=" + amount + ", displayName='" + displayName + '\'' + ", headData='" + headData + '\'' + ", headOwner='" + headOwner + '\'' + ", lore=" + lore + ", slot=" + slot + ", nbtTags=" + nbtTags + '}';
     }
 
     public boolean equals(Object o, boolean exact) {
@@ -203,14 +194,9 @@ public class Item {
                 item.lore = new ArrayList<>();
             }
 
-            return amount.equals(item.amount) &&
-                    material == item.material &&
-                    Objects.equals(displayName, item.displayName) &&
-                    Objects.equals(headData, item.headData) &&
-                    Objects.equals(headOwner, item.headOwner) &&
-                    Objects.equals(lore, item.lore) &&
-                    Objects.equals(slot, item.slot) &&
-                    Objects.equals(nbtTags, item.nbtTags);
+            return amount.equals(item.amount) && material == item.material && Objects.equals(displayName,
+                    item.displayName) && Objects.equals(headData, item.headData) && Objects.equals(headOwner, item.headOwner) && Objects.equals(lore,
+                    item.lore) && Objects.equals(slot, item.slot) && Objects.equals(nbtTags, item.nbtTags);
         } else {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
@@ -223,13 +209,9 @@ public class Item {
                 item.lore = new ArrayList<>();
             }
 
-            return material == item.material &&
-                    Objects.equals(displayName, item.displayName) &&
-                    Objects.equals(headData, item.headData) &&
-                    Objects.equals(headOwner, item.headOwner) &&
-                    Objects.equals(lore, item.lore) &&
-                    Objects.equals(slot, item.slot) &&
-                    Objects.equals(nbtTags, item.nbtTags);
+            return material == item.material && Objects.equals(displayName, item.displayName) && Objects.equals(headData,
+                    item.headData) && Objects.equals(headOwner, item.headOwner) && Objects.equals(lore, item.lore) && Objects.equals(slot,
+                    item.slot) && Objects.equals(nbtTags, item.nbtTags);
         }
     }
 

@@ -29,29 +29,15 @@ public class ProtocolLibManager {
         packet2.getWorldBorderActions().writeSafely(0, EnumWrappers.WorldBorderAction.SET_CENTER);
         packet3.getWorldBorderActions().writeSafely(0, EnumWrappers.WorldBorderAction.SET_SIZE);
 
-        packet1.getDoubles()
-                .write(0, x)
-                .write(1, z)
-                .write(2, diameter)
-                .write(3, diameter);
-        packet1.getLongs()
-                .write(0, 0L);
-        packet1.getIntegers()
-                .write(0,29999984)
-                .write(1, 0)
-                .write(2, 0);
+        packet1.getDoubles().write(0, x).write(1, z).write(2, diameter).write(3, diameter);
+        packet1.getLongs().write(0, 0L);
+        packet1.getIntegers().write(0, 29999984).write(1, 0).write(2, 0);
 
-        packet2.getDoubles()
-                .write(0, x)
-                .write(1, z);
+        packet2.getDoubles().write(0, x).write(1, z);
 
-        packet3
-                .getDoubles()
-                .write(0, diameter);
+        packet3.getDoubles().write(0, diameter);
 
         protocolManager.sendServerPacket(player, packet1);
-        //protocolManager.sendServerPacket(player, packet2);
-        //protocolManager.sendServerPacket(player, packet3);
     }
 
     @SuppressWarnings({"unused"})

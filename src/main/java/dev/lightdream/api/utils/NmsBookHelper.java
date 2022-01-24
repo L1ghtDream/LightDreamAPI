@@ -46,8 +46,7 @@ public final class NmsBookHelper {
             major = Integer.parseInt(m.group(1));
             minor = Integer.parseInt(m.group(2));
         } else {
-            throw new IllegalStateException(
-                    "Cannot parse version \"" + version + "\", make sure it follows \"v<major>_<minor>...\"");
+            throw new IllegalStateException("Cannot parse version \"" + version + "\", make sure it follows \"v<major>_<minor>...\"");
         }
         doubleHands = major <= 1 && minor >= 9;
         try {
@@ -212,8 +211,7 @@ public final class NmsBookHelper {
         private final String version = NmsBookHelper.version;
 
         public UnsupportedVersionException(Exception e) {
-            super("Error while executing reflections, submit to developers the following log (version: "
-                    + NmsBookHelper.version + ")", e);
+            super("Error while executing reflections, submit to developers the following log (version: " + NmsBookHelper.version + ")", e);
         }
     }
 }

@@ -42,21 +42,19 @@ public class LocationRange {
             return new ArrayList<>();
         }
 
-        FutureTask<List<Block>> task = new FutureTask<>(
-                () -> {
-                    World world = Bukkit.getWorld(min.world);
-                    List<Block> output = new ArrayList<>();
+        FutureTask<List<Block>> task = new FutureTask<>(() -> {
+            World world = Bukkit.getWorld(min.world);
+            List<Block> output = new ArrayList<>();
 
-                    for (int x = (int) Math.floor(min.x); x <= max.x; x++) {
-                        for (int y = (int) Math.floor(min.y); y <= max.y; y++) {
-                            for (int z = (int) Math.floor(min.z); z <= max.z; z++) {
-                                output.add(world.getBlockAt(x, y, z));
-                            }
-                        }
+            for (int x = (int) Math.floor(min.x); x <= max.x; x++) {
+                for (int y = (int) Math.floor(min.y); y <= max.y; y++) {
+                    for (int z = (int) Math.floor(min.z); z <= max.z; z++) {
+                        output.add(world.getBlockAt(x, y, z));
                     }
-                    return output;
                 }
-        );
+            }
+            return output;
+        });
 
         new Thread(task).start();
         return task.get();
@@ -64,23 +62,18 @@ public class LocationRange {
 
     @Override
     public String toString() {
-        return "LocationRange{" +
-                "pos1=" + pos1 +
-                ", pos2=" + pos2 +
-                '}';
+        return "LocationRange{" + "pos1=" + pos1 + ", pos2=" + pos2 + '}';
     }
 
     @SuppressWarnings("unused")
     public List<PluginLocation> getCorners() {
-        return Arrays.asList(
-                new PluginLocation(pos1.world, Math.min(pos1.x, pos2.x), Math.min(pos1.y, pos2.y), Math.min(pos1.z, pos2.z)),
+        return Arrays.asList(new PluginLocation(pos1.world, Math.min(pos1.x, pos2.x), Math.min(pos1.y, pos2.y), Math.min(pos1.z, pos2.z)),
                 new PluginLocation(pos1.world, Math.min(pos1.x, pos2.x), Math.min(pos1.y, pos2.y), Math.max(pos1.z, pos2.z)),
                 new PluginLocation(pos1.world, Math.min(pos1.x, pos2.x), Math.max(pos1.y, pos2.y), Math.min(pos1.z, pos2.z)),
                 new PluginLocation(pos1.world, Math.min(pos1.x, pos2.x), Math.max(pos1.y, pos2.y), Math.max(pos1.z, pos2.z)),
                 new PluginLocation(pos1.world, Math.max(pos1.x, pos2.x), Math.min(pos1.y, pos2.y), Math.min(pos1.z, pos2.z)),
                 new PluginLocation(pos1.world, Math.max(pos1.x, pos2.x), Math.min(pos1.y, pos2.y), Math.max(pos1.z, pos2.z)),
                 new PluginLocation(pos1.world, Math.max(pos1.x, pos2.x), Math.max(pos1.y, pos2.y), Math.min(pos1.z, pos2.z)),
-                new PluginLocation(pos1.world, Math.max(pos1.x, pos2.x), Math.max(pos1.y, pos2.y), Math.max(pos1.z, pos2.z))
-        );
+                new PluginLocation(pos1.world, Math.max(pos1.x, pos2.x), Math.max(pos1.y, pos2.y), Math.max(pos1.z, pos2.z)));
     }
 }

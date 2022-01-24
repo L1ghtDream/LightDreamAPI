@@ -11,7 +11,7 @@ import java.util.HashMap;
 @SuppressWarnings("unused")
 public class Reward {
 
-    public RewardType type;
+    public final RewardType type;
     public Item item;
     public String command;
     public int money;
@@ -53,11 +53,6 @@ public class Reward {
 
     @Override
     public String toString() {
-        return "Reward{" +
-                "type=" + type +
-                ", item=" + item +
-                ", command='" + command + '\'' +
-                ", money=" + money +
-                '}';
+        return "Reward{" + "type=" + type + ", item=" + item + ", command='" + command + '\'' + ", money=" + money + '}';
     }
 }

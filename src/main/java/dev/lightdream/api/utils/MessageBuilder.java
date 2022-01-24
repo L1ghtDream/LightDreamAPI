@@ -147,12 +147,7 @@ public class MessageBuilder extends Serializable implements java.io.Serializable
 
     @Override
     public String toString() {
-        return "MessageBuilder{" +
-                "base='" + base + '\'' +
-                ", baseList=" + baseList +
-                ", placeholders=" + placeholders +
-                ", values=" + values +
-                '}';
+        return "MessageBuilder{" + "base='" + base + '\'' + ", baseList=" + baseList + ", placeholders=" + placeholders + ", values=" + values + '}';
     }
 
     @SuppressWarnings("unused")

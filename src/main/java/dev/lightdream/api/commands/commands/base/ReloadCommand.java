@@ -1,20 +1,18 @@
 package dev.lightdream.api.commands.commands.base;
 
 import dev.lightdream.api.IAPI;
-import dev.lightdream.api.commands.SubCommand;
+import dev.lightdream.api.annotations.commands.SubCommand;
 import dev.lightdream.api.databases.User;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@dev.lightdream.api.annotations.commands.SubCommand(
-        aliases = "reload"
-)
-public class ReloadCommand extends SubCommand {
-    public ReloadCommand(@NotNull IAPI api, String parentCommand) {
-        super(api, parentCommand);
-        //super(api, Collections.singletonList("reload"), "", "", false, false, "", 0);
+@SubCommand(parent = ReloadCommand.class,
+        command = "reload")
+public class ReloadCommand extends dev.lightdream.api.commands.SubCommand {
+    public ReloadCommand(@NotNull IAPI api) {
+        super(api);
     }
 
     @Override

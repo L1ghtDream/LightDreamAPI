@@ -1,24 +1,23 @@
-package dev.lightdream.api.commands.commands.ldapi;
+package dev.lightdream.api.commands.commands.ldapi.subcommands;
 
 import dev.lightdream.api.IAPI;
 import dev.lightdream.api.commands.SubCommand;
+import dev.lightdream.api.commands.commands.ldapi.LdAPI;
 import dev.lightdream.api.databases.User;
 import dev.lightdream.api.utils.MessageBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-@dev.lightdream.api.annotations.commands.SubCommand(
-        aliases = "choseLang",
+@SuppressWarnings("unused")
+@dev.lightdream.api.annotations.commands.SubCommand(command = "choseLang",
         usage = "[lang]",
         onlyForPlayers = true,
         minimumArgs = 1,
-        parentCommand = "ld-api"
-)
+        parent = LdAPI.class)
 public class ChoseLangCommand extends SubCommand {
     public ChoseLangCommand(@NotNull IAPI api) {
         super(api);
-        //super(api, Collections.singletonList("choseLang"), "", "", true, false, "[lang]", 1);
     }
 
     @Override

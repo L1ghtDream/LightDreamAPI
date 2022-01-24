@@ -1405,7 +1405,7 @@ public enum XMaterial {
     }
 
     @NotNull
-    protected static Optional<XMaterial> matchDefinedXMaterial(@NotNull String name, byte data) {
+    private static Optional<XMaterial> matchDefinedXMaterial(@NotNull String name, byte data) {
         Boolean duplicated = null;
         boolean isAMap = name.equalsIgnoreCase("MAP");
 
@@ -1440,7 +1440,7 @@ public enum XMaterial {
     }
 
     @NotNull
-    protected static String format(@NotNull String name) {
+    private static String format(@NotNull String name) {
         int len = name.length();
         char[] chs = new char[len];
         int count = 0;

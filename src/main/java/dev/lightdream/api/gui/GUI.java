@@ -2,9 +2,9 @@ package dev.lightdream.api.gui;
 
 import dev.lightdream.api.IAPI;
 import dev.lightdream.api.databases.User;
+import dev.lightdream.api.dto.XMaterial;
 import dev.lightdream.api.dto.gui.GUIConfig;
 import dev.lightdream.api.dto.gui.GUIItem;
-import dev.lightdream.api.dto.XMaterial;
 import dev.lightdream.api.utils.ItemBuilder;
 import dev.lightdream.api.utils.MessageBuilder;
 import dev.lightdream.api.utils.Utils;
@@ -99,7 +99,8 @@ public abstract class GUI implements InventoryProvider {
                 }
 
                 if (item.item.material.equals(XMaterial.PLACEHOLDER)) {
-                    item.item.material = XMaterial.matchXMaterial(parse("%material%", keys.get(i), index + page * item.nextSlots.size())).orElse(XMaterial.AIR);
+                    item.item.material = XMaterial.matchXMaterial(parse("%material%", keys.get(i), index + page * item.nextSlots.size()))
+                            .orElse(XMaterial.AIR);
                 }
                 if (item.item.amount == null) {
                     item.item.amount = Integer.parseInt(parse("%amount%", keys.get(i), index + page * item.nextSlots.size()));

@@ -1,45 +1,19 @@
 package dev.lightdream.api;
 
-import dev.lightdream.api.dto.test.Test;
-import dev.lightdream.api.dto.test.TestBattery;
 import dev.lightdream.api.managers.DatabaseManager;
-import dev.lightdream.databasemanager.dto.SQLConfig;
-import dev.lightdream.logger.Debugger;
-import org.bukkit.plugin.java.JavaPlugin;
+import dev.lightdream.api.managers.MessageManager;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
-public final class APIPlugin extends JavaPlugin {
+public final class APIPlugin extends LightDreamPlugin {
 
-    public API api;
-
-    @SuppressWarnings("ConstantConditions")
     @Override
     public void onEnable() {
-        this.api = new API(this);
-
-        if (!Debugger.enabled) {
-            return;
-        }
-
-        new TestBattery(api, Arrays.asList(new Test(null, (test) -> test.submitResults(null)), new Test(null, (test) -> {
-            SQLConfig backup = api.sqlConfig;
-            api.sqlConfig = new SQLConfig();
-            api.sqlConfig.database = "tests";
-            DatabaseManager dbManager = new DatabaseManager(api);
-
-            UUID uuid1 = UUID.randomUUID();
-            dbManager.getUser(uuid1);
-
-            UUID uuid2 = UUID.randomUUID();
-            dbManager.getUser(uuid2);
-
-            api.sqlConfig = backup;
-            test.setExpectedResult(dbManager.getUser(uuid1));
-            test.submitResults(dbManager.getUser(uuid2));
-        }))).test();
+        init("LightDream-API-Plugin", String.valueOf(UUID.randomUUID()));
     }
 
     @Override
@@ -47,4 +21,44 @@ public final class APIPlugin extends JavaPlugin {
         api.disable();
     }
 
+    @Override
+    public @NotNull String parsePapi(OfflinePlayer player, String identifier) {
+        return "";
+    }
+
+    @Override
+    public MessageManager instantiateMessageManager() {
+        return new dev.lightdream.api.managers.MessageManager(this, getClass());
+    }
+
+    @Override
+    public void registerLangManager() {
+        dev.lightdream.api.API.instance.langManager.register(getClass(), getLangs());
+
+    }
+
+    @Override
+    public void disable() {
+
+    }
+
+    @Override
+    public void registerFileManagerModules() {
+
+    }
+
+    @Override
+    public void registerUser(Player player) {
+        databaseManager.createUser(player);
+    }
+
+    @Override
+    public DatabaseManager getDatabaseManager() {
+        return databaseManager;
+    }
+
+    @Override
+    public String getProjectVersion() {
+        return api.getProjectVersion();
+    }
 }

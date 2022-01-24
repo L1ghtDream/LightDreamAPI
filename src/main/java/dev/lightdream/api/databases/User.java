@@ -21,9 +21,11 @@ import java.util.UUID;
 @DatabaseTable(table = "users")
 public class User extends DatabaseEntry {
 
-    @DatabaseField(columnName = "uuid", unique = true)
+    @DatabaseField(columnName = "uuid",
+            unique = true)
     public UUID uuid;
-    @DatabaseField(columnName = "name", unique = true)
+    @DatabaseField(columnName = "name",
+            unique = true)
     public String name;
     @DatabaseField(columnName = "lang")
     public String lang;
@@ -80,23 +82,35 @@ public class User extends DatabaseEntry {
         this.lang = lang;
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "ConstantConditions"})
     public boolean hasMoney(double amount) {
+        if (API.instance.useEconomy()) {
+            return false;
+        }
         return API.instance.getEconomy().has(getOfflinePlayer(), amount);
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "ConstantConditions"})
     public void addMoney(double amount) {
+        if (API.instance.useEconomy()) {
+            return;
+        }
         API.instance.getEconomy().depositPlayer(getOfflinePlayer(), amount);
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "ConstantConditions"})
     public void removeMoney(double amount) {
+        if (API.instance.useEconomy()) {
+            return;
+        }
         API.instance.getEconomy().withdrawPlayer(getOfflinePlayer(), amount);
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "ConstantConditions"})
     public double getMoney() {
+        if (API.instance.useEconomy()) {
+            return 0;
+        }
         return API.instance.getEconomy().getBalance(getOfflinePlayer());
     }
 
@@ -166,11 +180,6 @@ public class User extends DatabaseEntry {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", uuid=" + uuid +
-                ", name='" + name + '\'' +
-                ", lang='" + lang + '\'' +
-                '}';
+        return "User{" + "id=" + id + ", uuid=" + uuid + ", name='" + name + '\'' + ", lang='" + lang + '\'' + '}';
     }
 }

@@ -1,13 +1,6 @@
 package dev.lightdream.api;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import dev.lightdream.api.commands.Command;
-import dev.lightdream.api.commands.SubCommand;
-import dev.lightdream.api.commands.commands.base.HelpCommand;
-import dev.lightdream.api.commands.commands.base.ReloadCommand;
-import dev.lightdream.api.commands.commands.base.VersionCommand;
-import dev.lightdream.api.commands.commands.ldapi.ChoseLangCommand;
-import dev.lightdream.api.commands.commands.ldapi.PluginsCommand;
 import dev.lightdream.api.configs.ApiConfig;
 import dev.lightdream.api.configs.Config;
 import dev.lightdream.api.configs.Lang;
@@ -23,11 +16,9 @@ import fr.minuskube.inv.InventoryManager;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.entities.MessageActivity;
 import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,7 +26,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -48,23 +38,19 @@ public final class API implements IAPI {
     public SQLConfig sqlConfig;
     public Config config;
     public Lang lang;
-    public ApiConfig apiConfig;
     public boolean enabled;
-
     //Plugins
     public List<LightDreamPlugin> plugins = new ArrayList<>();
-
-    public Economy economy = null;
-    public Permission permission = null;
-
     //Managers
     public LangManager langManager;
     public MessageManager messageManager;
-    //public OmrLiteDatabaseManagerImpl databaseManager;
     public FileManager fileManager;
     public KeyDeserializerManager keyDeserializerManager;
-    public Command command;
     public EventManager eventManager;
+    public CommandManager commandManager;
+    public ProtocolLibManager protocolLibManager;
+    public VaultManager vaultManager;
+    private ApiConfig apiConfig;
 
     public API(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -89,47 +75,41 @@ public final class API implements IAPI {
         //Load settings
         loadConfigs();
 
-        Logger.info("API Settings");
-        Logger.info("Use Economy (by Vault): " + apiConfig.useEconomy);
-        Logger.info("Use Permissions (by Vault): " + apiConfig.usePermissions);
+        Logger.setting("API Settings:");
+        Logger.setting("");
+        Logger.setting("Use Economy (by Vault): " + apiConfig.useEconomy + (apiConfig.useEconomy ? " (if available)" : ""));
+        Logger.setting("Use Permissions (by Vault): " + apiConfig.usePermissions + (apiConfig.usePermissions ? " (if available)" : ""));
+        Logger.setting("Use PlaceholderAPI: " + apiConfig.usePAPI + (apiConfig.usePAPI ? " (if available)" : ""));
+        Logger.setting("Use ProtocolLib: " + apiConfig.useProtocolLib + (apiConfig.useProtocolLib ? " (if available)" : ""));
 
         //Events
         new BalanceChangeEventRunnable(this);
 
-        //Placeholders
-        new PAPI(this).register();
-
-        //Setups
-        if (apiConfig.useEconomy) {
-            economy = setupEconomy();
-        }
-        if (apiConfig.usePermissions) {
-            permission = setupPermissions();
+        if (apiConfig.usePAPI && plugin.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new PAPI(this).register();
         }
 
+        if (apiConfig.useProtocolLib && plugin.getServer().getPluginManager().getPlugin("ProtocolLib") != null) {
+            this.protocolLibManager = new ProtocolLibManager();
+        }
+
+        if (plugin.getServer().getPluginManager().getPlugin("Vault") != null) {
+            this.vaultManager = new VaultManager(this);
+        } else {
+            apiConfig.useEconomy = false;
+            apiConfig.usePermissions = false;
+        }
 
         //Managers
-        messageManager = new MessageManager(this, API.class);
-        //this.databaseManager = new OmrLiteDatabaseManagerImpl(this);
-        //this.databaseManager.setup(User.class);
+        this.messageManager = new MessageManager(this, API.class);
         this.langManager = new LangManager(API.class, getLangs());
         this.eventManager = new EventManager(this);
 
         //Commands
-        List<SubCommand> baseSubCommands = new ArrayList<>(getBaseCommands());
-        command = new Command(this, getProjectID(), baseSubCommands);
+        commandManager = new CommandManager();
 
+        commandManager.register(this, "api.commands");
         Logger.good(getProjectName() + "(by github.com/L1ghtDream) has been enabled");
-    }
-
-    private Economy setupEconomy() {
-        RegisteredServiceProvider<Economy> rsp = plugin.getServer().getServicesManager().getRegistration(Economy.class);
-        return rsp.getProvider();
-    }
-
-    private Permission setupPermissions() {
-        RegisteredServiceProvider<Permission> rsp = plugin.getServer().getServicesManager().getRegistration(Permission.class);
-        return rsp.getProvider();
     }
 
     @SuppressWarnings({"SwitchStatementWithTooFewBranches", "unused"})
@@ -139,10 +119,6 @@ public final class API implements IAPI {
                 return getProjectVersion();
         }
         return "";
-    }
-
-    public List<SubCommand> getBaseCommands() {
-        return Arrays.asList(new ChoseLangCommand(this), new ReloadCommand(this, getProjectID()), new VersionCommand(this, getProjectID()), new PluginsCommand(this), new HelpCommand(this, getProjectID()));
     }
 
     public void loadConfigs() {
@@ -166,11 +142,6 @@ public final class API implements IAPI {
     @Override
     public void registerFileManagerModules() {
 
-    }
-
-    @Override
-    public Command getBaseCommand() {
-        return command;
     }
 
     @Override
@@ -221,7 +192,10 @@ public final class API implements IAPI {
 
     @Override
     public Economy getEconomy() {
-        return economy;
+        if (vaultManager == null) {
+            return null;
+        }
+        return vaultManager.economy;
     }
 
     @Override
@@ -245,6 +219,31 @@ public final class API implements IAPI {
             return plugins.get(0).getDatabaseManager();
         }
         return null;
+    }
+
+    @Override
+    public boolean useEconomy() {
+        return apiConfig.useEconomy;
+    }
+
+    @Override
+    public boolean usePermissions() {
+        return apiConfig.usePermissions;
+    }
+
+    @Override
+    public boolean usePAPI() {
+        return apiConfig.usePAPI;
+    }
+
+    @Override
+    public boolean useProtocolLib() {
+        return apiConfig.useProtocolLib;
+    }
+
+    @Override
+    public CommandManager getCommandManager() {
+        return commandManager;
     }
 
     public File getDataFolder() {
@@ -276,7 +275,8 @@ public final class API implements IAPI {
             return reader.read(new FileReader("pom.xml")).getVersion();
         }
 
-        return reader.read(new InputStreamReader(MessageActivity.Application.class.getResourceAsStream("/META-INF/maven/dev.lightdream/LightDreamAPI/pom.xml"))).getVersion();
+        return reader.read(new InputStreamReader(MessageActivity.Application.class.getResourceAsStream(
+                "/META-INF/maven/dev.lightdream/LightDreamAPI/pom.xml"))).getVersion();
     }
 
     @Override

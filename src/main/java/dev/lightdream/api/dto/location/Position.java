@@ -32,15 +32,11 @@ public class Position extends Serializable implements java.io.Serializable {
     }
 
     public boolean smaller(PluginLocation pos) {
-        return pos.x >= x &&
-                pos.y >= y &&
-                pos.z >= z;
+        return pos.x >= x && pos.y >= y && pos.z >= z;
     }
 
     public boolean bigger(PluginLocation pos) {
-        return pos.x <= x &&
-                pos.y <= y &&
-                pos.z <= z;
+        return pos.x <= x && pos.y <= y && pos.z <= z;
     }
 
     @SuppressWarnings("MethodDoesntCallSuperMethod")
@@ -75,10 +71,6 @@ public class Position extends Serializable implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return "Position{" +
-                "x=" + x +
-                ", y=" + y +
-                ", z=" + z +
-                '}';
+        return "Position{" + "x=" + x + ", y=" + y + ", z=" + z + '}';
     }
 }

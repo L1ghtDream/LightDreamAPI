@@ -37,8 +37,7 @@ public final class BookUtils {
     public static void openPlayer(Player p, ItemStack book) {
         CustomBookOpenEvent event = new CustomBookOpenEvent(p, book, false);
         Bukkit.getPluginManager().callEvent(event);
-        if (event.isCancelled())
-            return;
+        if (event.isCancelled()) return;
         p.closeInventory();
         ItemStack hand = p.getItemInHand();
 
@@ -69,10 +68,8 @@ public final class BookUtils {
 
         @SuppressWarnings({"HttpUrlsUsage", "unused"})
         static ClickAction openUrl(String url) {
-            if (url.startsWith("http://") || url.startsWith("https://"))
-                return new SimpleClickAction(ClickEvent.Action.OPEN_URL, url);
-            else
-                throw new IllegalArgumentException("Invalid url: \"" + url + "\", it should start with http:// or https://");
+            if (url.startsWith("http://") || url.startsWith("https://")) return new SimpleClickAction(ClickEvent.Action.OPEN_URL, url);
+            else throw new IllegalArgumentException("Invalid url: \"" + url + "\", it should start with http:// or https://");
         }
 
         @SuppressWarnings("unused")
@@ -121,10 +118,7 @@ public final class BookUtils {
 
         static HoverAction showEntity(UUID uuid, String type, String name) {
             return new SimpleHoverAction(HoverEvent.Action.SHOW_ENTITY,
-                    NmsBookHelper.jsonToComponents(
-                            "{id:\"" + uuid + "\",type:\"" + type + "\"name:\"" + name + "\"}"
-                    )
-            );
+                    NmsBookHelper.jsonToComponents("{id:\"" + uuid + "\",type:\"" + type + "\"name:\"" + name + "\"}"));
         }
 
         @SuppressWarnings({"unused", "deprecation"})
@@ -274,7 +268,8 @@ public final class BookUtils {
 
     @Setter
     @Getter
-    @Accessors(fluent = true, chain = true)
+    @Accessors(fluent = true,
+            chain = true)
     public static class TextBuilder {
         private String text = "";
         private ClickAction onClick = null;
@@ -290,8 +285,7 @@ public final class BookUtils {
 
         @SuppressWarnings("unused")
         public TextBuilder color(ChatColor color) {
-            if (color != null && !color.isColor())
-                throw new IllegalArgumentException("Argument isn't a color!");
+            if (color != null && !color.isColor()) throw new IllegalArgumentException("Argument isn't a color!");
             this.color = color;
             return this;
         }
@@ -299,23 +293,18 @@ public final class BookUtils {
         @SuppressWarnings("unused")
         public TextBuilder style(ChatColor... style) {
             for (ChatColor c : style)
-                if (!c.isFormat())
-                    throw new IllegalArgumentException("Argument isn't a style!");
+                if (!c.isFormat()) throw new IllegalArgumentException("Argument isn't a style!");
             this.style = style;
             return this;
         }
 
         public BaseComponent build() {
             TextComponent res = new TextComponent(text);
-            if (onClick != null)
-                res.setClickEvent(new ClickEvent(onClick.action(), onClick.value()));
-            if (onHover != null)
-                res.setHoverEvent(new HoverEvent(onHover.action(), onHover.value()));
+            if (onClick != null) res.setClickEvent(new ClickEvent(onClick.action(), onClick.value()));
+            if (onHover != null) res.setHoverEvent(new HoverEvent(onHover.action(), onHover.value()));
             if (color != null) {
-                if (canTranslateDirectly)
-                    res.setColor(color.asBungee());
-                else
-                    res.setColor(net.md_5.bungee.api.ChatColor.getByChar(color.getChar()));
+                if (canTranslateDirectly) res.setColor(color.asBungee());
+                else res.setColor(net.md_5.bungee.api.ChatColor.getByChar(color.getChar()));
             }
             if (style != null) {
                 for (ChatColor c : style) {

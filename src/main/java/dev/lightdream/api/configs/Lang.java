@@ -52,17 +52,6 @@ public class Lang {
 
     @Override
     public String toString() {
-        return "Lang{" +
-                "mustBeAPlayer='" + mustBeAPlayer + '\'' +
-                ", mustBeConsole='" + mustBeConsole + '\'' +
-                ", noPermission='" + noPermission + '\'' +
-                ", unknownCommand='" + unknownCommand + '\'' +
-                ", invalidUser='" + invalidUser + '\'' +
-                ", invalidNumber='" + invalidNumber + '\'' +
-                ", version='" + version + '\'' +
-                ", invalidLang='" + invalidLang + '\'' +
-                ", langChanged='" + langChanged + '\'' +
-                ", helpCommand='" + helpCommand + '\'' +
-                '}';
+        return "Lang{" + "mustBeAPlayer='" + mustBeAPlayer + '\'' + ", mustBeConsole='" + mustBeConsole + '\'' + ", noPermission='" + noPermission + '\'' + ", unknownCommand='" + unknownCommand + '\'' + ", invalidUser='" + invalidUser + '\'' + ", invalidNumber='" + invalidNumber + '\'' + ", version='" + version + '\'' + ", invalidLang='" + invalidLang + '\'' + ", langChanged='" + langChanged + '\'' + ", helpCommand='" + helpCommand + '\'' + '}';
     }
 }
