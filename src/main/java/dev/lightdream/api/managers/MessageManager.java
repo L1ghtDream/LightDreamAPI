@@ -1,6 +1,7 @@
 package dev.lightdream.api.managers;
 
 import de.themoep.minedown.MineDown;
+import dev.lightdream.api.databases.ConsoleUser;
 import dev.lightdream.api.databases.User;
 import dev.lightdream.api.utils.MessageBuilder;
 import dev.lightdream.api.utils.Utils;
@@ -48,6 +49,10 @@ public class MessageManager {
     }
 
     public static void sendMessage(User user, MessageBuilder builder) {
+        if(user instanceof ConsoleUser){
+            ConsoleUser consoleUser = (ConsoleUser) user;
+            consoleUser.sendMessage(builder);
+        }
         if (user.isOnline()) {
             return;
         }

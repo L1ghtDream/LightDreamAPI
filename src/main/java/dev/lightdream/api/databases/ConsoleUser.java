@@ -1,6 +1,9 @@
 package dev.lightdream.api.databases;
 
 import dev.lightdream.api.dto.location.PluginLocation;
+import dev.lightdream.api.managers.MessageManager;
+import dev.lightdream.api.utils.MessageBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -77,5 +80,13 @@ public class ConsoleUser extends User {
         return true;
     }
 
+    @Override
+    public void sendMessage(String msg) {
+        MessageManager.sendMessage(Bukkit.getConsoleSender(), msg);
+    }
 
+    @Override
+    public void sendMessage(MessageBuilder msg) {
+        MessageManager.sendMessage(Bukkit.getConsoleSender(), msg);
+    }
 }
